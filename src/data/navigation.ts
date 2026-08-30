@@ -1,4 +1,9 @@
-export const navigationItems = [
+export interface NavigationItem {
+  label: string;
+  href: string;
+}
+
+export const mainNavigation: NavigationItem[] = [
   {
     label: "Home",
     href: "/",
@@ -28,3 +33,8 @@ export const navigationItems = [
     href: "/contact",
   },
 ];
+
+export const navigationCta = {
+  label: "Book a Session",
+  href: "/book-session",
+};

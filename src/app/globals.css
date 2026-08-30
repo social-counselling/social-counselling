@@ -1,90 +1,79 @@
 @import "tailwindcss";
 
+/* =========================================================
+   GLOBAL DESIGN TOKENS
+   Change these values to change the website theme globally.
+   ========================================================= */
+
 :root {
-  /* =========================================
-     BRAND COLORS
-     ========================================= */
+  /* Brand */
+  --brand-primary: #147d7e;
+  --brand-primary-dark: #0e6667;
+  --brand-primary-light: #e8f5f4;
 
-  --color-primary: #147d7e;
-  --color-primary-dark: #0e6667;
-  --color-primary-light: #e8f5f4;
+  /* Secondary */
+  --brand-secondary: #244d70;
+  --brand-secondary-light: #edf4f8;
 
-  --color-secondary: #244d70;
-  --color-secondary-light: #edf4f8;
+  /* Accent */
+  --brand-accent: #d7a445;
+  --brand-accent-light: #fbf4e4;
 
-  --color-accent: #d7a445;
-  --color-accent-light: #fbf4e4;
+  /* Background */
+  --brand-background: #ffffff;
+  --brand-background-soft: #f7faf9;
+  --brand-background-muted: #eef5f3;
 
-  /* =========================================
-     BACKGROUNDS
-     ========================================= */
+  /* Text */
+  --brand-text-primary: #183b3b;
+  --brand-text-secondary: #5f7373;
+  --brand-text-muted: #8a9b9b;
 
-  --color-background: #ffffff;
-  --color-background-soft: #f7faf9;
-  --color-background-muted: #eef5f3;
+  /* Border */
+  --brand-border: #dce8e6;
 
-  /* =========================================
-     TEXT
-     ========================================= */
+  /* Status */
+  --brand-success: #2f855a;
+  --brand-warning: #d69e2e;
+  --brand-error: #c53030;
 
-  --color-foreground: #183b3b;
-  --color-text-primary: #183b3b;
-  --color-text-secondary: #5f7373;
-  --color-text-muted: #8a9b9b;
-
-  /* =========================================
-     BORDERS
-     ========================================= */
-
-  --color-border: #dce8e6;
-
-  /* =========================================
-     STATUS
-     ========================================= */
-
-  --color-success: #2f855a;
-  --color-warning: #d69e2e;
-  --color-error: #c53030;
-
-  /* =========================================
-     RADIUS
-     ========================================= */
-
+  /* Radius */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 20px;
   --radius-xl: 28px;
   --radius-full: 9999px;
 
-  /* =========================================
-     SHADOWS
-     ========================================= */
-
+  /* Shadows */
   --shadow-soft: 0 8px 30px rgba(24, 59, 59, 0.08);
   --shadow-card: 0 12px 40px rgba(24, 59, 59, 0.1);
 }
 
+/* =========================================================
+   TAILWIND THEME
+   ========================================================= */
+
 @theme inline {
-  --color-primary: var(--color-primary);
-  --color-primary-dark: var(--color-primary-dark);
-  --color-primary-light: var(--color-primary-light);
+  --color-primary: var(--brand-primary);
+  --color-primary-dark: var(--brand-primary-dark);
+  --color-primary-light: var(--brand-primary-light);
 
-  --color-secondary: var(--color-secondary);
-  --color-secondary-light: var(--color-secondary-light);
+  --color-secondary: var(--brand-secondary);
+  --color-secondary-light: var(--brand-secondary-light);
 
-  --color-accent: var(--color-accent);
-  --color-accent-light: var(--color-accent-light);
+  --color-accent: var(--brand-accent);
+  --color-accent-light: var(--brand-accent-light);
 
-  --color-background: var(--color-background);
-  --color-background-soft: var(--color-background-soft);
-  --color-background-muted: var(--color-background-muted);
+  --color-background: var(--brand-background);
+  --color-background-soft: var(--brand-background-soft);
+  --color-background-muted: var(--brand-background-muted);
 
-  --color-foreground: var(--color-foreground);
-  --color-text-primary: var(--color-text-primary);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-muted: var(--color-text-muted);
+  --color-foreground: var(--brand-text-primary);
+  --color-text-primary: var(--brand-text-primary);
+  --color-text-secondary: var(--brand-text-secondary);
+  --color-text-muted: var(--brand-text-muted);
 
-  --color-border: var(--color-border);
+  --color-border: var(--brand-border);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
@@ -92,6 +81,10 @@
   --radius-xl: var(--radius-xl);
   --radius-full: var(--radius-full);
 }
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
 
 * {
   box-sizing: border-box;
@@ -103,8 +96,8 @@ html {
 
 body {
   margin: 0;
-  background: var(--color-background);
-  color: var(--color-foreground);
+  background: var(--brand-background);
+  color: var(--brand-text-primary);
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -123,6 +116,6 @@ img {
 }
 
 ::selection {
-  background: var(--color-primary);
-  color: white;
+  background: var(--brand-primary);
+  color: #ffffff;
 }

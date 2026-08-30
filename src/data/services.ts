@@ -1,77 +1,72 @@
-export interface Service {
-  id: string;
-  slug: string;
-  title: string;
-  shortDescription: string;
-  description: string;
-  icon: string;
-  image: string;
-  color: "teal" | "purple" | "orange" | "blue" | "green";
-}
+import type { Service } from "@/types/service";
 
 export const services: Service[] = [
   {
-    id: "service_001",
-    slug: "teenagers-counselling",
-    title: "Teenagers Counselling",
+    id: "youth-counselling",
+    slug: "youth-counselling",
+    title: "Youth Counselling",
     shortDescription:
-      "Building confidence and nurturing values.",
+      "A supportive space to help young people navigate personal, emotional and social challenges with greater confidence and clarity.",
     description:
-      "Support for teenagers navigating academic pressure, relationships, identity, confidence, emotions, and life transitions.",
-    icon: "users",
-    image: "/images/services/teenagers.jpg",
-    color: "teal",
+      "Youth counselling provides a safe and supportive environment for young people to talk openly, understand their challenges and develop healthier ways of thinking and responding.",
+    status: "READY",
+    bookingEnabled: true,
+    suitableFor: [
+      "Teenagers",
+      "Young adults",
+      "Personal challenges",
+      "Emotional wellbeing",
+      "Confidence building",
+    ],
   },
 
   {
-    id: "service_002",
+    id: "marriage-counselling",
     slug: "marriage-counselling",
     title: "Marriage Counselling",
     shortDescription:
-      "Understanding and creating stronger bonds.",
+      "Guidance for couples seeking better understanding, communication and stronger relationships.",
     description:
-      "A supportive space for couples to improve communication, understand each other, resolve conflicts, and strengthen their relationship.",
-    icon: "heart-handshake",
-    image: "/images/services/marriage.jpg",
-    color: "purple",
+      "Marriage counselling creates a safe space for couples to understand different perspectives, communicate more openly and work through relationship challenges with thoughtful guidance.",
+    status: "READY",
+    bookingEnabled: true,
+    suitableFor: [
+      "Pre-marriage",
+      "Marriage challenges",
+      "Communication",
+      "Relationship concerns",
+      "Compatibility",
+    ],
   },
 
   {
-    id: "service_003",
-    slug: "senior-citizens-counselling",
-    title: "Senior Citizens Counselling",
-    shortDescription:
-      "Transition, relationship and care.",
-    description:
-      "Compassionate counselling focused on emotional wellbeing, life transitions, relationships, loneliness, and adapting to change.",
-    icon: "heart",
-    image: "/images/services/seniors.jpg",
-    color: "orange",
-  },
-
-  {
-    id: "service_004",
-    slug: "individual-counselling",
-    title: "Individual Counselling",
-    shortDescription:
-      "Guidance to the right path with clarity.",
-    description:
-      "One-to-one counselling for personal growth, emotional challenges, relationships, stress, confidence, and everyday life concerns.",
-    icon: "user",
-    image: "/images/services/individual.jpg",
-    color: "blue",
-  },
-
-  {
-    id: "service_005",
+    id: "corporate-employee-counselling",
     slug: "corporate-employee-counselling",
     title: "Corporate Employee Counselling",
     shortDescription:
-      "Navigating workplace challenges.",
+      "Confidential support to help employees navigate workplace challenges, personal pressures and professional wellbeing.",
     description:
-      "Professional emotional wellbeing support that helps employees manage workplace stress, relationships, burnout, and personal challenges.",
-    icon: "briefcase",
-    image: "/images/services/corporate.jpg",
-    color: "green",
+      "Corporate employee counselling provides employees with a supportive space to discuss workplace and personal challenges and develop clearer, healthier ways forward.",
+    status: "READY",
+    bookingEnabled: true,
+    suitableFor: [
+      "Workplace stress",
+      "Professional challenges",
+      "Employee wellbeing",
+      "Work-life balance",
+      "Personal growth",
+    ],
   },
 ];
+
+export function getServiceBySlug(
+  slug: string
+): Service | undefined {
+  return services.find(
+    (service) => service.slug === slug
+  );
+}
+
+export const readyServices = services.filter(
+  (service) => service.status === "READY"
+);

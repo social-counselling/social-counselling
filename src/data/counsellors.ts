@@ -1,73 +1,175 @@
-export interface Counsellor {
-  id: string;
-  slug: string;
-  name: string;
-  designation: string;
-  image: string;
-  experience: number;
-  rating: number;
-  reviewCount: number;
-  specializations: string[];
-  languages: string[];
-  sessionPrice: number;
-  isAvailable: boolean;
-}
+import type { Counsellor } from "@/types/counsellor";
 
 export const counsellors: Counsellor[] = [
   {
-    id: "counsellor_001",
-    slug: "ananya-sharma",
-    name: "Dr. Ananya Sharma",
-    designation: "Clinical Psychologist",
-    image: "/images/counsellors/ananya-sharma.jpg",
-    experience: 8,
-    rating: 4.9,
-    reviewCount: 126,
-    specializations: [
-      "Individual Counselling",
-      "Relationships",
-      "Stress Management",
+    id: "dr-hemali-jariwala",
+
+    slug: "dr-hemali-jariwala",
+
+    name: "Dr. Hemali Jariwala",
+
+    credentials:
+      "Homeopathy Consultant / Palliative Care Associate / Spiritual Healer",
+
+    experience: "15+ years of dedicated clinical experience",
+
+    languages: [
+      "English",
+      "Hindi",
+      "Gujarati",
     ],
-    languages: ["English", "Hindi"],
-    sessionPrice: 1500,
-    isAvailable: true,
+
+    geographicalCoverage:
+      "Pan India, especially the western parts like Mumbai and Gujarat",
+
+    specializations: [
+      {
+        id: "women-post-pregnancy",
+        title: "Women's Post-Pregnancy Counselling",
+      },
+      {
+        id: "lifestyle-disorders",
+        title: "Lifestyle Disorders",
+      },
+      {
+        id: "student-counselling",
+        title: "Student Counselling",
+      },
+      {
+        id: "post-separation-trauma",
+        title: "Post-Separation Trauma",
+      },
+      {
+        id: "mental-health",
+        title: "Overall Mental Health",
+      },
+    ],
+
+    shortBio:
+      "A compassionate and trusted practitioner with extensive clinical experience and a holistic approach that considers physical, emotional and psychological wellbeing.",
+
+    fullBio:
+      "Dr. Hemali Jariwala has over 15 years of dedicated clinical experience. Her work includes individualized homoeopathic treatment, palliative care support and adolescent and mental wellness counselling. She works with people across age groups and focuses on compassionate, holistic support.",
+
+    mantra:
+      undefined,
+
+    profileImage:
+      undefined,
+
+    isAvailableForBooking: true,
   },
 
   {
-    id: "counsellor_002",
-    slug: "rahul-mehta",
-    name: "Dr. Rahul Mehta",
-    designation: "Counselling Psychologist",
-    image: "/images/counsellors/rahul-mehta.jpg",
-    experience: 10,
-    rating: 4.8,
-    reviewCount: 98,
-    specializations: [
-      "Marriage Counselling",
-      "Family Counselling",
-      "Life Transitions",
+    id: "kiranmai-patwari",
+
+    slug: "kiranmai-patwari",
+
+    name: "Kiranmai Patwari",
+
+    credentials:
+      "Corporate Professional / Trained Counsellor",
+
+    age: 42,
+
+    languages: [
+      "English",
+      "Hindi",
+      "Telugu",
+      "Kannada",
     ],
-    languages: ["English", "Hindi"],
-    sessionPrice: 1800,
-    isAvailable: true,
+
+    geographicalCoverage:
+      "Pan India",
+
+    specializations: [
+      {
+        id: "family-counselling",
+        title: "Family Counselling",
+      },
+      {
+        id: "marriage-counselling",
+        title: "Marriage Counselling",
+      },
+      {
+        id: "postpartum-counselling",
+        title: "Postpartum Counselling",
+      },
+    ],
+
+    shortBio:
+      "A trained counsellor focused on family and women's counselling, with experience supporting people through family conflict, relationship concerns, trauma and postpartum transition.",
+
+    fullBio:
+      "Kiranmai Patwari is a corporate professional and trained counsellor with experience in family and women's counselling. Her path into counselling was shaped by family counselling shows and firsthand experience with women's issues in modern society. She emphasizes listening, understanding, communication and practical guidance.",
+
+    mantra:
+      "Stay positive. Work hard. Spread happiness.",
+
+    profileImage:
+      undefined,
+
+    isAvailableForBooking: true,
   },
 
   {
-    id: "counsellor_003",
-    slug: "meera-kapoor",
-    name: "Dr. Meera Kapoor",
-    designation: "Senior Counselling Specialist",
-    image: "/images/counsellors/meera-kapoor.jpg",
-    experience: 12,
-    rating: 4.9,
-    reviewCount: 154,
-    specializations: [
-      "Senior Citizens",
-      "Anxiety Management",
-      "Emotional Wellbeing",
+    id: "vikram-srivastava",
+
+    slug: "vikram-srivastava",
+
+    name: "Vikram Srivastava",
+
+    credentials:
+      "Ex-Army Officer / Corporate Leader",
+
+    age: 49,
+
+    experience:
+      "About 20 years of counselling experience",
+
+    languages: [
+      "English",
+      "Hindi",
     ],
-    languages: ["English", "Hindi"],
-    sessionPrice: 2000,
-    isAvailable: false,
+
+    geographicalCoverage:
+      "Pan India, especially the northern and central parts of India",
+
+    specializations: [
+      {
+        id: "youth-counselling",
+        title: "Youth Counselling",
+      },
+      {
+        id: "marriage-counselling",
+        title: "Marriage Counselling",
+      },
+      {
+        id: "corporate-employee-counselling",
+        title: "Corporate Employee Counselling",
+      },
+    ],
+
+    shortBio:
+      "An experienced counsellor known for building a quick connection with people and helping them identify a thoughtful and practical path forward.",
+
+    fullBio:
+      "Vikram Srivastava is an Ex-Army Officer and Corporate Leader who is passionate about counselling people in need. He is described as being able to connect quickly with people and guide them with compassion and thoughtfulness. His experience includes youth counselling, marriage counselling, corporate employee counselling and work with juvenile correctional facilities.",
+
+    mantra:
+      "Stay positive. Work hard. Spread happiness.",
+
+    profileImage:
+      undefined,
+
+    isAvailableForBooking: true,
   },
 ];
+
+export function getCounsellorBySlug(
+  slug: string
+): Counsellor | undefined {
+  return counsellors.find(
+    (counsellor) => counsellor.slug === slug
+  );
+}

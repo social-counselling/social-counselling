@@ -1,3 +1,23 @@
+export type CounsellingTypeId =
+  | "teenagers"
+  | "marriage"
+  | "senior-citizens"
+  | "individual"
+  | "corporate";
+
+export interface CounsellingType {
+  id: CounsellingTypeId;
+  title: string;
+  subtitle: string;
+  href: string;
+}
+
+export interface HeroBenefit {
+  id: string;
+  title: string;
+  description: string;
+}
+
 export const heroData = {
   eyebrow: "Empathy • Support • Guidance",
 
@@ -21,21 +41,60 @@ export const heroData = {
   image: "/images/hero/home-hero.png",
 };
 
-export const heroBenefits = [
+export const counsellingTypes: CounsellingType[] = [
   {
-    id: "benefit_001",
+    id: "teenagers",
+    title: "Teenagers",
+    subtitle: "Building confidence",
+    href: "/services/teenagers-counselling",
+  },
+
+  {
+    id: "marriage",
+    title: "Marriage",
+    subtitle: "Creating stronger bonds",
+    href: "/services/marriage-counselling",
+  },
+
+  {
+    id: "senior-citizens",
+    title: "Senior Citizens",
+    subtitle: "Transition & care",
+    href: "/services/senior-citizens-counselling",
+  },
+
+  {
+    id: "individual",
+    title: "Individual",
+    subtitle: "Clarity & growth",
+    href: "/services/individual-counselling",
+  },
+
+  {
+    id: "corporate",
+    title: "Corporate",
+    subtitle: "Workplace wellbeing",
+    href: "/services/corporate-employee-counselling",
+  },
+];
+
+export const heroBenefits: HeroBenefit[] = [
+  {
+    id: "listening",
     title: "A listening ear.",
     description:
       "A safe and judgement-free space to express yourself.",
   },
+
   {
-    id: "benefit_002",
+    id: "thought",
     title: "A conscious thought.",
     description:
       "Understand your emotions and develop healthier perspectives.",
   },
+
   {
-    id: "benefit_003",
+    id: "path",
     title: "A clear path forward.",
     description:
       "Practical guidance to help you move ahead with confidence.",

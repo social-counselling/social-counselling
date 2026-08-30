@@ -1,117 +1,270 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
-import { navigationItems } from "@/data/navigation";
+
+import {
+  mainNavigation,
+  navigationCta,
+} from "@/data/navigation";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const isActive = (href: string) => {
+    if (href === "/") {
+      return pathname === "/";
+    }
+
+    return pathname.startsWith(href);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
 
   return (
-    <header className="absolute left-0 right-0 top-0 z-50">
-      <Container className="pt-4 sm:pt-5 lg:pt-6">
-        <div className="flex items-center justify-between gap-4">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="relative z-50 flex shrink-0 items-center"
-            onClick={() => setIsOpen(false)}
+    <>
+      <header className="fixed inset-x-0 top-0 z-50">
+        <Container className="pt-3 sm:pt-4">
+          <nav
+            className="
+              flex
+              min-h-[68px]
+              items-center
+              justify-between
+              rounded-[22px]
+              border
+              border-white/70
+              bg-white/85
+              px-4
+              shadow-[0_8px_30px_rgba(24,59,59,0.08)]
+              backdrop-blur-xl
+              sm:px-5
+              lg:min-h-[76px]
+              lg:px-6
+            "
           >
-            <div className="flex items-center">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white/80 text-primary shadow-sm backdrop-blur-sm sm:h-12 sm:w-12">
-                <span className="text-lg font-bold">S</span>
-              </div>
+            {/* =================================================
+                LOGO
+                ================================================= */}
 
-              <div className="ml-2 hidden sm:block">
-                <div className="text-[17px] font-bold leading-none tracking-[0.16em] text-secondary">
-                  SOCIAL
-                </div>
-
-                <div className="mt-1 text-[11px] font-semibold tracking-[0.24em] text-primary">
-                  COUNSELLING
-                </div>
-              </div>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden items-center gap-1 rounded-full border border-white/50 bg-white/70 px-2 py-2 shadow-lg backdrop-blur-md lg:flex">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group relative rounded-full px-4 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:text-primary"
-              >
-                {item.label}
-
-                {item.label === "Home" && (
-                  <span className="absolute bottom-1.5 left-1/2 h-0.5 w-5 -translate-x-1/2 rounded-full bg-primary" />
-                )}
-              </Link>
-            ))}
-
-            <Button
-              href="/book-session"
-              size="sm"
-              className="ml-1 px-5"
+            <Link
+              href="/"
+              aria-label="Social Counselling home"
+              className="relative flex shrink-0 items-center"
+              onClick={closeMenu}
             >
-              Book a Session
-            </Button>
+              <Image
+                src="/images/logo/logo.png"
+                alt="Social Counselling"
+                width={190}
+                height={75}
+                priority
+                className="
+                  h-auto
+                  w-[145px]
+                  sm:w-[165px]
+                  lg:w-[185px]
+                "
+              />
+            </Link>
+
+            {/* =================================================
+                DESKTOP NAVIGATION
+                ================================================= */}
+
+            <div className="hidden items-center gap-1 lg:flex">
+              {mainNavigation.map((item) => {
+                const active = isActive(item.href);
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`
+                      relative
+                      rounded-full
+                      px-3
+                      py-2
+                      text-sm
+                      font-medium
+                      transition-colors
+                      duration-200
+                      xl:px-4
+                      ${
+                        active
+                          ? "text-primary"
+                          : "text-secondary hover:text-primary"
+                      }
+                    `}
+                  >
+                    {item.label}
+
+                    {active && (
+                      <span
+                        className="
+                          absolute
+                          inset-x-3
+                          -bottom-0.5
+                          h-0.5
+                          rounded-full
+                          bg-primary
+                        "
+                      />
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* =================================================
+                DESKTOP CTA
+                ================================================= */}
+
+            <div className="hidden lg:block">
+              <Button
+                href={navigationCta.href}
+                size="md"
+                className="px-6"
+              >
+                {navigationCta.label}
+              </Button>
+            </div>
+
+            {/* =================================================
+                MOBILE MENU BUTTON
+                ================================================= */}
+
+            <button
+              type="button"
+              aria-label={
+                isMenuOpen
+                  ? "Close navigation menu"
+                  : "Open navigation menu"
+              }
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen((previous) => !previous)}
+              className="
+                flex
+                h-11
+                w-11
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-border
+                bg-white
+                text-secondary
+                shadow-sm
+                transition
+                hover:bg-primary-light
+                hover:text-primary
+                lg:hidden
+              "
+            >
+              {isMenuOpen ? (
+                <X className="h-5 w-5" />
+              ) : (
+                <Menu className="h-5 w-5" />
+              )}
+            </button>
           </nav>
 
-          {/* Mobile Menu Button */}
-          <button
-            type="button"
-            aria-label={isOpen ? "Close menu" : "Open menu"}
-            aria-expanded={isOpen}
-            onClick={() => setIsOpen((value) => !value)}
-            className="relative z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/60 bg-white/80 text-secondary shadow-md backdrop-blur-md lg:hidden"
+          {/* =================================================
+              MOBILE MENU
+              ================================================= */}
+
+          <div
+            className={`
+              overflow-hidden
+              transition-all
+              duration-300
+              lg:hidden
+              ${
+                isMenuOpen
+                  ? "mt-2 max-h-[600px] opacity-100"
+                  : "max-h-0 opacity-0"
+              }
+            `}
           >
-            {isOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
-        </div>
+            <div
+              className="
+                rounded-[22px]
+                border
+                border-white/70
+                bg-white/95
+                p-3
+                shadow-[0_12px_40px_rgba(24,59,59,0.12)]
+                backdrop-blur-xl
+              "
+            >
+              <div className="flex flex-col">
+                {mainNavigation.map((item) => {
+                  const active = isActive(item.href);
 
-        {/* Mobile Navigation */}
-        <div
-          className={`overflow-hidden transition-all duration-300 lg:hidden ${
-            isOpen
-              ? "mt-3 max-h-[500px] opacity-100"
-              : "max-h-0 opacity-0"
-          }`}
-        >
-          <div className="rounded-3xl border border-white/60 bg-white/95 p-3 shadow-xl backdrop-blur-md">
-            <nav className="flex flex-col">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className="rounded-2xl px-4 py-3.5 text-sm font-medium text-slate-700 transition-colors hover:bg-primary-light hover:text-primary"
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={closeMenu}
+                      className={`
+                        flex
+                        items-center
+                        justify-between
+                        rounded-xl
+                        px-4
+                        py-3.5
+                        text-sm
+                        font-medium
+                        transition-colors
+                        ${
+                          active
+                            ? "bg-primary-light text-primary"
+                            : "text-secondary hover:bg-background-soft hover:text-primary"
+                        }
+                      `}
+                    >
+                      <span>{item.label}</span>
+
+                      {active && (
+                        <span className="h-2 w-2 rounded-full bg-primary" />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
+
+              <div className="mt-3 border-t border-border pt-3">
+                <Button
+                  href={navigationCta.href}
+                  size="lg"
+                  className="w-full"
+                  onClick={closeMenu}
                 >
-                  {item.label}
-                </Link>
-              ))}
-
-              <Button
-                href="/book-session"
-                size="md"
-                className="mt-2 w-full"
-                onClick={() => setIsOpen(false)}
-              >
-                Book a Session
-              </Button>
-            </nav>
+                  {navigationCta.label}
+                </Button>
+              </div>
+            </div>
           </div>
-        </div>
-      </Container>
-    </header>
+        </Container>
+      </header>
+
+      {/* =====================================================
+          HEADER SPACING
+
+          Prevents page content from going behind fixed navbar.
+          ===================================================== */}
+
+      <div className="h-[84px] sm:h-[92px] lg:h-[108px]" />
+    </>
   );
 }
