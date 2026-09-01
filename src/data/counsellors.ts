@@ -59,58 +59,57 @@ export const counsellors: Counsellor[] = [
 
     isAvailableForBooking: true,
   },
+{
+  id: "kiranmai-patwari",
 
-  {
-    id: "kiranmai-patwari",
+  slug: "kiranmai-patwari",
 
-    slug: "kiranmai-patwari",
+  name: "Kiranmai Patwari",
 
-    name: "Kiranmai Patwari",
+  credentials:
+    "Corporate Professional / Trained Counsellor",
 
-    credentials:
-      "Corporate Professional / Trained Counsellor",
+  age: 42,
 
-    age: 42,
+  languages: [
+    "English",
+    "Hindi",
+    "Telugu",
+    "Kannada",
+  ],
 
-    languages: [
-      "English",
-      "Hindi",
-      "Telugu",
-      "Kannada",
-    ],
+  geographicalCoverage:
+    "Pan India",
 
-    geographicalCoverage:
-      "Pan India",
+  specializations: [
+    {
+      id: "family-counselling",
+      title: "Family Counselling",
+    },
+    {
+      id: "marriage-counselling",
+      title: "Marriage Counselling",
+    },
+    {
+      id: "postpartum-counselling",
+      title: "Postpartum Counselling",
+    },
+  ],
 
-    specializations: [
-      {
-        id: "family-counselling",
-        title: "Family Counselling",
-      },
-      {
-        id: "marriage-counselling",
-        title: "Marriage Counselling",
-      },
-      {
-        id: "postpartum-counselling",
-        title: "Postpartum Counselling",
-      },
-    ],
+  shortBio:
+    "A trained counsellor focused on family and women's counselling, with experience supporting people through family conflict, trauma and postpartum transition.",
 
-    shortBio:
-      "A trained counsellor focused on family and women's counselling, with experience supporting people through family conflict, relationship concerns, trauma and postpartum transition.",
+  fullBio:
+    "Kiranmai Patwari is a corporate professional and trained counsellor with experience in family and women's counselling.",
 
-    fullBio:
-      "Kiranmai Patwari is a corporate professional and trained counsellor with experience in family and women's counselling. Her path into counselling was shaped by family counselling shows and firsthand experience with women's issues in modern society. She emphasizes listening, understanding, communication and practical guidance.",
+  mantra:
+    "Stay positive. Work hard. Spread happiness.",
 
-    mantra:
-      "Stay positive. Work hard. Spread happiness.",
+  profileImage:
+    "/images/counsellors/kiranmai-patwari-profile.png",
 
-    profileImage:
-      undefined,
-
-    isAvailableForBooking: true,
-  },
+  isAvailableForBooking: true,
+},
 
   {
     id: "vikram-srivastava",
@@ -159,8 +158,7 @@ export const counsellors: Counsellor[] = [
     mantra:
       "Stay positive. Work hard. Spread happiness.",
 
-    profileImage:
-      undefined,
+    profileImage:"/images/counsellors/VIKRAMSRIVASTAVA.jpg",
 
     isAvailableForBooking: true,
   },

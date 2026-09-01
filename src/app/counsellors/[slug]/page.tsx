@@ -131,7 +131,7 @@ export default async function CounsellorDetailPage({
                       (max-width: 1024px) 100vw,
                       40vw
                     "
-                    className="object-cover"
+                    className="object-fill"
                   />
                 ) : (
                   <div
