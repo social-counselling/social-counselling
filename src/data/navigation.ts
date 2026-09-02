@@ -9,16 +9,16 @@ export const mainNavigation: NavigationItem[] = [
     href: "/",
   },
   {
+  label:"About",
+  href:"/about"
+  },
+  {
     label: "Services",
     href: "/services",
   },
   {
     label: "Counsellors",
     href: "/counsellors",
-  },
-  {
-    label: "Resources",
-    href: "/resources",
   },
   {
     label: "Blog",

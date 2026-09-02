@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
 
@@ -64,16 +63,16 @@ export default function Navbar() {
               onClick={closeMenu}
             >
               <Image
-                src="/images/logo/logo.png"
+                src="/images/logo/Social Counselling Icon.png"
                 alt="Social Counselling"
-                width={190}
-                height={75}
+                width={80}
+                height={30}
                 priority
                 className="
                   h-auto
-                  w-[145px]
-                  sm:w-[165px]
-                  lg:w-[185px]
+                  w-[60px]
+                  sm:w-[40px]
+                  lg:w-[80px]
                 "
               />
             </Link>
