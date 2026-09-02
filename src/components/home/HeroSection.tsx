@@ -49,49 +49,54 @@ function ServiceCard({
 
   return (
     <Link
-      href={service.href}
-      className={`
-        group flex items-center border border-white/70
-        bg-white/75 shadow-lg backdrop-blur-md
-        transition-all duration-300
-        hover:-translate-y-1 hover:bg-white/90
+  href={service.href}
+  className={`
+    group flex min-w-0 items-center
+    border border-white/60
+    bg-white/75
+    shadow-sm
+    backdrop-blur-md
+    transition-all duration-300
 
-        ${
-          compact
-         ? "gap-1.5 rounded-lg px-1.5 py-1"
-         : "gap-2.5 rounded-[18px] px-3 py-2.5"
-        }
-      `}
-    >
+    ${
+      compact
+
+  ? "h-7 w-[135px] gap-1 rounded-md px-1.5"
+  : "gap-2.5 rounded-[18px] px-3 py-2.5"
+    }
+  `}
+>
       <div
         className={`
           flex shrink-0 items-center justify-center
-          rounded-full bg-white text-primary shadow-sm
-          transition-all duration-300
-          group-hover:bg-primary group-hover:text-white
+          rounded-full bg-white text-primary
+          shadow-sm
 
           ${
             compact
-            ? "h-6 w-6"
-            : "h-9 w-9"
+              ? "h-5 w-5"
+              : "h-9 w-9"
           }
         `}
       >
         <Icon
-         className={compact ? "h-3 w-3" : "h-4.5 w-4.5"}
-          strokeWidth={1.7}
+          className={
+            compact
+              ? "h-2.5 w-2.5"
+              : "h-4.5 w-4.5"
+          }
+          strokeWidth={1.8}
         />
       </div>
 
-      <div className="min-w-0">
+      <div className="min-w-0 leading-none">
         <p
           className={`
             truncate font-bold text-secondary
-
             ${
-             compact
-             ? "text-[8px] sm:text-[10px]"
-            : "text-xs xl:text-sm"
+              compact
+                ? "text-[7px]"
+                : "text-xs xl:text-sm"
             }
           `}
         >
@@ -101,10 +106,9 @@ function ServiceCard({
         <p
           className={`
             truncate text-slate-600
-
             ${
               compact
-                ? "text-[7px] sm:text-[9px]"
+                ? "mt-0.5 text-[6px]"
                 : "mt-0.5 text-[10px] xl:text-xs"
             }
           `}
@@ -118,7 +122,9 @@ function ServiceCard({
           className="
             ml-auto hidden h-3.5 w-3.5
             shrink-0 text-primary
-            opacity-0 transition-all duration-300
+            opacity-0
+            transition-all
+            duration-300
             group-hover:translate-x-1
             group-hover:opacity-100
             xl:block
@@ -267,52 +273,49 @@ export default function HeroSection() {
               These are deliberately small because
               the quote is already inside the image.
               ================================================= */}
+           <div
+  className="
+    absolute
+    left-2
+    right-2
+    bottom-2
+    md:hidden
+  "
+>
+  <div className="grid grid-cols-2 gap-1.5 px-3">
+    {counsellingTypes.map((service) => (
+      <ServiceCard
+        key={service.id}
+        service={service}
+        compact
+      />
+    ))}
+  </div>
 
-          <div
-            className="
-              absolute
-              left-2
-              right-2 bottom-[5%]
-              md:hidden
-            "
-          >
-            <div
-              className="
-                grid
-                grid-cols-2
-                gap-1.5
-              "
-            >
-              {counsellingTypes.map((service) => (
-                <ServiceCard
-                  key={service.id}
-                  service={service}
-                  compact
-                />
-              ))}
-            </div>
-
-            <div className="mt-1.5">
-              <Button
-                href="/services"
-                variant="outline"
-                size="sm"
-                className="
-                  h-8
-                  w-full
-                  border-white
-                  bg-white/80
-                  px-3
-                  text-[10px]
-                  backdrop-blur-md
-                "
-              >
-                View All Services
-
-                <ArrowRight className="h-3 w-3" />
-              </Button>
-            </div>
-          </div>
+  <div className="mt-1">
+    <Button
+      href="/services"
+      variant="outline"
+      size="sm"
+      className="
+        mx-auto
+        flex
+        h-6
+        w-[135px]
+        rounded-full
+        border-white
+        bg-white/80
+        px-2
+        text-[8px]
+        leading-none
+        backdrop-blur-md
+      "
+    >
+      View All Services
+      <ArrowRight className="h-2.5 w-2.5" />
+    </Button>
+  </div>
+</div>
         </Container>
       </div>
     </section>
