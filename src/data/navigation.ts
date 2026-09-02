@@ -13,6 +13,10 @@ export const mainNavigation: NavigationItem[] = [
   href:"/about"
   },
   {
+    label:"Vision Mission & Purpose",
+    href:"/vision-mission"
+  },
+  {
     label: "Services",
     href: "/services",
   },
