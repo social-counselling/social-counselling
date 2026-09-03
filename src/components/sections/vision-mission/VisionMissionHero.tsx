@@ -22,145 +22,148 @@ function ImageSection({
           < 1024px
           ===================================================== */}
 
-      <div className="relative w-full lg:hidden">
 
-        {/* ===================================================
-            FULL IMAGE
-            h-auto + w-full keeps the complete image visible.
-            =================================================== */}
+<div className="relative w-full lg:hidden">
 
-        <Image
-          src={image}
-          alt={title}
-          width={1200}
-          height={800}
-          priority
-          sizes="100vw"
-          className="block h-auto w-full"
-        />
+  {/* ===================================================
+      FULL IMAGE
+      =================================================== */}
 
-        {/* ===================================================
-            CONTENT OVER IMAGE
+<Image
+  src={image}
+  alt={title}
+  width={1200}
+  height={800}
+  priority
+  sizes="100vw"
+  className="block h-auto w-full"
+/>
 
-            This is directly relative to the image.
-            =================================================== */}
+  {/* ===================================================
+      CONTENT OVER IMAGE
+      =================================================== */}
 
-        <div className="absolute inset-0 z-10">
+ <div className="absolute inset-0 z-10">
+  <div
+    className={`
+      absolute
+      left-1/2
+      z-20
+      w-[82%]
+      -translate-x-1/2
 
-     <div
-  className={`
-    absolute
-    z-20
+      rounded-3xl
+      border
+      border-white/50
+      bg-white/25
+      p-3
+      shadow-xl
+      backdrop-blur-md
 
-    /* ================= MOBILE ================= */
-    left-1/2
-    -translate-x-1/2
-    w-[72%]
+      ${
+        reverse
+          ? "bottom-[6%]"
+          : "top-[6%]"
+      }
 
-    rounded-3xl
-    border
-    border-white/50
-    bg-white/25
-    p-3
-    shadow-xl
-    backdrop-blur-md
+      sm:left-auto
+      sm:right-4
+      sm:w-[78%]
+      sm:translate-x-0
+      sm:p-5
 
-    /* ================= TABLET ================= */
-    sm:left-auto
-    sm:right-4
-    sm:translate-x-0
-    sm:w-[78%]
-    sm:p-5
+      md:right-2
+      md:w-[50%]
+      md:p-6
 
-    md:right-2
-    md:w-[50%]
-    md:p-6
+      sm:${
+        reverse
+          ? "bottom-[5%]"
+          : "top-[5%]"
+      }
+    `}
+  >
 
-    /* ================= POSITION ================= */
-    ${
-      reverse
-        ? "bottom-2"
-        : "top-2"
-    }
-  `}
->
+    
 
-            {/* =================================================
-                EYEBROW
-                ================================================= */}
+      {/* =================================================
+          EYEBROW
+          ================================================= */}
 
-            <p
-              className="
-                text-[9px]
-                font-semibold
-                uppercase
-                tracking-[0.25em]
-                text-primary
+      <p
+        className="
+          text-[8px]
+          font-semibold
+          uppercase
+          tracking-[0.25em]
+          text-primary
 
-                sm:text-xs
-              "
-            >
-              {title}
-            </p>
+          sm:text-xs
+        "
+      >
+        {title}
+      </p>
 
-            {/* =================================================
-                TITLE
-                ================================================= */}
+      {/* =================================================
+          TITLE
+          ================================================= */}
 
-            <h1
-              className="
-                mt-2
-                text-2xl
-                font-bold
-                text-secondary
+      <h1
+        className="
+          mt-1
+          text-xl
+          font-bold
+          text-secondary
 
-                sm:text-3xl
-                md:text-4xl
-              "
-            >
-              {title}
-            </h1>
+          sm:mt-2
+          sm:text-3xl
 
-            {/* =================================================
-                PARAGRAPHS
-                ================================================= */}
+          md:text-4xl
+        "
+      >
+        {title}
+      </h1>
 
-            <div
-              className="
-                mt-4
-                space-y-3
+      {/* =================================================
+          PARAGRAPHS
+          ================================================= */}
 
-                sm:mt-5
-                sm:space-y-4
+      <div
+        className="
+          mt-3
+          space-y-2
 
-                md:mt-5
-                md:space-y-4
-              "
-            >
-              {paragraphs.map((paragraph, index) => (
-                <p
-                  key={index}
-                  className="
-                     text-[10px]
-  leading-4
-  text-slate-800
+          sm:mt-5
+          sm:space-y-4
 
-  sm:text-xs
-  sm:leading-6
+          md:mt-5
+          md:space-y-4
+        "
+      >
+        {paragraphs.map((paragraph, index) => (
+          <p
+            key={index}
+            className="
+              text-[9px]
+              leading-4
+              text-slate-800
 
-                    md:text-sm
-                    md:leading-6
-                  "
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
+              sm:text-xs
+              sm:leading-6
 
-          </div>
-
-        </div>
+              md:text-sm
+              md:leading-6
+            "
+          >
+            {paragraph}
+          </p>
+        ))}
       </div>
+
+    </div>
+
+  </div>
+</div>
 
 
       {/* =====================================================

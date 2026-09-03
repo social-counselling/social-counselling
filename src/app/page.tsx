@@ -8,9 +8,11 @@ import OurRoleSection from "@/components/home/OurRoleSection";
 import LargerPurposeSection from "@/components/home/LargerPurposeSection";
 import HomeClosingSection from "@/components/home/HomeClosingSection";
 
+
 export default function HomePage() {
   return (
     <main>
+
       <HeroSection />
 
       <HomeIntroductionSection />
