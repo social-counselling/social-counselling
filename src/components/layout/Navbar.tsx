@@ -257,13 +257,7 @@ export default function Navbar() {
         </Container>
       </header>
 
-      {/* =====================================================
-          HEADER SPACING
-
-          Prevents page content from going behind fixed navbar.
-          ===================================================== */}
-
-      <div className="h-[84px] sm:h-[92px] lg:h-[108px]" />
+     
     </>
   );
 }
