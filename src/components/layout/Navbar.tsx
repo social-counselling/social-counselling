@@ -49,18 +49,18 @@ export default function Navbar() {
           There is NO background around both.
           ===================================================== */}
 
-      <Container className="pt-4">
+      <Container className=" sm:pt-1 lg:pt-5  xl:pt-5">
 
         <div
           className="
             flex
             items-start
             justify-between
-            pt-4
+            pt-2
 
-            sm:pt-5
+            sm:pt-0
 
-            lg:pt-2
+            lg:pt-4
             xl:pt-2
           "
         >
@@ -153,7 +153,7 @@ export default function Navbar() {
                 className="
                   flex
                   items-center
-                  gap-1
+
 
                   xl:gap-2
                 "
@@ -168,22 +168,15 @@ export default function Navbar() {
                       href={item.href}
                       className={`
                         relative
-
                         whitespace-nowrap
-
                         rounded-full
-
                         px-3
                         py-2
-
                         text-base
                         font-medium
-
                         transition-all
                         duration-200
-
                         xl:px-4
-
                         ${
                           active
                             ? "text-primary"
@@ -416,10 +409,10 @@ export default function Navbar() {
 
             <div
               className="
-                mt-3
+                mt-2
                 border-t
                 border-border
-                pt-3
+                pt-0
               "
             >
 

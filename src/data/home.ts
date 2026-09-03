@@ -17,6 +17,7 @@ export interface CounsellingType {
   title: string;
   subtitle: string;
   href: string;
+  icon:string;
 }
 
 /* =========================================================
@@ -42,40 +43,43 @@ export const heroData = {
    ========================================================= */
 
 export const counsellingTypes: CounsellingType[] = [
-  {
+ {
     id: "teenagers",
-    title: "Teenagers",
-    subtitle: "Building confidence",
-    href: "/services/teenagers-counselling",
+    title: "Teenagers Counselling",
+    subtitle: "Building confidence, nurturing values",
+    href: "/services/teenagers",
+    icon: "/images/icons/teenagers.png",
   },
-
   {
     id: "marriage",
-    title: "Marriage",
-    subtitle: "Creating stronger bonds",
-    href: "/services/marriage-counselling",
+    title: "Marriage Counselling",
+    subtitle: "Understanding and creating bonds",
+    href: "/services/marriage",
+    icon: "/images/icons/marriage.png",
   },
-
   {
     id: "senior-citizens",
-    title: "Senior Citizens",
-    subtitle: "Transition & care",
-    href: "/services/senior-citizens-counselling",
+    title: "Senior Citizens Counselling",
+    subtitle: "Transition, relationship and care",
+    href: "/services/senior-citizens",
+    icon: "/images/icons/senior-citizens.png",
   },
-
   {
     id: "individual",
-    title: "Individual",
-    subtitle: "Clarity & growth",
-    href: "/services/individual-counselling",
+    title: "Individual Counselling",
+    subtitle: "Guidance to the right path with clarity",
+    href: "/services/individual",
+    icon: "/images/icons/individual.png",
   },
-
   {
     id: "corporate",
-    title: "Corporate",
-    subtitle: "Workplace wellbeing",
-    href: "/services/corporate-employee-counselling",
+    title: "Corporate Employee Counselling",
+    subtitle: "Navigating workplace challenges",
+    href: "/services/corporate",
+    icon: "/images/icons/corporate.png",
   },
+
+
 ];
 
 

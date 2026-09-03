@@ -1,39 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
-
-import {
-  ArrowRight,
-  BriefcaseBusiness,
-  HeartHandshake,
-  HeartPulse,
-  UserRound,
-  UsersRound,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
-import MarriageServiceCard from "@/components/home/MarriageServiceCard";
 
 import {
   counsellingTypes,
   heroData,
-  type CounsellingTypeId,
 } from "@/data/home";
-
-/* =========================================================
-   SERVICE ICONS
-   ========================================================= */
-
-const counsellingIcons: Record<
-  CounsellingTypeId,
-  typeof UsersRound
-> = {
-  teenagers: UsersRound,
-  marriage: HeartHandshake,
-  "senior-citizens": HeartPulse,
-  individual: UserRound,
-  corporate: BriefcaseBusiness,
-};
+import MarriageServiceCard from "./MarriageServiceCard";
 
 /* =========================================================
    SERVICE CARD
@@ -46,74 +22,97 @@ function ServiceCard({
   service: (typeof counsellingTypes)[number];
   compact?: boolean;
 }) {
-  const Icon = counsellingIcons[service.id];
-
   return (
     <Link
       href={service.href}
       className={`
         group
         flex
-        min-w-0
         items-center
+        min-w-0
         border
-        border-white/60
+        border-white/70
         bg-white/75
-        shadow-sm
         backdrop-blur-md
+        shadow-[0_6px_20px_rgba(24,59,59,0.08)]
         transition-all
         duration-300
+        hover:bg-white/90
+        hover:shadow-[0_10px_30px_rgba(24,59,59,0.14)]
 
         ${
           compact
-            ? "h-7 w-[125px] gap-1 rounded-md px-1.5"
-            : "gap-2.5 rounded-[18px] px-3 py-2.5"
+            ? `
+              w-full
+              min-h-[64px]
+              gap-2
+              rounded-[18px]
+              px-2
+              py-2
+            `
+            : `
+              w-full
+              min-h-[82px]
+              gap-3
+              rounded-[22px]
+              px-3
+              py-2.5
+            `
         }
       `}
     >
-      {/* ICON */}
+      {/* =====================================================
+          ICON
+          ===================================================== */}
 
       <div
         className={`
+          relative
           flex
           shrink-0
           items-center
           justify-center
+          overflow-hidden
           rounded-full
           bg-white
-          text-primary
           shadow-sm
 
           ${
             compact
-              ? "h-5 w-5"
-              : "h-9 w-9"
+              ? "h-11 w-11"
+              : "h-[58px] w-[58px]"
           }
         `}
       >
-        <Icon
-          className={
-            compact
-              ? "h-2.5 w-2.5"
-              : "h-4.5 w-4.5"
-          }
-          strokeWidth={1.8}
+        <Image
+          src={service.icon}
+          alt=""
+          width={80}
+          height={80}
+          className="
+            h-full
+            w-full
+            object-contain
+            p-1
+          "
         />
       </div>
 
-      {/* TEXT */}
+      {/* =====================================================
+          TEXT
+          ===================================================== */}
 
-      <div className="min-w-0 leading-none">
+      <div className="min-w-0 flex-1">
         <p
           className={`
-            truncate
-            font-bold
+            font-semibold
+            leading-tight
             text-secondary
 
             ${
               compact
-                ? "text-[7px]"
-                : "text-xs xl:text-sm"
+                ? "line-clamp-2 text-[10px]"
+                : "text-sm xl:text-[15px]"
             }
           `}
         >
@@ -122,13 +121,14 @@ function ServiceCard({
 
         <p
           className={`
-            truncate
+            mt-1
+            leading-tight
             text-slate-600
 
             ${
               compact
-                ? "mt-0.5 text-[6px]"
-                : "mt-0.5 text-[10px] xl:text-xs"
+                ? "line-clamp-2 text-[8px]"
+                : "line-clamp-2 text-[11px] xl:text-xs"
             }
           `}
         >
@@ -136,15 +136,15 @@ function ServiceCard({
         </p>
       </div>
 
-      {/* ARROW */}
+      {/* =====================================================
+          ARROW
+          ===================================================== */}
 
       {!compact && (
         <ArrowRight
           className="
-            ml-auto
-            hidden
-            h-3.5
-            w-3.5
+            h-4
+            w-4
             shrink-0
             text-primary
             opacity-0
@@ -152,13 +152,47 @@ function ServiceCard({
             duration-300
             group-hover:translate-x-1
             group-hover:opacity-100
-            xl:block
           "
         />
       )}
     </Link>
   );
 }
+
+/* =========================================================
+   SERVICE LIST
+   ========================================================= */
+
+function ServiceList({
+  compact = false,
+}: {
+  compact?: boolean;
+}) {
+  return (
+    <div
+      className={
+        compact
+          ? "grid grid-cols-1 gap-2 sm:grid-cols-2"
+          : "flex flex-col gap-2.5"
+      }
+    >
+     {counsellingTypes.map((service) =>
+  service.id === "marriage" ? (
+    <MarriageServiceCard
+      key={service.id}
+      service={service}
+    />
+  ) : (
+    <ServiceCard
+      key={service.id}
+      service={service}
+    />
+  )
+)}
+    </div>
+  );
+}
+
 
 /* =========================================================
    HERO SECTION
@@ -169,18 +203,10 @@ export default function HeroSection() {
     <section className="relative w-full overflow-hidden">
 
       {/* =====================================================
-          HERO IMAGE CONTAINER
-
-          IMPORTANT:
-          h-auto + w-full keeps the ORIGINAL IMAGE RATIO.
-          No object-cover = NO CROPPING / NO ZOOM.
+          HERO IMAGE
           ===================================================== */}
 
       <div className="relative w-full">
-
-        {/* ===================================================
-            FULL IMAGE
-            =================================================== */}
 
         <Image
           src={heroData.image}
@@ -197,51 +223,41 @@ export default function HeroSection() {
         />
 
         {/* ===================================================
-            CONTENT OVER IMAGE
+            DESKTOP SERVICE CARDS
+
+            ONLY DESKTOP
+            xl+
             =================================================== */}
 
-        <Container className="absolute inset-0 z-10 h-full">
-
-          {/* =================================================
-              DESKTOP SERVICES
-              >= 1280px
-              ================================================= */}
-
+        <Container
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            z-20
+            hidden
+            xl:block
+          "
+        >
           <div
             className="
+              pointer-events-auto
               absolute
               left-3
               top-[18%]
-
-              hidden
-              w-[185px]
-              flex-col
-              gap-2
-
-              xl:flex
+              w-[285px]
             "
           >
-            {counsellingTypes.map((service) =>
-              service.id === "marriage" ? (
-                <MarriageServiceCard
-                  key={service.id}
-                  service={service}
-                />
-              ) : (
-                <ServiceCard
-                  key={service.id}
-                  service={service}
-                />
-              )
-            )}
+            <ServiceList />
 
             <Button
               href="/services"
               variant="outline"
-              size="sm"
+              size="md"
               className="
-                mt-1
+                mt-3
                 w-full
+                rounded-full
                 border-white
                 bg-white/80
                 backdrop-blur-md
@@ -249,56 +265,58 @@ export default function HeroSection() {
             >
               View All Services
 
-              <ArrowRight className="h-3.5 w-3.5" />
+              <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
+        </Container>
+      </div>
 
-          {/* =================================================
-              TABLET
-              md -> xl
-              ================================================= */}
+      {/* =====================================================
+          TABLET + MOBILE SERVICES
+
+          IMAGE REMAINS COMPLETELY CLEAN
+
+          < xl
+          ===================================================== */}
+
+      <div
+        className="
+          block
+          bg-white
+          py-6
+          sm:py-8
+          lg:py-10
+          xl:hidden
+        "
+      >
+        <Container>
 
           <div
             className="
-              absolute
-              bottom-[10%]
-              left-3
-              right-3
-
-              hidden
-
-              md:block
-              xl:hidden
+              mx-auto
+              w-full
+              max-w-2xl
             "
           >
-            <div className="grid grid-cols-3 gap-2">
-              {counsellingTypes.map((service) =>
-                service.id === "marriage" ? (
-                  <MarriageServiceCard
-                    key={service.id}
-                    service={service}
-                    compact
-                  />
-                ) : (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    compact
-                  />
-                )
-              )}
-            </div>
+            <ServiceList compact />
 
-            <div className="mt-2 max-w-[260px]">
+            <div
+              className="
+                mx-auto
+                mt-4
+                max-w-[260px]
+                sm:mt-5
+              "
+            >
               <Button
                 href="/services"
                 variant="outline"
                 size="sm"
                 className="
                   w-full
-                  border-white
-                  bg-white/80
-                  backdrop-blur-md
+                  rounded-full
+                  border-primary/30
+                  bg-white
                 "
               >
                 View All Services
@@ -308,75 +326,9 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* =================================================
-              MOBILE
-              < md
-              ================================================= */}
-
-          <div
-            className="
-              absolute
-              bottom-3
-              left-2
-              right-2
-
-              md:hidden
-            "
-          >
-            <div
-              className="
-                grid
-                grid-cols-2
-                justify-items-start
-                gap-1.5
-                px-3
-              "
-            >
-              {counsellingTypes.map((service) =>
-                service.id === "marriage" ? (
-                  <MarriageServiceCard
-                    key={service.id}
-                    service={service}
-                    compact
-                  />
-                ) : (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    compact
-                  />
-                )
-              )}
-            </div>
-
-            <div className="mt-1">
-              <Button
-                href="/services"
-                variant="outline"
-                size="sm"
-                className="
-                  mx-auto
-                  flex
-                  h-6
-                  w-[125px]
-                  rounded-full
-                  border-white
-                  bg-white/80
-                  px-2
-                  text-[8px]
-                  leading-none
-                  backdrop-blur-md
-                "
-              >
-                View All Services
-
-                <ArrowRight className="h-2.5 w-2.5" />
-              </Button>
-            </div>
-          </div>
-
         </Container>
       </div>
+
     </section>
   );
 }

@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
-import {
-  ArrowRight,
-  HeartHandshake,
-} from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 import {
   marriageServices,
@@ -25,14 +23,30 @@ export default function MarriageServiceCard({
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="relative min-w-0">
+    <div
+      className="relative min-w-0"
+      onMouseEnter={() => {
+        if (!compact) {
+          setOpen(true);
+        }
+      }}
+      onMouseLeave={() => {
+        if (!compact) {
+          setOpen(false);
+        }
+      }}
+    >
       {/* =====================================================
-          MARRIAGE CARD
+          MARRIAGE SERVICE CARD
           ===================================================== */}
 
       <button
         type="button"
-        onClick={() => setOpen((previous) => !previous)}
+        onClick={() => {
+          if (compact) {
+            setOpen((previous) => !previous);
+          }
+        }}
         aria-expanded={open}
         className={`
           group
@@ -51,7 +65,7 @@ export default function MarriageServiceCard({
 
           ${
             compact
-              ? "h-6 w-[125px] gap-1 rounded-md px-1"
+              ? "h-7 w-[125px] gap-1 rounded-md px-1.5"
               : "w-full gap-2.5 rounded-[18px] px-3 py-2.5"
           }
         `}
@@ -66,27 +80,29 @@ export default function MarriageServiceCard({
             shrink-0
             items-center
             justify-center
+            overflow-hidden
             rounded-full
             bg-white
-            text-primary
             shadow-sm
-            transition-all
-            duration-300
 
             ${
               compact
-                ? "h-4 w-4"
+                ? "h-5 w-5"
                 : "h-9 w-9"
             }
           `}
         >
-          <HeartHandshake
-            className={
-              compact
-                ? "h-2 w-2"
-                : "h-4.5 w-4.5"
-            }
-            strokeWidth={1.8}
+          <Image
+            src="/images/icons/marriage.png"
+            alt=""
+            width={80}
+            height={80}
+            className="
+              h-full
+              w-full
+              object-contain
+              p-0.5
+            "
           />
         </div>
 
@@ -103,7 +119,7 @@ export default function MarriageServiceCard({
 
               ${
                 compact
-                  ? "text-[6px]"
+                  ? "text-[7px]"
                   : "text-xs xl:text-sm"
               }
             `}
@@ -118,7 +134,7 @@ export default function MarriageServiceCard({
 
               ${
                 compact
-                  ? "mt-0.5 text-[5px]"
+                  ? "mt-0.5 text-[6px]"
                   : "mt-0.5 text-[10px] xl:text-xs"
               }
             `}
@@ -140,7 +156,7 @@ export default function MarriageServiceCard({
 
             ${
               compact
-                ? "h-2 w-2"
+                ? "h-2.5 w-2.5"
                 : "h-3.5 w-3.5"
             }
 
@@ -150,12 +166,13 @@ export default function MarriageServiceCard({
       </button>
 
       {/* =====================================================
-          SUBMENU
+          MARRIAGE SUBMENU
           ===================================================== */}
 
       {open && (
         <div
           className={`
+            absolute
             z-50
             rounded-xl
             border
@@ -167,15 +184,13 @@ export default function MarriageServiceCard({
             ${
               compact
                 ? `
-                  absolute
                   left-0
                   top-[calc(100%+4px)]
                   w-[165px]
                   p-1
                 `
                 : `
-                  absolute
-                  left-[calc(100%+10px)]
+                  left-[calc(100%+8px)]
                   top-0
                   w-[250px]
                   p-2
