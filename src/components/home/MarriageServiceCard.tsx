@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
 import { ArrowRight } from "lucide-react";
 
 import {
@@ -36,10 +35,6 @@ export default function MarriageServiceCard({
         }
       }}
     >
-      {/* =====================================================
-          MARRIAGE SERVICE CARD
-          ===================================================== */}
-
       <button
         type="button"
         onClick={() => {
@@ -51,31 +46,43 @@ export default function MarriageServiceCard({
         className={`
           group
           flex
+          w-full
           min-w-0
           items-center
           border
-          border-white/60
+          border-white/70
           bg-white/75
-          text-left
-          shadow-sm
           backdrop-blur-md
+          shadow-[0_6px_20px_rgba(24,59,59,0.08)]
+          text-left
           transition-all
           duration-300
           hover:bg-white/90
+          hover:shadow-[0_10px_30px_rgba(24,59,59,0.14)]
 
           ${
             compact
-              ? "h-7 w-[125px] gap-1 rounded-md px-1.5"
-              : "w-full gap-2.5 rounded-[18px] px-3 py-2.5"
+              ? `
+                min-h-[64px]
+                gap-2
+                rounded-[18px]
+                px-2
+                py-2
+              `
+              : `
+                min-h-[82px]
+                gap-3
+                rounded-[22px]
+                px-3
+                py-2.5
+              `
           }
         `}
       >
-        {/* =================================================
-            ICON
-            ================================================= */}
-
+        {/* Icon */}
         <div
           className={`
+            relative
             flex
             shrink-0
             items-center
@@ -87,8 +94,8 @@ export default function MarriageServiceCard({
 
             ${
               compact
-                ? "h-5 w-5"
-                : "h-9 w-9"
+                ? "h-11 w-11"
+                : "h-[58px] w-[58px]"
             }
           `}
         >
@@ -101,26 +108,23 @@ export default function MarriageServiceCard({
               h-full
               w-full
               object-contain
-              p-0.5
+              p-1
             "
           />
         </div>
 
-        {/* =================================================
-            TEXT
-            ================================================= */}
-
-        <div className="min-w-0 flex-1 leading-none">
+        {/* Content */}
+        <div className="min-w-0 flex-1">
           <p
             className={`
-              truncate
-              font-bold
+              font-semibold
+              leading-tight
               text-secondary
 
               ${
                 compact
-                  ? "text-[7px]"
-                  : "text-xs xl:text-sm"
+                  ? "line-clamp-2 text-[10px]"
+                  : "text-sm xl:text-[15px]"
               }
             `}
           >
@@ -129,13 +133,14 @@ export default function MarriageServiceCard({
 
           <p
             className={`
-              truncate
+              mt-1
+              leading-tight
               text-slate-600
 
               ${
                 compact
-                  ? "mt-0.5 text-[6px]"
-                  : "mt-0.5 text-[10px] xl:text-xs"
+                  ? "line-clamp-2 text-[8px]"
+                  : "line-clamp-2 text-[11px] xl:text-xs"
               }
             `}
           >
@@ -143,32 +148,27 @@ export default function MarriageServiceCard({
           </p>
         </div>
 
-        {/* =================================================
-            ARROW
-            ================================================= */}
-
-        <ArrowRight
-          className={`
-            shrink-0
-            text-primary
-            transition-transform
-            duration-300
-
-            ${
-              compact
-                ? "h-2.5 w-2.5"
-                : "h-3.5 w-3.5"
-            }
-
-            ${open ? "rotate-90" : ""}
-          `}
-        />
+        {/* Arrow — hidden on compact/mobile */}
+        {!compact && (
+          <ArrowRight
+            className={`
+              h-4
+              w-4
+              shrink-0
+              text-primary
+              transition-all
+              duration-300
+              ${
+                open
+                  ? "translate-x-1 rotate-90"
+                  : ""
+              }
+            `}
+          />
+        )}
       </button>
 
-      {/* =====================================================
-          MARRIAGE SUBMENU
-          ===================================================== */}
-
+      {/* Marriage submenu */}
       {open && (
         <div
           className={`
@@ -183,30 +183,15 @@ export default function MarriageServiceCard({
 
             ${
               compact
-                ? `
-                  left-0
-                  top-[calc(100%+4px)]
-                  w-[165px]
-                  p-1
-                `
-                : `
-                  left-[calc(100%+8px)]
-                  top-0
-                  w-[250px]
-                  p-2
-                `
+                ? "left-0 top-[calc(100%+4px)] w-full p-1"
+                : "left-[calc(100%+8px)] top-0 w-[250px] p-2"
             }
           `}
         >
-          {/* =================================================
-              TITLE
-              ================================================= */}
-
           <div
             className={`
               border-b
               border-slate-200
-
               ${
                 compact
                   ? "px-2 pb-1 pt-1"
@@ -218,7 +203,6 @@ export default function MarriageServiceCard({
               className={`
                 font-bold
                 text-secondary
-
                 ${
                   compact
                     ? "text-[8px]"
@@ -231,22 +215,18 @@ export default function MarriageServiceCard({
 
             <p
               className={`
+                mt-0.5
                 text-slate-500
-
                 ${
                   compact
-                    ? "mt-0.5 text-[6px]"
-                    : "mt-0.5 text-[10px]"
+                    ? "text-[6px]"
+                    : "text-[10px]"
                 }
               `}
             >
               Choose the support you need
             </p>
           </div>
-
-          {/* =================================================
-              OPTIONS
-              ================================================= */}
 
           <div className="mt-1">
             {marriageServices.map((item) => (

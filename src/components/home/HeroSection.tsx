@@ -9,6 +9,7 @@ import {
   counsellingTypes,
   heroData,
 } from "@/data/home";
+
 import MarriageServiceCard from "./MarriageServiceCard";
 
 /* =========================================================
@@ -138,6 +139,8 @@ function ServiceCard({
 
       {/* =====================================================
           ARROW
+
+          Only show on desktop.
           ===================================================== */}
 
       {!compact && (
@@ -172,27 +175,28 @@ function ServiceList({
     <div
       className={
         compact
-          ? "grid grid-cols-1 gap-2 sm:grid-cols-2"
+          ? "flex flex-col gap-2"
           : "flex flex-col gap-2.5"
       }
     >
-     {counsellingTypes.map((service) =>
-  service.id === "marriage" ? (
-    <MarriageServiceCard
-      key={service.id}
-      service={service}
-    />
-  ) : (
-    <ServiceCard
-      key={service.id}
-      service={service}
-    />
-  )
-)}
+      {counsellingTypes.map((service) =>
+        service.id === "marriage" ? (
+          <MarriageServiceCard
+            key={service.id}
+            service={service}
+            compact={compact}
+          />
+        ) : (
+          <ServiceCard
+            key={service.id}
+            service={service}
+            compact={compact}
+          />
+        )
+      )}
     </div>
   );
 }
-
 
 /* =========================================================
    HERO SECTION
@@ -225,8 +229,8 @@ export default function HeroSection() {
         {/* ===================================================
             DESKTOP SERVICE CARDS
 
-            ONLY DESKTOP
-            xl+
+            xl and above:
+            Cards stay OVER the hero image.
             =================================================== */}
 
         <Container
@@ -248,7 +252,12 @@ export default function HeroSection() {
               w-[285px]
             "
           >
+
             <ServiceList />
+
+            {/* ===============================================
+                VIEW ALL SERVICES
+                =============================================== */}
 
             <Button
               href="/services"
@@ -267,6 +276,7 @@ export default function HeroSection() {
 
               <ArrowRight className="h-4 w-4" />
             </Button>
+
           </div>
         </Container>
       </div>
@@ -274,9 +284,10 @@ export default function HeroSection() {
       {/* =====================================================
           TABLET + MOBILE SERVICES
 
-          IMAGE REMAINS COMPLETELY CLEAN
+          Below xl:
+          Image stays completely clean.
 
-          < xl
+          Cards appear BELOW the image.
           ===================================================== */}
 
       <div
@@ -298,7 +309,16 @@ export default function HeroSection() {
               max-w-2xl
             "
           >
+
+            {/* ===============================================
+                COMPACT SERVICE CARDS
+                =============================================== */}
+
             <ServiceList compact />
+
+            {/* ===============================================
+                VIEW ALL SERVICES
+                =============================================== */}
 
             <div
               className="
@@ -324,6 +344,7 @@ export default function HeroSection() {
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>
             </div>
+
           </div>
 
         </Container>
