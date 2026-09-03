@@ -9,6 +9,7 @@
   /* Brand */
   --brand-primary: #147d7e;
   --brand-primary-dark: #0e6667;
+  --brand-primary-dark1: #144f50;
   --brand-primary-light: #e8f5f4;
 
   /* Secondary */
@@ -56,6 +57,7 @@
 @theme inline {
   --color-primary: var(--brand-primary);
   --color-primary-dark: var(--brand-primary-dark);
+  --color-primary-dark1: var(--brand-primary-dark1);
   --color-primary-light: var(--brand-primary-light);
 
   --color-secondary: var(--brand-secondary);

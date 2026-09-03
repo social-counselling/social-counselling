@@ -113,7 +113,7 @@ function ImageSection({
           mt-1
           text-xl
           font-bold
-          text-secondary
+          text-white
 
           sm:mt-2
           sm:text-3xl
@@ -146,7 +146,7 @@ function ImageSection({
             className="
               text-[9px]
               leading-4
-              text-slate-800
+              text-white
 
               sm:text-xs
               sm:leading-6
@@ -222,13 +222,6 @@ function ImageSection({
                 w-full
                 max-w-xl
 
-                rounded-3xl
-                border
-                border-white/50
-                bg-white/25
-                p-10
-                shadow-xl
-                backdrop-blur-md
               "
             >
 
@@ -275,7 +268,7 @@ function ImageSection({
                     className="
                       text-base
                       leading-7
-                      text-slate-800
+                      text-white
                     "
                   >
                     {paragraph}

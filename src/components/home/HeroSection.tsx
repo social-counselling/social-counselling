@@ -13,10 +13,10 @@ import {
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
 import MarriageServiceCard from "@/components/home/MarriageServiceCard";
+
 import {
   counsellingTypes,
   heroData,
-  marriageServices,
   type CounsellingTypeId,
 } from "@/data/home";
 
@@ -50,26 +50,38 @@ function ServiceCard({
 
   return (
     <Link
-  href={service.href}
-  className={`
-    group flex min-w-0 items-center
-    border border-white/60
-    bg-white/75
-    shadow-sm
-    backdrop-blur-md
-    transition-all duration-300
+      href={service.href}
+      className={`
+        group
+        flex
+        min-w-0
+        items-center
+        border
+        border-white/60
+        bg-white/75
+        shadow-sm
+        backdrop-blur-md
+        transition-all
+        duration-300
 
-   ${
-  compact
-    ? "h-7 w-[125px] gap-1 rounded-md px-1.5"
-    : "gap-2.5 rounded-[18px] px-3 py-2.5"
-}
-  `}
->
+        ${
+          compact
+            ? "h-7 w-[125px] gap-1 rounded-md px-1.5"
+            : "gap-2.5 rounded-[18px] px-3 py-2.5"
+        }
+      `}
+    >
+      {/* ICON */}
+
       <div
         className={`
-          flex shrink-0 items-center justify-center
-          rounded-full bg-white text-primary
+          flex
+          shrink-0
+          items-center
+          justify-center
+          rounded-full
+          bg-white
+          text-primary
           shadow-sm
 
           ${
@@ -89,10 +101,15 @@ function ServiceCard({
         />
       </div>
 
+      {/* TEXT */}
+
       <div className="min-w-0 leading-none">
         <p
           className={`
-            truncate font-bold text-secondary
+            truncate
+            font-bold
+            text-secondary
+
             ${
               compact
                 ? "text-[7px]"
@@ -105,7 +122,9 @@ function ServiceCard({
 
         <p
           className={`
-            truncate text-slate-600
+            truncate
+            text-slate-600
+
             ${
               compact
                 ? "mt-0.5 text-[6px]"
@@ -117,11 +136,17 @@ function ServiceCard({
         </p>
       </div>
 
+      {/* ARROW */}
+
       {!compact && (
         <ArrowRight
           className="
-            ml-auto hidden h-3.5 w-3.5
-            shrink-0 text-primary
+            ml-auto
+            hidden
+            h-3.5
+            w-3.5
+            shrink-0
+            text-primary
             opacity-0
             transition-all
             duration-300
@@ -141,179 +166,217 @@ function ServiceCard({
 
 export default function HeroSection() {
   return (
-   <section className="relative w-full overflow-hidden">
-  <div
-    className="
-      relative
-      w-full
-      h-[360px]
-      sm:h-[420px]
-      lg:min-h-[700px]
-      xl:min-h-[780px]
-    "
-  >
-    <Image
-      src={heroData.image}
-      alt="Social Counselling"
-      fill
-      priority
-      sizes="100vw"
-      className="
-        object-cover
-        object-[52%_center]
-        lg:object-center
-      "
-    />
+    <section className="relative w-full overflow-hidden">
 
-    <Container className="relative z-10 h-full">
+      {/* =====================================================
+          HERO IMAGE CONTAINER
 
-      {/* DESKTOP SERVICES */}
-      <div
-        className="
-          absolute
-          left-3
-          top-[18%]
-          hidden
-          w-[185px]
-          flex-col
-          gap-2
-          xl:flex
-        "
-      >
-        {counsellingTypes.map((service) =>
-  service.id === "marriage" ? (
-    <MarriageServiceCard
-      key={service.id}
-      service={service}
-    />
-  ) : (
-    <ServiceCard
-      key={service.id}
-      service={service}
-    />
-  )
-)}
+          IMPORTANT:
+          h-auto + w-full keeps the ORIGINAL IMAGE RATIO.
+          No object-cover = NO CROPPING / NO ZOOM.
+          ===================================================== */}
 
-        <Button
-          href="/services"
-          variant="outline"
-          size="sm"
+      <div className="relative w-full">
+
+        {/* ===================================================
+            FULL IMAGE
+            =================================================== */}
+
+        <Image
+          src={heroData.image}
+          alt="Social Counselling"
+          width={1536}
+          height={1024}
+          priority
+          sizes="100vw"
           className="
-            mt-1
+            block
+            h-auto
             w-full
-            border-white
-            bg-white/80
-            backdrop-blur-md
           "
-        >
-          View All Services
-          <ArrowRight className="h-3.5 w-3.5" />
-        </Button>
-      </div>
+        />
 
-      {/* TABLET */}
-      <div
-        className="
-          absolute
-          left-3
-          right-3
-          bottom-[10%]
-          hidden
-          md:block
-          xl:hidden
-        "
-      >
-        <div className="grid grid-cols-3 gap-2">
-       {counsellingTypes.map((service) =>
-  service.id === "marriage" ? (
-    <MarriageServiceCard
-      key={service.id}
-      service={service}
-      compact
-    />
-  ) : (
-    <ServiceCard
-      key={service.id}
-      service={service}
-      compact
-    />
-  )
-)}
-        </div>
+        {/* ===================================================
+            CONTENT OVER IMAGE
+            =================================================== */}
 
-        <div className="mt-2 max-w-[260px]">
-          <Button
-            href="/services"
-            variant="outline"
-            size="sm"
+        <Container className="absolute inset-0 z-10 h-full">
+
+          {/* =================================================
+              DESKTOP SERVICES
+              >= 1280px
+              ================================================= */}
+
+          <div
             className="
-              w-full
-              border-white
-              bg-white/80
-              backdrop-blur-md
+              absolute
+              left-3
+              top-[18%]
+
+              hidden
+              w-[185px]
+              flex-col
+              gap-2
+
+              xl:flex
             "
           >
-            View All Services
-            <ArrowRight className="h-3.5 w-3.5" />
-          </Button>
-        </div>
-      </div>
+            {counsellingTypes.map((service) =>
+              service.id === "marriage" ? (
+                <MarriageServiceCard
+                  key={service.id}
+                  service={service}
+                />
+              ) : (
+                <ServiceCard
+                  key={service.id}
+                  service={service}
+                />
+              )
+            )}
 
-      {/* MOBILE */}
-      <div
-        className="
-          absolute
-          left-2
-          right-2
-          bottom-3
-          md:hidden
-        "
-      >
-        <div className="grid grid-cols-2 justify-items-start gap-1.5 px-3">
-       {counsellingTypes.map((service) =>
-  service.id === "marriage" ? (
-    <MarriageServiceCard
-      key={service.id}
-      service={service}
-      compact
-    />
-  ) : (
-    <ServiceCard
-      key={service.id}
-      service={service}
-      compact
-    />
-  )
-)}
-        </div>
+            <Button
+              href="/services"
+              variant="outline"
+              size="sm"
+              className="
+                mt-1
+                w-full
+                border-white
+                bg-white/80
+                backdrop-blur-md
+              "
+            >
+              View All Services
 
-        <div className="mt-1">
-          <Button
-            href="/services"
-            variant="outline"
-            size="sm"
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </div>
+
+          {/* =================================================
+              TABLET
+              md -> xl
+              ================================================= */}
+
+          <div
             className="
-              mx-auto
-              flex
-              h-6
-              w-[125px]
-              rounded-full
-              border-white
-              bg-white/80
-              px-2
-              text-[8px]
-              leading-none
-              backdrop-blur-md
+              absolute
+              bottom-[10%]
+              left-3
+              right-3
+
+              hidden
+
+              md:block
+              xl:hidden
             "
           >
-            View All Services
-            <ArrowRight className="h-2.5 w-2.5" />
-          </Button>
-        </div>
-      </div>
+            <div className="grid grid-cols-3 gap-2">
+              {counsellingTypes.map((service) =>
+                service.id === "marriage" ? (
+                  <MarriageServiceCard
+                    key={service.id}
+                    service={service}
+                    compact
+                  />
+                ) : (
+                  <ServiceCard
+                    key={service.id}
+                    service={service}
+                    compact
+                  />
+                )
+              )}
+            </div>
 
-    </Container>
-  </div>
-</section>
+            <div className="mt-2 max-w-[260px]">
+              <Button
+                href="/services"
+                variant="outline"
+                size="sm"
+                className="
+                  w-full
+                  border-white
+                  bg-white/80
+                  backdrop-blur-md
+                "
+              >
+                View All Services
+
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Button>
+            </div>
+          </div>
+
+          {/* =================================================
+              MOBILE
+              < md
+              ================================================= */}
+
+          <div
+            className="
+              absolute
+              bottom-3
+              left-2
+              right-2
+
+              md:hidden
+            "
+          >
+            <div
+              className="
+                grid
+                grid-cols-2
+                justify-items-start
+                gap-1.5
+                px-3
+              "
+            >
+              {counsellingTypes.map((service) =>
+                service.id === "marriage" ? (
+                  <MarriageServiceCard
+                    key={service.id}
+                    service={service}
+                    compact
+                  />
+                ) : (
+                  <ServiceCard
+                    key={service.id}
+                    service={service}
+                    compact
+                  />
+                )
+              )}
+            </div>
+
+            <div className="mt-1">
+              <Button
+                href="/services"
+                variant="outline"
+                size="sm"
+                className="
+                  mx-auto
+                  flex
+                  h-6
+                  w-[125px]
+                  rounded-full
+                  border-white
+                  bg-white/80
+                  px-2
+                  text-[8px]
+                  leading-none
+                  backdrop-blur-md
+                "
+              >
+                View All Services
+
+                <ArrowRight className="h-2.5 w-2.5" />
+              </Button>
+            </div>
+          </div>
+
+        </Container>
+      </div>
+    </section>
   );
 }

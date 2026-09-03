@@ -9,7 +9,7 @@ export const mainNavigation: NavigationItem[] = [
     href: "/",
   },
   {
-  label:"About",
+  label:"About Us",
   href:"/about"
   },
   {
