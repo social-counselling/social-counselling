@@ -78,6 +78,31 @@ export const counsellingTypes: CounsellingType[] = [
   },
 ];
 
+
+
+/* =========================================================
+   MARRIAGE COUNSELLING TYPES
+   ========================================================= */
+
+export const marriageServices = [
+  {
+    id: "pre-marriage",
+    title: "Pre-marriage Counselling",
+    href: "/services/pre-marriage-counselling",
+  },
+
+  {
+    id: "post-marriage",
+    title: "Post-marriage Counselling",
+    href: "/services/post-marriage-counselling",
+  },
+
+  {
+    id: "compatibility",
+    title: "Compatibility Assessment/Check",
+    href: "/services/compatibility-assessment",
+  },
+];
 /* =========================================================
    HOME INTRODUCTION
    ========================================================= */

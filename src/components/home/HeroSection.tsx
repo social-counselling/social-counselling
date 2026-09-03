@@ -12,10 +12,11 @@ import {
 
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
-
+import MarriageServiceCard from "@/components/home/MarriageServiceCard";
 import {
   counsellingTypes,
   heroData,
+  marriageServices,
   type CounsellingTypeId,
 } from "@/data/home";
 
@@ -179,12 +180,19 @@ export default function HeroSection() {
           xl:flex
         "
       >
-        {counsellingTypes.map((service) => (
-          <ServiceCard
-            key={service.id}
-            service={service}
-          />
-        ))}
+        {counsellingTypes.map((service) =>
+  service.id === "marriage" ? (
+    <MarriageServiceCard
+      key={service.id}
+      service={service}
+    />
+  ) : (
+    <ServiceCard
+      key={service.id}
+      service={service}
+    />
+  )
+)}
 
         <Button
           href="/services"
@@ -216,13 +224,21 @@ export default function HeroSection() {
         "
       >
         <div className="grid grid-cols-3 gap-2">
-          {counsellingTypes.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              compact
-            />
-          ))}
+       {counsellingTypes.map((service) =>
+  service.id === "marriage" ? (
+    <MarriageServiceCard
+      key={service.id}
+      service={service}
+      compact
+    />
+  ) : (
+    <ServiceCard
+      key={service.id}
+      service={service}
+      compact
+    />
+  )
+)}
         </div>
 
         <div className="mt-2 max-w-[260px]">
@@ -254,13 +270,21 @@ export default function HeroSection() {
         "
       >
         <div className="grid grid-cols-2 justify-items-start gap-1.5 px-3">
-          {counsellingTypes.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              compact
-            />
-          ))}
+       {counsellingTypes.map((service) =>
+  service.id === "marriage" ? (
+    <MarriageServiceCard
+      key={service.id}
+      service={service}
+      compact
+    />
+  ) : (
+    <ServiceCard
+      key={service.id}
+      service={service}
+      compact
+    />
+  )
+)}
         </div>
 
         <div className="mt-1">
