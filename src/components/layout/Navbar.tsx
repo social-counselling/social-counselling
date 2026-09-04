@@ -49,7 +49,7 @@ export default function Navbar() {
           There is NO background around both.
           ===================================================== */}
 
-      <Container className=" sm:pt-1 lg:pt-5  xl:pt-5">
+      <Container className=" sm:pt-0 lg:pt-4  xl:pt-3">
 
         <div
           className="
@@ -57,9 +57,7 @@ export default function Navbar() {
             items-start
             justify-between
             pt-2
-
             sm:pt-0
-
             lg:pt-4
             xl:pt-2
           "
@@ -90,12 +88,12 @@ export default function Navbar() {
               priority
               className="
                 h-auto
-                w-[105px]
+                w-[120px]
 
                 sm:w-[120px]
 
-                lg:w-[190px]
-
+                lg:w-[145px]
+                 min-[1350px]:w-[195px]
                 xl:w-[195px]
               "
             />
@@ -123,24 +121,20 @@ export default function Navbar() {
               className="
                 flex
                 items-center
-                gap-1
+                gap-0
 
                 rounded-full
-
                 border
                 border-white/50
-
                 bg-white/80
-
-                px-4
+                px-3
                 py-1
-
                 shadow-[0_8px_30px_rgba(24,59,59,0.08)]
-
+                min-[1350px]:gap-2
+                min-[1350px]:px-3
+                 min-[1350px]:py-2.5  
                 
-
-                xl:gap-2
-                xl:px-5
+                xl:px-3
                 xl:py-2.5
               "
             >
@@ -170,9 +164,11 @@ export default function Navbar() {
                         relative
                         whitespace-nowrap
                         rounded-full
-                        px-3
+                        px-2
                         py-2
-                        text-base
+                        text-sm
+                        min-[1350px]:px-4
+                       min-[1350px]:text-base
                         font-medium
                         transition-all
                         duration-200
@@ -228,10 +224,10 @@ export default function Navbar() {
                   ml-2
                   shrink-0
                   rounded-full
-                  px-6
+                  px-4
 
-                  xl:ml-3
-                  xl:px-7
+                 min-[1350px]:ml-3
+                 min-[1350px]:px-7
                 "
               >
                 {navigationCta.label}

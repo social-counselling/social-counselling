@@ -33,13 +33,13 @@ function ServiceCard({
         min-w-0
         border
         border-white/70
-        bg-white/75
-        backdrop-blur-md
-        shadow-[0_6px_20px_rgba(24,59,59,0.08)]
+        bg-white/70
+
+        shadow-[0_5px_18px_rgba(24,59,59,0.07)]
         transition-all
         duration-300
         hover:bg-white/90
-        hover:shadow-[0_10px_30px_rgba(24,59,59,0.14)]
+        hover:shadow-[0_8px_24px_rgba(24,59,59,0.12)]
 
         ${
           compact
@@ -54,7 +54,7 @@ function ServiceCard({
             : `
               w-full
               min-h-[82px]
-              gap-3
+              gap-2
               rounded-[22px]
               px-3
               py-2.5
@@ -245,11 +245,12 @@ export default function HeroSection() {
         >
           <div
             className="
-              pointer-events-auto
+              pointer-events-auto rounded-2xl
+              
               absolute
               left-3
-              top-[18%]
-              w-[285px]
+              top-[16%]
+              w-[250px]
             "
           >
 
