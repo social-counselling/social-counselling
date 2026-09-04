@@ -83,7 +83,7 @@ export default function Navbar() {
             "
           >
             <Image
-              src="/images/logo/logo.png"
+              src="/images/logo/mainLogo.png"
               alt="Social Counselling"
               width={180}
               height={70}
