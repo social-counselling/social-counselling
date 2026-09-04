@@ -6,71 +6,61 @@ import { homeIntroduction } from "@/data/home";
 
 export default function HomeIntroductionSection() {
   return (
-    <section className="relative overflow-hidden bg-white py-16 sm:py-20 lg:py-24">
+    <section
+      className="
+        relative
+        overflow-hidden
+        bg-white
+        py-16
+        sm:py-20
+        lg:py-24
+      "
+    >
       {/* =====================================================
-          DECORATIVE BOTANICAL ELEMENTS
+          TOP LEFT LEAVES
           ===================================================== */}
 
-      {/* Top-left leaves */}
-    <Image
-  src="/images/home/introduction/leaf-top-left7.png"
-  alt=""
-  width={255}
-  height={245}
-  aria-hidden="true"
-  className="
-    pointer-events-none
-    absolute
-    left-0
-    top-0
-    z-0
-    w-[120px]
-    opacity-70
-    sm:w-[170px]
-    lg:w-[230px]
-    xl:w-[255px]
-  "
-/>
-
-      {/* Top-right leaves */}
-   <Image
-  src="/images/home/introduction/leaf-top-right 3.png"
-  alt=""
-  width={240}
-  height={225}
-  aria-hidden="true"
-  className="
-    pointer-events-none
-    absolute
-    right-0
-    top-0
-    z-0
-    w-[120px]
-    opacity-60
-    sm:w-[170px]
-    lg:w-[220px]
-    xl:w-[240px]
-  "
-/>
-
-      {/* Bottom-right leaves */}
       <Image
-        src="/images/home/introduction/leaf-bottom-right1.png"
+        src="/images/home/introduction/leaf-top-left7.png"
         alt=""
-        width={285}
-        height={270}
+        width={255}
+        height={245}
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
-          bottom-0
-          right-0
+          left-0
+          top-0
           z-0
-          w-[150px]
-          opacity-50
-          sm:w-[200px]
-          lg:w-[260px]
-          xl:w-[285px]
+          w-[120px]
+          opacity-70
+          sm:w-[170px]
+          lg:w-[230px]
+          xl:w-[255px]
+        "
+      />
+
+      {/* =====================================================
+          TOP RIGHT LEAVES
+          ===================================================== */}
+
+      <Image
+        src="/images/home/introduction/leaf-top-right 3.png"
+        alt=""
+        width={240}
+        height={225}
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          right-0
+          top-0
+          z-0
+          w-[120px]
+          opacity-60
+          sm:w-[170px]
+          lg:w-[220px]
+          xl:w-[240px]
         "
       />
 
@@ -93,7 +83,6 @@ export default function HomeIntroductionSection() {
             {homeIntroduction.eyebrow}
           </p>
 
-          {/* Horizontal botanical divider */}
           <div className="mt-4 flex justify-center sm:mt-5">
             <Image
               src="/images/home/introduction/leaf-divider.png"
@@ -131,9 +120,9 @@ export default function HomeIntroductionSection() {
             className="
               pointer-events-none
               absolute
-              bottom-6
+              bottom-0
               left-1/2
-              top-6
+              top-0
               hidden
               -translate-x-1/2
               lg:block
@@ -148,7 +137,7 @@ export default function HomeIntroductionSection() {
                 h-full
                 w-px
                 -translate-x-1/2
-                bg-primary/25
+                bg-primary/20
               "
             />
 
@@ -157,6 +146,7 @@ export default function HomeIntroductionSection() {
               alt=""
               width={40}
               height={140}
+              aria-hidden="true"
               className="
                 absolute
                 left-1/2
@@ -170,6 +160,10 @@ export default function HomeIntroductionSection() {
               "
             />
           </div>
+
+          {/* =================================================
+              TWO COLUMN LAYOUT
+              ================================================= */}
 
           <div
             className="
@@ -187,6 +181,10 @@ export default function HomeIntroductionSection() {
 
             <div className="relative">
               <div className="mx-auto max-w-2xl lg:mx-0">
+                {/* =============================================
+                    TITLE
+                    ============================================= */}
+
                 <h2
                   className="
                     max-w-2xl
@@ -195,9 +193,9 @@ export default function HomeIntroductionSection() {
                     leading-[1.08]
                     tracking-tight
                     text-secondary
-                    sm:text-2xl
-                    lg:text-[32px]
-                    xl:text-[38px]
+                    sm:text-4xl
+                    lg:text-[40px]
+                    xl:text-[48px]
                   "
                 >
                   {homeIntroduction.title}
@@ -211,9 +209,6 @@ export default function HomeIntroductionSection() {
                   className="
                     relative
                     mt-8
-                    overflow-hidden
-                    rounded-[32px]
-                    sm:mt-10
                     lg:hidden
                   "
                 >
@@ -222,42 +217,69 @@ export default function HomeIntroductionSection() {
                     alt="A peaceful mountain lake landscape"
                     width={1536}
                     height={1024}
+                    sizes="100vw"
                     className="
                       block
                       h-auto
                       w-full
-                      object-cover
+                      rounded-[28px]
                     "
                   />
                 </div>
 
                 {/* =============================================
                     DESKTOP IMAGE
+
+                    IMPORTANT:
+                    - No object-cover
+                    - No fixed height
+                    - No rounded card
+                    - Full image remains visible
                     ============================================= */}
 
                 <div
-  className="
-    relative
-    mt-10
-    hidden
-    overflow-hidden
-    rounded-[42px]
-    lg:block
-  "
->
-  <Image
-    src="/images/home/introduction/introduction-scene.png"
-    alt="A peaceful mountain lake landscape"
-    width={1536}
-    height={1024}
-    sizes="(min-width: 1280px) 48vw, 50vw"
-    className="
-      block
-      h-auto
-      w-full
-    "
-  />
-</div>
+                  className="
+                    relative
+                    mt-10
+                    hidden
+                    lg:block
+                  "
+                >
+                  <Image
+                    src="/images/home/introduction/introduction-scene.png"
+                    alt="A peaceful mountain lake landscape"
+                    width={1536}
+                    height={1024}
+                    sizes="(min-width: 1280px) 48vw, 50vw"
+                    className="
+                      block
+                      h-auto
+                      w-full
+                    "
+                  />
+
+                  {/* =========================================
+                      SOFT ORGANIC BOTTOM BLEND
+
+                      This sits below the scene instead of
+                      washing over the man/image.
+                      ========================================= */}
+
+                  <div
+                    className="
+                      pointer-events-none
+                      absolute
+                      bottom-[-1px]
+                      left-0
+                      right-0
+                      h-[70px]
+                      bg-gradient-to-t
+                      from-white
+                      via-white/60
+                      to-transparent
+                    "
+                  />
+                </div>
               </div>
             </div>
 
@@ -273,7 +295,10 @@ export default function HomeIntroductionSection() {
               "
             >
               <div className="w-full max-w-2xl">
-                {/* Mobile divider */}
+                {/* =============================================
+                    MOBILE DIVIDER
+                    ============================================= */}
+
                 <div
                   className="
                     mb-8
@@ -296,6 +321,10 @@ export default function HomeIntroductionSection() {
                   />
                 </div>
 
+                {/* =============================================
+                    PARAGRAPHS
+                    ============================================= */}
+
                 <div className="space-y-7 sm:space-y-8">
                   {homeIntroduction.paragraphs.map(
                     (paragraph, index) => (
@@ -314,7 +343,10 @@ export default function HomeIntroductionSection() {
                           {paragraph}
                         </p>
 
-                        {/* Subtle botanical divider */}
+                        {/* =====================================
+                            SUBTLE BOTANICAL DIVIDER
+                            ===================================== */}
+
                         {index === 0 && (
                           <div
                             className="
@@ -350,7 +382,7 @@ export default function HomeIntroductionSection() {
       </Container>
 
       {/* =====================================================
-          BOTTOM BOTANICAL DECORATION
+          BOTTOM LEFT LEAVES
           ===================================================== */}
 
       <Image
@@ -370,6 +402,30 @@ export default function HomeIntroductionSection() {
           sm:w-[160px]
           lg:w-[200px]
           xl:w-[220px]
+        "
+      />
+
+      {/* =====================================================
+          BOTTOM RIGHT LEAVES
+          ===================================================== */}
+
+      <Image
+        src="/images/home/introduction/leaf-bottom-right1.png"
+        alt=""
+        width={285}
+        height={270}
+        aria-hidden="true"
+        className="
+          pointer-events-none
+          absolute
+          bottom-0
+          right-0
+          z-0
+          w-[150px]
+          opacity-50
+          sm:w-[200px]
+          lg:w-[260px]
+          xl:w-[285px]
         "
       />
     </section>
