@@ -16,6 +16,39 @@ export default function SocialCounsellingSection() {
         xl:py-28
       "
     >
+
+{/* =====================================================
+    LEFT VERTICAL BOTANICAL BORDER
+    ===================================================== */}
+
+<Image
+  src="/images/home/introduction/vertical2.png"
+  alt=""
+  width={128}
+  height={671}
+  aria-hidden="true"
+  className="
+    pointer-events-none
+    absolute
+    left-0
+    top-1/2
+    z-0
+    h-[600px]
+    w-auto
+    -translate-y-1/2
+    opacity-25
+    sm:h-[400px]
+    sm:opacity-28
+    md:h-[480px]
+    md:opacity-30
+    lg:h-[540px]
+    xl:h-[600px]
+    xl:opacity-35
+  "
+/>
+
+
+
       {/* =====================================================
           TOP LEFT BOTANICAL
           ===================================================== */}
@@ -72,13 +105,15 @@ export default function SocialCounsellingSection() {
         <div className="mx-auto max-w-5xl text-center">
           <p
             className="
-              text-[11px]
+              text-4xl
               font-bold
               uppercase
               tracking-[0.32em]
               text-primary
-              sm:text-xs
-              lg:text-sm
+              sm:text-4xl
+              lg:text-4xl
+
+              
             "
           >
             {socialCounsellingData.eyebrow}
@@ -113,14 +148,14 @@ export default function SocialCounsellingSection() {
               mx-auto
               mt-5
               max-w-4xl
-              text-3xl
+              text-xl
               font-bold
               leading-[1.08]
               tracking-tight
               text-secondary
-              sm:text-4xl
-              lg:text-[44px]
-              xl:text-[48px]
+              sm:text-xl
+              lg:text-2xl
+              xl:text-2xl
             "
           >
             {socialCounsellingData.title}
@@ -235,22 +270,15 @@ export default function SocialCounsellingSection() {
                 />
               </div>
 
-              <div className="space-y-7 sm:space-y-8">
+              <div className=" mx-auto w-full max-w-2xl space-y-7 sm:space-y-8 xl:mx-0 xl:max-w-none ">
                 {socialCounsellingData.paragraphs.map(
                   (paragraph, index) => (
                     <div key={paragraph}>
                       <p
                         className="
-                          max-w-xl
-                          text-[15px]
-                          leading-7
-                          text-slate-600
-                          sm:text-base
-                          sm:leading-8
-                          lg:text-[17px]
-                          lg:leading-8
+                           text-[15px] leading-7 text-slate-600 sm:text-base sm:leading-8 lg:text-[17px] lg:leading-8
                           xl:text-[17px]
-                          xl:leading-9
+                     xl:leading-9
                         "
                       >
                         {paragraph}
@@ -305,7 +333,7 @@ export default function SocialCounsellingSection() {
 
               <div className="relative overflow-hidden">
                 <Image
-                  src="/images/home/social-counselling/social-counselling-scene.png"
+                  src="/images/home/social-counselling/social-counselling-scene1.png"
                   alt="A counselling conversation beside a peaceful mountain lake"
                   width={1536}
                   height={1024}

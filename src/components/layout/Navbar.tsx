@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
@@ -18,6 +18,27 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  /* =========================================================
+     SCROLL STATE
+     ========================================================= */
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   /* =========================================================
      ACTIVE NAVIGATION
@@ -40,32 +61,50 @@ export default function Navbar() {
   };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-
+    <header
+      className="
+        fixed
+        inset-x-0
+        top-0
+        z-50
+      "
+    >
       {/* =====================================================
           MAIN HEADER
-
-          Logo and navigation are SEPARATE.
-          There is NO background around both.
           ===================================================== */}
 
-      <Container className=" sm:pt-0 lg:pt-4  xl:pt-3">
+      <Container
+        className={`
+          transition-[padding]
+          duration-300
+          ease-out
 
+          ${
+            isScrolled
+              ? "pt-0"
+              : "sm:pt-0 lg:pt-4 xl:pt-3"
+          }
+        `}
+      >
         <div
-          className="
+          className={`
             flex
             items-start
             justify-between
-            pt-2
-            sm:pt-0
-            lg:pt-4
-            xl:pt-2
-          "
-        >
 
+            transition-[padding]
+            duration-300
+            ease-out
+
+            ${
+              isScrolled
+                ? "pt-0"
+                : "pt-2 sm:pt-0 lg:pt-4 xl:pt-2"
+            }
+          `}
+        >
           {/* =================================================
               LOGO
-              LEFT SIDE
               ================================================= */}
 
           <Link
@@ -93,154 +132,177 @@ export default function Navbar() {
                 sm:w-[120px]
 
                 lg:w-[145px]
-                 min-[1350px]:w-[195px]
+
+                min-[1350px]:w-[195px]
+
                 xl:w-[195px]
               "
             />
           </Link>
 
-
           {/* =================================================
-              RIGHT SIDE
               DESKTOP NAVIGATION
               ================================================= */}
 
-          <div
-            className="
-              hidden
-              items-center
-              lg:flex
-            "
+          {/* =================================================
+    DESKTOP NAVIGATION
+    ================================================= */}
+
+<div
+  className="
+    relative
+    hidden
+    lg:flex
+    items-center
+  "
+>
+  {/* =================================================
+      HORIZONTAL BOTANICAL LEAF
+      ================================================= */}
+
+  <div
+    className="
+      pointer-events-none
+      absolute
+      left-1/2
+      top-0
+      z-20
+      flex
+      -translate-x-1/2
+      -translate-y-1/2
+      items-center
+      justify-center
+    "
+  >
+    <Image
+      src="/images/home/introduction/vertical1.png"
+      alt=""
+      width={128}
+      height={671}
+      aria-hidden="true"
+      className="
+        block
+        h-auto
+        w-[150px]
+        rotate-90
+        opacity-60
+      "
+    />
+  </div>
+
+  {/* =================================================
+      NAVIGATION PILL
+      ================================================= */}
+
+  <nav
+    className="
+      relative
+      z-10
+      flex
+      items-center
+      gap-0
+      rounded-full
+      border
+      border-white/50
+      bg-white/80
+      px-3
+      py-1
+      shadow-[0_8px_30px_rgba(24,59,59,0.08)]
+      backdrop-blur-md
+
+      min-[1350px]:gap-2
+      min-[1350px]:px-3
+      min-[1350px]:py-2.5
+
+      xl:px-3
+      xl:py-2.5
+    "
+  >
+    {/* =============================================
+        NAVIGATION LINKS
+        ============================================= */}
+
+    <div
+      className="
+        flex
+        items-center
+        xl:gap-2
+      "
+    >
+      {mainNavigation.map((item) => {
+        const active = isActive(item.href);
+
+        return (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={`
+              relative
+              whitespace-nowrap
+              rounded-full
+              px-2
+              py-2
+              text-sm
+              font-medium
+              transition-all
+              duration-200
+
+              min-[1350px]:px-4
+              min-[1350px]:text-base
+
+              xl:px-4
+
+              ${
+                active
+                  ? "text-primary"
+                  : "text-secondary hover:text-primary"
+              }
+            `}
           >
+            {item.label}
 
-            {/* ===============================================
-                NAVIGATION PILL
-                =============================================== */}
-
-            <nav
-              className="
-                flex
-                items-center
-                gap-0
-
-                rounded-full
-                border
-                border-white/50
-                bg-white/80
-                px-3
-                py-1
-                shadow-[0_8px_30px_rgba(24,59,59,0.08)]
-                min-[1350px]:gap-2
-                min-[1350px]:px-3
-                 min-[1350px]:py-2.5  
-                
-                xl:px-3
-                xl:py-2.5
-              "
-            >
-
-              {/* =============================================
-                  NAVIGATION LINKS
-                  ============================================= */}
-
-              <div
+            {active && (
+              <span
                 className="
-                  flex
-                  items-center
-
-
-                  xl:gap-2
-                "
-              >
-
-                {mainNavigation.map((item) => {
-                  const active = isActive(item.href);
-
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className={`
-                        relative
-                        whitespace-nowrap
-                        rounded-full
-                        px-2
-                        py-2
-                        text-sm
-                        min-[1350px]:px-4
-                       min-[1350px]:text-base
-                        font-medium
-                        transition-all
-                        duration-200
-                        xl:px-4
-                        ${
-                          active
-                            ? "text-primary"
-                            : "text-secondary hover:text-primary"
-                        }
-                      `}
-                    >
-
-                      {item.label}
-
-                      {/* ===================================
-                          ACTIVE UNDERLINE
-                          =================================== */}
-
-                      {active && (
-                        <span
-                          className="
-                            absolute
-                            left-1/2
-                            bottom-0
-
-                            h-0.5
-                            w-10
-
-                            -translate-x-1/2
-
-                            rounded-full
-
-                            bg-primary
-                          "
-                        />
-                      )}
-
-                    </Link>
-                  );
-                })}
-
-              </div>
-
-
-              {/* =============================================
-                  BOOK SESSION BUTTON
-                  ============================================= */}
-
-              <Button
-                href={navigationCta.href}
-                size="md"
-                className="
-                  ml-2
-                  shrink-0
+                  absolute
+                  bottom-0
+                  left-1/2
+                  h-0.5
+                  w-10
+                  -translate-x-1/2
                   rounded-full
-                  px-4
-
-                 min-[1350px]:ml-3
-                 min-[1350px]:px-7
+                  bg-primary
                 "
-              >
-                {navigationCta.label}
-              </Button>
+              />
+            )}
+          </Link>
+        );
+      })}
+    </div>
 
-            </nav>
+    {/* =============================================
+        BOOK SESSION BUTTON
+        ============================================= */}
 
-          </div>
-
+    <Button
+      href={navigationCta.href}
+      size="md"
+      className="
+        ml-2
+        shrink-0
+        rounded-full
+        px-4
+        min-[1350px]:ml-3
+        min-[1350px]:px-7
+      "
+    >
+      {navigationCta.label}
+    </Button>
+  </nav>
+</div>
 
           {/* =================================================
               MOBILE / TABLET MENU BUTTON
-              RIGHT SIDE
               ================================================= */}
 
           <button
@@ -288,22 +350,16 @@ export default function Navbar() {
               lg:hidden
             "
           >
-
             {isMenuOpen ? (
               <X className="h-5 w-5" />
             ) : (
               <Menu className="h-5 w-5" />
             )}
-
           </button>
-
         </div>
-
 
         {/* ===================================================
             MOBILE / TABLET MENU
-
-            This remains separate from the logo.
             =================================================== */}
 
         <div
@@ -322,7 +378,6 @@ export default function Navbar() {
             }
           `}
         >
-
           <div
             className="
               rounded-[22px]
@@ -339,13 +394,11 @@ export default function Navbar() {
               backdrop-blur-xl
             "
           >
-
             {/* ===============================================
                 MOBILE LINKS
                 =============================================== */}
 
             <div className="flex flex-col">
-
               {mainNavigation.map((item) => {
                 const active = isActive(item.href);
 
@@ -376,10 +429,7 @@ export default function Navbar() {
                       }
                     `}
                   >
-
-                    <span>
-                      {item.label}
-                    </span>
+                    <span>{item.label}</span>
 
                     {active && (
                       <span
@@ -391,13 +441,10 @@ export default function Navbar() {
                         "
                       />
                     )}
-
                   </Link>
                 );
               })}
-
             </div>
-
 
             {/* ===============================================
                 MOBILE CTA
@@ -411,7 +458,6 @@ export default function Navbar() {
                 pt-0
               "
             >
-
               <Button
                 href={navigationCta.href}
                 size="lg"
@@ -420,15 +466,10 @@ export default function Navbar() {
               >
                 {navigationCta.label}
               </Button>
-
             </div>
-
           </div>
-
         </div>
-
       </Container>
-
     </header>
   );
 }

@@ -16,6 +16,34 @@ export default function HomeIntroductionSection() {
         xl:py-28
       "
     >
+
+     <Image
+  src="/images/home/introduction/vertical2.png"
+  alt=""
+  width={128}
+  height={671}
+  aria-hidden="true"
+  className="
+    pointer-events-none
+    absolute
+    right-0
+    top-1/2
+    z-0
+    h-[clamp(220px,42vh,600px)]
+    w-auto
+    -translate-y-1/2
+    scale-x-[-1]
+    opacity-25
+    sm:h-[clamp(280px,44vh,600px)]
+    sm:opacity-28
+    md:h-[clamp(340px,48vh,600px)]
+    md:opacity-30
+    lg:h-[clamp(420px,55vh,600px)]
+    xl:h-[600px]
+    xl:opacity-35
+  "
+/>
+
       {/* =====================================================
           TOP LEFT BOTANICAL
           ===================================================== */}
@@ -39,6 +67,8 @@ export default function HomeIntroductionSection() {
           xl:w-[210px]
         "
       />
+
+
 
       {/* =====================================================
           TOP RIGHT BOTANICAL
@@ -69,40 +99,67 @@ export default function HomeIntroductionSection() {
             HEADER
             =================================================== */}
 
-        <div className="mx-auto max-w-4xl text-center">
-          <p
-            className="
-              text-[11px]
-              font-bold
-              uppercase
-              tracking-[0.32em]
-              text-primary
-              sm:text-xs
-              lg:text-sm
-            "
-          >
-            {homeIntroduction.eyebrow}
-          </p>
+        {/* ===================================================
+    HEADER
+    =================================================== */}
 
-          <div
-            className="mt-4 flex justify-center sm:mt-5"
-            aria-hidden="true"
-          >
-            <Image
-              src="/images/home/introduction/leaf-divider.png"
-              alt=""
-              width={140}
-              height={40}
-              className="
-                h-auto
-                w-[100px]
-                opacity-70
-                sm:w-[120px]
-                lg:w-[140px]
-              "
-            />
-          </div>
-        </div>
+<div className="mx-auto max-w-4xl text-center">
+  {/* Title */}
+  <p
+    className="
+      text-[11px]
+      font-bold
+      uppercase
+      tracking-[0.32em]
+      text-primary
+      sm:text-xs
+      lg:text-sm
+    "
+  >
+    {homeIntroduction.eyebrow}
+  </p>
+
+  {/* Leaf Divider */}
+  <div
+    className="mt-4 flex justify-center sm:mt-5"
+    aria-hidden="true"
+  >
+    <Image
+      src="/images/home/introduction/leaf-divider.png"
+      alt=""
+      width={140}
+      height={40}
+      className="
+        h-auto
+        w-[100px]
+        opacity-70
+        sm:w-[120px]
+        lg:w-[140px]
+      "
+    />
+  </div>
+
+  {/* Subtitle */}
+  <h2
+    className="
+      mx-auto
+      mt-5
+      max-w-3xl
+      text-center
+      text-2xl
+      font-bold
+      leading-tight
+      tracking-tight
+      text-secondary
+      sm:mt-6
+      sm:text-3xl
+      lg:text-4xl
+      xl:text-[42px]
+    "
+  >
+    {homeIntroduction.title}
+  </h2>
+</div>
 
         {/* ===================================================
             MAIN CONTENT
@@ -134,23 +191,7 @@ export default function HomeIntroductionSection() {
             <div className="relative">
               {/* Title */}
 
-              <div className="relative z-10 xl:pr-8">
-                <h2
-                  className="
-                    max-w-2xl
-                    text-3xl
-                    font-bold
-                    leading-[1.08]
-                    tracking-tight
-                    text-secondary
-                    sm:text-4xl
-                    lg:text-[42px]
-                    xl:text-[46px]
-                  "
-                >
-                  {homeIntroduction.title}
-                </h2>
-              </div>
+             
 
               {/* Image */}
 
@@ -177,7 +218,7 @@ export default function HomeIntroductionSection() {
 
                 <div className="relative overflow-hidden">
                   <Image
-                    src="/images/home/introduction/introduction-scene.png"
+                    src="/images/home/introduction/introduction-scene1.png"
                     alt="A peaceful mountain lake landscape"
                     width={1536}
                     height={1024}
@@ -275,57 +316,67 @@ export default function HomeIntroductionSection() {
 
               {/* Paragraphs */}
 
-              <div className="space-y-7 sm:space-y-8">
-                {homeIntroduction.paragraphs.map(
-                  (paragraph, index) => (
-                    <div key={index}>
-                      <p
-                        className="
-                          max-w-xl
-                          text-[15px]
-                          leading-7
-                          text-slate-600
-                          sm:text-base
-                          sm:leading-8
-                          lg:text-[17px]
-                          lg:leading-8
-                          xl:text-[17px]
-                          xl:leading-9
-                        "
-                      >
-                        {paragraph}
-                      </p>
+             
 
-                      {/* subtle divider */}
+<div
+  className="
+    mx-auto
+    w-full
+    max-w-3xl
+    space-y-7
+    sm:space-y-8
+    xl:mx-0
+    xl:max-w-none
+  "
+>
+  {homeIntroduction.paragraphs.map(
+    (paragraph, index) => (
+      <div key={index}>
+        <p
+          className="
+            text-[15px]
+            leading-7
+            text-slate-600
+            sm:text-base
+            sm:leading-8
+            lg:text-[17px]
+            lg:leading-8
+            xl:text-[17px]
+            xl:leading-9
+          "
+        >
+          {paragraph}
+        </p>
 
-                      {index === 0 && (
-                        <div
-                          className="
-                            mt-6
-                            flex
-                            justify-start
-                            sm:mt-7
-                          "
-                          aria-hidden="true"
-                        >
-                          <Image
-                            src="/images/home/introduction/leaf-divider.png"
-                            alt=""
-                            width={140}
-                            height={40}
-                            className="
-                              h-auto
-                              w-[90px]
-                              opacity-45
-                              sm:w-[105px]
-                            "
-                          />
-                        </div>
-                      )}
-                    </div>
-                  )
-                )}
-              </div>
+        {index === 0 && (
+          <div
+            className="
+              mt-6
+              flex
+              justify-center
+              sm:mt-7
+              xl:justify-start
+            "
+            aria-hidden="true"
+          >
+            <Image
+              src="/images/home/introduction/leaf-divider.png"
+              alt=""
+              width={140}
+              height={40}
+              className="
+                h-auto
+                w-[90px]
+                opacity-45
+                sm:w-[105px]
+              "
+            />
+          </div>
+        )}
+      </div>
+    )
+  )}
+</div>
             </div>
           </div>
         </div>
