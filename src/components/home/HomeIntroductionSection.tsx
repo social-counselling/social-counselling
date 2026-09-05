@@ -1,7 +1,6 @@
 import Image from "next/image";
 
 import Container from "@/components/common/Container";
-
 import { homeIntroduction } from "@/data/home";
 
 export default function HomeIntroductionSection() {
@@ -14,10 +13,11 @@ export default function HomeIntroductionSection() {
         py-16
         sm:py-20
         lg:py-24
+        xl:py-28
       "
     >
       {/* =====================================================
-          TOP LEFT LEAVES
+          TOP LEFT BOTANICAL
           ===================================================== */}
 
       <Image
@@ -32,16 +32,16 @@ export default function HomeIntroductionSection() {
           left-0
           top-0
           z-0
-          w-[120px]
-          opacity-70
-          sm:w-[170px]
-          lg:w-[230px]
-          xl:w-[255px]
+          w-[90px]
+          opacity-45
+          sm:w-[120px]
+          lg:w-[170px]
+          xl:w-[210px]
         "
       />
 
       {/* =====================================================
-          TOP RIGHT LEAVES
+          TOP RIGHT BOTANICAL
           ===================================================== */}
 
       <Image
@@ -56,45 +56,48 @@ export default function HomeIntroductionSection() {
           right-0
           top-0
           z-0
-          w-[120px]
-          opacity-60
-          sm:w-[170px]
-          lg:w-[220px]
-          xl:w-[240px]
+          w-[90px]
+          opacity-40
+          sm:w-[120px]
+          lg:w-[170px]
+          xl:w-[205px]
         "
       />
 
       <Container className="relative z-10">
         {/* ===================================================
-            SECTION HEADER
+            HEADER
             =================================================== */}
 
         <div className="mx-auto max-w-4xl text-center">
           <p
             className="
-              text-xs
+              text-[11px]
               font-bold
               uppercase
-              tracking-[0.28em]
+              tracking-[0.32em]
               text-primary
-              sm:text-sm
+              sm:text-xs
+              lg:text-sm
             "
           >
             {homeIntroduction.eyebrow}
           </p>
 
-          <div className="mt-4 flex justify-center sm:mt-5">
+          <div
+            className="mt-4 flex justify-center sm:mt-5"
+            aria-hidden="true"
+          >
             <Image
               src="/images/home/introduction/leaf-divider.png"
               alt=""
               width={140}
               height={40}
-              aria-hidden="true"
               className="
                 h-auto
                 w-[100px]
-                opacity-75
-                sm:w-[125px]
+                opacity-70
+                sm:w-[120px]
                 lg:w-[140px]
               "
             />
@@ -109,82 +112,29 @@ export default function HomeIntroductionSection() {
           className="
             relative
             mt-10
-            lg:mt-14
+            sm:mt-12
+            xl:mt-14
           "
         >
-          {/* =================================================
-              DESKTOP VERTICAL DIVIDER
-              ================================================= */}
-
-          <div
-            className="
-              pointer-events-none
-              absolute
-              bottom-0
-              left-1/2
-              top-0
-              hidden
-              -translate-x-1/2
-              lg:block
-            "
-            aria-hidden="true"
-          >
-            <div
-              className="
-                absolute
-                left-1/2
-                top-0
-                h-full
-                w-px
-                -translate-x-1/2
-                bg-primary/20
-              "
-            />
-
-            <Image
-              src="/images/home/introduction/leaf-divider.png"
-              alt=""
-              width={40}
-              height={140}
-              aria-hidden="true"
-              className="
-                absolute
-                left-1/2
-                top-1/2
-                h-auto
-                w-[34px]
-                -translate-x-1/2
-                -translate-y-1/2
-                rotate-90
-                opacity-80
-              "
-            />
-          </div>
-
-          {/* =================================================
-              TWO COLUMN LAYOUT
-              ================================================= */}
-
           <div
             className="
               grid
               grid-cols-1
-              gap-12
-              lg:grid-cols-2
-              lg:gap-20
-              xl:gap-24
+              items-center
+              gap-10
+              xl:grid-cols-[1.08fr_0.92fr]
+              xl:gap-20
+              2xl:gap-24
             "
           >
             {/* =================================================
-                LEFT SIDE
+                LEFT — VISUAL STORY
                 ================================================= */}
 
             <div className="relative">
-              <div className="mx-auto max-w-2xl lg:mx-0">
-                {/* =============================================
-                    TITLE
-                    ============================================= */}
+              {/* Title */}
 
+              <div className="relative z-10 xl:pr-8">
                 <h2
                   className="
                     max-w-2xl
@@ -194,63 +144,47 @@ export default function HomeIntroductionSection() {
                     tracking-tight
                     text-secondary
                     sm:text-4xl
-                    lg:text-[40px]
-                    xl:text-[48px]
+                    lg:text-[42px]
+                    xl:text-[46px]
                   "
                 >
                   {homeIntroduction.title}
                 </h2>
+              </div>
 
-                {/* =============================================
-                    MOBILE IMAGE
-                    ============================================= */}
+              {/* Image */}
+
+              <div
+                className="
+                  relative
+                  mt-8
+                  sm:mt-10
+                "
+              >
+                {/* soft background glow */}
 
                 <div
                   className="
-                    relative
-                    mt-8
-                    lg:hidden
+                    pointer-events-none
+                    absolute
+                    -inset-5
+                    rounded-[45%]
+                    bg-primary/[0.035]
+                    blur-3xl
                   "
-                >
+                  aria-hidden="true"
+                />
+
+                <div className="relative overflow-hidden">
                   <Image
                     src="/images/home/introduction/introduction-scene.png"
                     alt="A peaceful mountain lake landscape"
                     width={1536}
                     height={1024}
-                    sizes="100vw"
-                    className="
-                      block
-                      h-auto
-                      w-full
-                      rounded-[28px]
+                    sizes="
+                      (min-width: 1280px) 55vw,
+                      100vw
                     "
-                  />
-                </div>
-
-                {/* =============================================
-                    DESKTOP IMAGE
-
-                    IMPORTANT:
-                    - No object-cover
-                    - No fixed height
-                    - No rounded card
-                    - Full image remains visible
-                    ============================================= */}
-
-                <div
-                  className="
-                    relative
-                    mt-10
-                    hidden
-                    lg:block
-                  "
-                >
-                  <Image
-                    src="/images/home/introduction/introduction-scene.png"
-                    alt="A peaceful mountain lake landscape"
-                    width={1536}
-                    height={1024}
-                    sizes="(min-width: 1280px) 48vw, 50vw"
                     className="
                       block
                       h-auto
@@ -258,123 +192,139 @@ export default function HomeIntroductionSection() {
                     "
                   />
 
-                  {/* =========================================
-                      SOFT ORGANIC BOTTOM BLEND
-
-                      This sits below the scene instead of
-                      washing over the man/image.
-                      ========================================= */}
+                  {/* organic image fade */}
 
                   <div
                     className="
                       pointer-events-none
                       absolute
-                      bottom-[-1px]
+                      bottom-0
                       left-0
                       right-0
-                      h-[70px]
+                      h-[100px]
                       bg-gradient-to-t
                       from-white
-                      via-white/60
+                      via-white/35
                       to-transparent
+                      sm:h-[125px]
                     "
+                    aria-hidden="true"
                   />
                 </div>
               </div>
             </div>
 
             {/* =================================================
-                RIGHT SIDE
+                RIGHT — CONTENT
                 ================================================= */}
 
-            <div
-              className="
-                flex
-                items-center
-                lg:min-h-full
-              "
-            >
-              <div className="w-full max-w-2xl">
-                {/* =============================================
-                    MOBILE DIVIDER
-                    ============================================= */}
+            <div className="relative">
+              {/* Desktop botanical divider */}
 
-                <div
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  -left-8
+                  top-0
+                  hidden
+                  h-full
+                  xl:block
+                "
+                aria-hidden="true"
+              >
+                <div className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-primary/15" />
+
+                <Image
+                  src="/images/home/introduction/leaf-divider.png"
+                  alt=""
+                  width={40}
+                  height={140}
                   className="
-                    mb-8
-                    flex
-                    justify-center
-                    lg:hidden
+                    absolute
+                    left-1/2
+                    top-1/2
+                    w-[30px]
+                    -translate-x-1/2
+                    -translate-y-1/2
+                    rotate-90
+                    opacity-65
                   "
-                  aria-hidden="true"
-                >
-                  <Image
-                    src="/images/home/introduction/leaf-divider.png"
-                    alt=""
-                    width={140}
-                    height={40}
-                    className="
-                      h-auto
-                      w-[110px]
-                      opacity-65
-                    "
-                  />
-                </div>
+                />
+              </div>
 
-                {/* =============================================
-                    PARAGRAPHS
-                    ============================================= */}
+              {/* Mobile divider */}
 
-                <div className="space-y-7 sm:space-y-8">
-                  {homeIntroduction.paragraphs.map(
-                    (paragraph, index) => (
-                      <div key={index}>
-                        <p
+              <div
+                className="
+                  mb-7
+                  flex
+                  justify-center
+                  xl:hidden
+                "
+                aria-hidden="true"
+              >
+                <Image
+                  src="/images/home/introduction/leaf-divider.png"
+                  alt=""
+                  width={140}
+                  height={40}
+                  className="h-auto w-[105px] opacity-55"
+                />
+              </div>
+
+              {/* Paragraphs */}
+
+              <div className="space-y-7 sm:space-y-8">
+                {homeIntroduction.paragraphs.map(
+                  (paragraph, index) => (
+                    <div key={index}>
+                      <p
+                        className="
+                          max-w-xl
+                          text-[15px]
+                          leading-7
+                          text-slate-600
+                          sm:text-base
+                          sm:leading-8
+                          lg:text-[17px]
+                          lg:leading-8
+                          xl:text-[17px]
+                          xl:leading-9
+                        "
+                      >
+                        {paragraph}
+                      </p>
+
+                      {/* subtle divider */}
+
+                      {index === 0 && (
+                        <div
                           className="
-                            text-base
-                            leading-8
-                            text-slate-600
-                            sm:text-lg
-                            sm:leading-9
-                            lg:text-[17px]
-                            xl:text-lg
+                            mt-6
+                            flex
+                            justify-start
+                            sm:mt-7
                           "
+                          aria-hidden="true"
                         >
-                          {paragraph}
-                        </p>
-
-                        {/* =====================================
-                            SUBTLE BOTANICAL DIVIDER
-                            ===================================== */}
-
-                        {index === 0 && (
-                          <div
+                          <Image
+                            src="/images/home/introduction/leaf-divider.png"
+                            alt=""
+                            width={140}
+                            height={40}
                             className="
-                              mt-7
-                              flex
-                              justify-center
-                              sm:mt-8
+                              h-auto
+                              w-[90px]
+                              opacity-45
+                              sm:w-[105px]
                             "
-                            aria-hidden="true"
-                          >
-                            <Image
-                              src="/images/home/introduction/leaf-divider.png"
-                              alt=""
-                              width={140}
-                              height={40}
-                              className="
-                                h-auto
-                                w-[105px]
-                                opacity-50
-                                sm:w-[120px]
-                              "
-                            />
-                          </div>
-                        )}
-                      </div>
-                    )
-                  )}
-                </div>
+                          />
+                        </div>
+                      )}
+                    </div>
+                  )
+                )}
               </div>
             </div>
           </div>
@@ -397,11 +347,11 @@ export default function HomeIntroductionSection() {
           bottom-0
           left-0
           z-0
-          w-[110px]
-          opacity-40
-          sm:w-[160px]
-          lg:w-[200px]
-          xl:w-[220px]
+          w-[90px]
+          opacity-30
+          sm:w-[120px]
+          lg:w-[170px]
+          xl:w-[210px]
         "
       />
 
@@ -421,13 +371,54 @@ export default function HomeIntroductionSection() {
           bottom-0
           right-0
           z-0
-          w-[150px]
-          opacity-50
-          sm:w-[200px]
-          lg:w-[260px]
-          xl:w-[285px]
+          w-[105px]
+          opacity-35
+          sm:w-[135px]
+          lg:w-[180px]
+          xl:w-[220px]
         "
       />
+
+      {/* =====================================================
+          ORGANIC SECTION TRANSITION
+          ===================================================== */}
+
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-0
+          left-0
+          right-0
+          z-20
+          h-[55px]
+          overflow-hidden
+          sm:h-[65px]
+          lg:h-[75px]
+        "
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1440 140"
+          preserveAspectRatio="none"
+          className="absolute bottom-0 h-full w-full"
+        >
+          <path
+             fill="#E8F5E9"
+            d="
+              M0 65
+              C120 95 210 112 340 102
+              C470 92 535 55 665 65
+              C795 75 850 112 970 105
+              C1090 98 1145 65 1250 72
+              C1340 78 1390 92 1440 88
+              L1440 140
+              L0 140
+              Z
+            "
+          />
+        </svg>
+      </div>
     </section>
   );
 }

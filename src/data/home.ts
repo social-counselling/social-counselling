@@ -118,7 +118,7 @@ export const homeIntroduction = {
     "Sometimes, all we need is someone to guide us towards the right path.",
 
   paragraphs: [
-    "Life can sometimes leave us unsure, emotionally overwhelmed, perplexed or indecisive about the right course of action—whether for ourselves or for someone we care about.",
+    "Life can sometimes leave us unsure, emotionally overwhelmed, perplexed or indecisive about the right course of action whether for ourselves or for someone we care about.",
 
     "We all undergo situations in life wherein we feel disappointment, isolation, indecisiveness, frustration and dismay.",
 
