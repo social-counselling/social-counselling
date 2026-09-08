@@ -17,32 +17,7 @@ export default function HomeIntroductionSection() {
       "
     >
 
-     <Image
-  src="/images/home/introduction/vertical2.png"
-  alt=""
-  width={128}
-  height={671}
-  aria-hidden="true"
-  className="
-    pointer-events-none
-    absolute
-    right-0
-    top-1/2
-    z-0
-    h-[clamp(220px,42vh,600px)]
-    w-auto
-    -translate-y-1/2
-    scale-x-[-1]
-    opacity-25
-    sm:h-[clamp(280px,44vh,600px)]
-    sm:opacity-28
-    md:h-[clamp(340px,48vh,600px)]
-    md:opacity-30
-    lg:h-[clamp(420px,55vh,600px)]
-    xl:h-[600px]
-    xl:opacity-35
-  "
-/>
+   
 
       {/* =====================================================
           TOP LEFT BOTANICAL
@@ -99,21 +74,18 @@ export default function HomeIntroductionSection() {
             HEADER
             =================================================== */}
 
-        {/* ===================================================
-    HEADER
-    =================================================== */}
 
 <div className="mx-auto max-w-4xl text-center">
   {/* Title */}
   <p
     className="
-      text-[11px]
-      font-bold
-      uppercase
-      tracking-[0.32em]
-      text-primary
-      sm:text-xs
-      lg:text-sm
+       text-4xl
+              font-bold
+              uppercase
+              tracking-[0.32em]
+              text-primary
+              sm:text-4xl
+              lg:text-4xl
     "
   >
     {homeIntroduction.eyebrow}
@@ -143,18 +115,20 @@ export default function HomeIntroductionSection() {
   <h2
     className="
       mx-auto
-      mt-5
-      max-w-3xl
+     
+
       text-center
-      text-2xl
-      font-bold
-      leading-tight
-      tracking-tight
-      text-secondary
-      sm:mt-6
-      sm:text-3xl
-      lg:text-4xl
-      xl:text-[42px]
+
+              mt-5
+              max-w-4xl
+              text-xl
+              font-bold
+              leading-[1.08]
+              tracking-tight
+              text-secondary
+              sm:text-xl
+              lg:text-2xl
+              xl:text-2xl
     "
   >
     {homeIntroduction.title}

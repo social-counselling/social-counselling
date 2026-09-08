@@ -17,38 +17,6 @@ export default function SocialCounsellingSection() {
       "
     >
 
-{/* =====================================================
-    LEFT VERTICAL BOTANICAL BORDER
-    ===================================================== */}
-
-<Image
-  src="/images/home/introduction/vertical2.png"
-  alt=""
-  width={128}
-  height={671}
-  aria-hidden="true"
-  className="
-    pointer-events-none
-    absolute
-    left-0
-    top-1/2
-    z-0
-    h-[600px]
-    w-auto
-    -translate-y-1/2
-    opacity-25
-    sm:h-[400px]
-    sm:opacity-28
-    md:h-[480px]
-    md:opacity-30
-    lg:h-[540px]
-    xl:h-[600px]
-    xl:opacity-35
-  "
-/>
-
-
-
       {/* =====================================================
           TOP LEFT BOTANICAL
           ===================================================== */}

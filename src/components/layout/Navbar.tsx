@@ -144,9 +144,6 @@ export default function Navbar() {
               DESKTOP NAVIGATION
               ================================================= */}
 
-          {/* =================================================
-    DESKTOP NAVIGATION
-    ================================================= */}
 
 <div
   className="
@@ -174,20 +171,7 @@ export default function Navbar() {
       justify-center
     "
   >
-    <Image
-      src="/images/home/introduction/vertical1.png"
-      alt=""
-      width={128}
-      height={671}
-      aria-hidden="true"
-      className="
-        block
-        h-auto
-        w-[150px]
-        rotate-90
-        opacity-60
-      "
-    />
+
   </div>
 
   {/* =================================================
