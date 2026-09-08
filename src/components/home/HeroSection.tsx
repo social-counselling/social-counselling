@@ -53,7 +53,7 @@ function ServiceCard({
             `
             : `
               w-full
-              min-h-[82px]
+              min-h-[62px]
               gap-2
               rounded-[22px]
               px-3
@@ -81,7 +81,7 @@ function ServiceCard({
           ${
             compact
               ? "h-11 w-11"
-              : "h-[58px] w-[58px]"
+              : "h-[48px] w-[48px]"
           }
         `}
       >
@@ -113,7 +113,7 @@ function ServiceCard({
             ${
               compact
                 ? "line-clamp-2 text-[10px]"
-                : "text-sm xl:text-[15px]"
+                : "text-sm xl:text-[13px]"
             }
           `}
         >
@@ -204,13 +204,13 @@ function ServiceList({
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full overflow-hidden ">
 
       {/* =====================================================
           HERO IMAGE
           ===================================================== */}
 
-      <div className="relative w-full">
+      <div className="relative w-full xl:h-screen">
 
         <Image
           src={heroData.image}
@@ -223,6 +223,7 @@ export default function HeroSection() {
             block
             h-auto
             w-full
+            xl:h-full
           "
         />
 
@@ -265,7 +266,7 @@ export default function HeroSection() {
               variant="outline"
               size="md"
               className="
-                mt-3
+                mt-2
                 w-full
                 rounded-full
                 border-white

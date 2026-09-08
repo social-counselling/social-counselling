@@ -95,7 +95,7 @@ export default function MarriageServiceCard({
             ${
               compact
                 ? "h-11 w-11"
-                : "h-[58px] w-[58px]"
+                : "h-[48px] w-[48px]"
             }
           `}
         >
@@ -124,7 +124,7 @@ export default function MarriageServiceCard({
               ${
                 compact
                   ? "line-clamp-2 text-[10px]"
-                  : "text-sm xl:text-[15px]"
+                  : "text-sm xl:text-[13px]"
               }
             `}
           >
