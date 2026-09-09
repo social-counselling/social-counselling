@@ -2,6 +2,7 @@ import Image from "next/image";
 
 import Container from "@/components/common/Container";
 import { socialCounsellingData } from "@/data/home";
+import SectionSideLeaves from "../common/SectionSideLeaves";
 
 export default function SocialCounsellingSection() {
   return (
@@ -16,6 +17,7 @@ export default function SocialCounsellingSection() {
         xl:py-28
       "
     >
+      <SectionSideLeaves/>
 
       {/* =====================================================
           TOP LEFT BOTANICAL
@@ -32,7 +34,7 @@ export default function SocialCounsellingSection() {
           absolute
           left-0
           top-0
-          z-0
+          z-1
           w-[80px]
           opacity-30
           sm:w-[110px]
@@ -56,7 +58,7 @@ export default function SocialCounsellingSection() {
           absolute
           right-0
           top-0
-          z-0
+          z-1
           w-[85px]
           opacity-30
           sm:w-[115px]
@@ -344,7 +346,7 @@ export default function SocialCounsellingSection() {
           BOTTOM LEFT LEAVES
           ===================================================== */}
 
-      <Image
+      {/* <Image
         src="/images/home/introduction/leaf-bottom-left1.png"
         alt=""
         width={220}
@@ -362,13 +364,13 @@ export default function SocialCounsellingSection() {
           lg:w-[170px]
           xl:w-[205px]
         "
-      />
+      /> */}
 
       {/* =====================================================
           BOTTOM RIGHT LEAVES
           ===================================================== */}
 
-      <Image
+      {/* <Image
         src="/images/home/introduction/leaf-bottom-right1.png"
         alt=""
         width={285}
@@ -386,7 +388,43 @@ export default function SocialCounsellingSection() {
           lg:w-[180px]
           xl:w-[215px]
         "
-      />
+      /> */}
+      <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-0
+          left-0
+          right-0
+          z-20
+          h-[55px]
+          overflow-hidden
+          sm:h-[65px]
+          lg:h-[75px]
+        "
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1440 140"
+          preserveAspectRatio="none"
+          className="absolute bottom-0 h-full w-full"
+        >
+          <path
+             fill="#E8F5E9"
+            d="
+              M0 65
+              C120 95 210 112 340 102
+              C470 92 535 55 665 65
+              C795 75 850 112 970 105
+              C1090 98 1145 65 1250 72
+              C1340 78 1390 92 1440 88
+              L1440 140
+              L0 140
+              Z
+            "
+          />
+        </svg>
+      </div>
     </section>
   );
 }

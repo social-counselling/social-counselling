@@ -1,7 +1,8 @@
 import Image from "next/image";
 
 import Container from "@/components/common/Container";
-import { homeIntroduction } from "@/data/home";
+import { homeIntroduction } from "@/data/home"
+import SectionSideLeaves from "@/components/common/SectionSideLeaves";;
 
 export default function HomeIntroductionSection() {
   return (
@@ -16,7 +17,7 @@ export default function HomeIntroductionSection() {
         xl:py-28
       "
     >
-
+<SectionSideLeaves/>
    
 
       {/* =====================================================
@@ -34,7 +35,7 @@ export default function HomeIntroductionSection() {
           absolute
           left-0
           top-0
-          z-0
+          z-1
           w-[90px]
           opacity-45
           sm:w-[120px]
@@ -60,7 +61,7 @@ export default function HomeIntroductionSection() {
           absolute
           right-0
           top-0
-          z-0
+          z-1
           w-[90px]
           opacity-40
           sm:w-[120px]
@@ -360,7 +361,7 @@ export default function HomeIntroductionSection() {
           BOTTOM LEFT LEAVES
           ===================================================== */}
 
-      <Image
+      {/* <Image
         src="/images/home/introduction/leaf-bottom-left1.png"
         alt=""
         width={220}
@@ -371,20 +372,20 @@ export default function HomeIntroductionSection() {
           absolute
           bottom-0
           left-0
-          z-0
+          z-1
           w-[90px]
           opacity-30
           sm:w-[120px]
           lg:w-[170px]
           xl:w-[210px]
         "
-      />
+      /> */}
 
       {/* =====================================================
           BOTTOM RIGHT LEAVES
           ===================================================== */}
 
-      <Image
+      {/* <Image
         src="/images/home/introduction/leaf-bottom-right1.png"
         alt=""
         width={285}
@@ -395,14 +396,14 @@ export default function HomeIntroductionSection() {
           absolute
           bottom-0
           right-0
-          z-0
+          z-1
           w-[105px]
           opacity-35
           sm:w-[135px]
           lg:w-[180px]
           xl:w-[220px]
         "
-      />
+      /> */}
 
       {/* =====================================================
           ORGANIC SECTION TRANSITION

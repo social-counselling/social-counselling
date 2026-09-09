@@ -18,27 +18,27 @@ export default function Navbar() {
   const pathname = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+   const [isScrolled, setIsScrolled] = useState(false);
 
   /* =========================================================
      SCROLL STATE
      ========================================================= */
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setIsScrolled(window.scrollY > 20);
+  //   };
 
-    handleScroll();
+  //   handleScroll();
 
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
+  //   window.addEventListener("scroll", handleScroll, {
+  //     passive: true,
+  //   });
 
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   /* =========================================================
      ACTIVE NAVIGATION
@@ -157,22 +157,41 @@ export default function Navbar() {
       HORIZONTAL BOTANICAL LEAF
       ================================================= */}
 
-  <div
-    className="
-      pointer-events-none
-      absolute
-      left-1/2
-      top-0
-      z-20
-      flex
-      -translate-x-1/2
-      -translate-y-1/2
-      items-center
-      justify-center
-    "
-  >
+{/* =================================================
+    HORIZONTAL BOTANICAL LEAF
+    ================================================= */}
 
-  </div>
+<div
+  className="
+    pointer-events-none
+    absolute
+    left-1/2
+    top-1/2
+    z-0
+    flex
+    -translate-x-1/2
+    -translate-y-1/2
+    items-center
+    justify-center
+    w-[650px]
+    min-[1350px]:w-[780px]
+    xl:w-[820px]
+  "
+>
+  <Image
+    src="/images/home/introduction/navbar-leaves.png"
+    alt=""
+    width={2048}
+    height={512}
+    aria-hidden="true"
+    className="
+      block
+      h-auto
+      w-full
+      opacity-95
+    "
+  />
+</div>
 
   {/* =================================================
       NAVIGATION PILL
