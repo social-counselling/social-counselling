@@ -25,7 +25,7 @@ export interface CounsellingType {
    ========================================================= */
 
 export const heroData = {
-  image: "/images/hero/newHeroHome1.png",
+  image: "/images/hero/Home Page1.png",
 
   primaryCta: {
     label: "Book a Session",

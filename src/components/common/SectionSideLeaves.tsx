@@ -11,25 +11,25 @@ export default function SectionSideLeaves() {
           top-0
           z-0
           h-full
-          w-[55px]
+         w-[30px]
           overflow-hidden
-          opacity-45
+          opacity-30
 
-          sm:w-[65px]
+          sm:w-[40px]
           sm:opacity-50
 
-          md:w-[75px]
+          md:w-[50px]
 
-          lg:w-[85px]
+          lg:w-[60px]
 
-          xl:w-[95px]
+          xl:w-[70px]
         "
       >
         <div
           className="
             h-full
             w-full
-            bg-[url('/images/contact/section-leaf-leftFull2.png')]
+            bg-[url('/images/contact/newmainSideLeaf.png')]
             bg-left-top
             bg-[length:100%_auto]
             bg-repeat-y
@@ -47,25 +47,25 @@ export default function SectionSideLeaves() {
           top-0
           z-0
           h-full
-          w-[55px]
+          w-[30px]
           overflow-hidden
-          opacity-45
+          opacity-30
 
-          sm:w-[65px]
+          sm:w-[40px]
           sm:opacity-50
 
-          md:w-[75px]
+          md:w-[50px]
 
-          lg:w-[85px]
+          lg:w-[60px]
 
-          xl:w-[95px]
+          xl:w-[70px]
         "
       >
         <div
           className="
             h-full
             w-full
-            bg-[url('/images/contact/section-leaf-rightFull2.png')]
+            bg-[url('/images/contact/newmainSideLeaf.png')]
             bg-right-top
             bg-[length:100%_auto]
             bg-repeat-y
