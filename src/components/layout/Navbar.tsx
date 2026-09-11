@@ -157,11 +157,8 @@ export default function Navbar() {
       HORIZONTAL BOTANICAL LEAF
       ================================================= */}
 
-{/* =================================================
-    HORIZONTAL BOTANICAL LEAF
-    ================================================= */}
 
-<div
+{/* <div
   className="
     pointer-events-none
     absolute
@@ -191,7 +188,7 @@ export default function Navbar() {
       opacity-95
     "
   />
-</div>
+</div> */}
 
   {/* =================================================
       NAVIGATION PILL

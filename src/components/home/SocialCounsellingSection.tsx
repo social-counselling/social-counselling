@@ -2,7 +2,7 @@ import Image from "next/image";
 
 import Container from "@/components/common/Container";
 import { socialCounsellingData } from "@/data/home";
-import SectionSideLeaves from "../common/SectionSideLeaves";
+
 
 export default function SocialCounsellingSection() {
   return (
@@ -17,7 +17,7 @@ export default function SocialCounsellingSection() {
         xl:py-28
       "
     >
-      <SectionSideLeaves/>
+
 
       {/* =====================================================
           TOP LEFT BOTANICAL
@@ -75,12 +75,12 @@ export default function SocialCounsellingSection() {
         <div className="mx-auto max-w-5xl text-center">
           <p
             className="
-              text-4xl
+              text-2xl
               font-bold
               uppercase
               tracking-[0.32em]
               text-primary
-              sm:text-4xl
+              sm:text-2xl
               lg:text-4xl
 
               
@@ -346,7 +346,7 @@ export default function SocialCounsellingSection() {
           BOTTOM LEFT LEAVES
           ===================================================== */}
 
-      {/* <Image
+      <Image
         src="/images/home/introduction/leaf-bottom-left1.png"
         alt=""
         width={220}
@@ -364,13 +364,13 @@ export default function SocialCounsellingSection() {
           lg:w-[170px]
           xl:w-[205px]
         "
-      /> */}
+      />
 
       {/* =====================================================
           BOTTOM RIGHT LEAVES
           ===================================================== */}
 
-      {/* <Image
+      <Image
         src="/images/home/introduction/leaf-bottom-right1.png"
         alt=""
         width={285}
@@ -388,7 +388,7 @@ export default function SocialCounsellingSection() {
           lg:w-[180px]
           xl:w-[215px]
         "
-      /> */}
+      />
       <div
         className="
           pointer-events-none

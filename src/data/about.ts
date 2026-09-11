@@ -1,11 +1,11 @@
 export const aboutData = {
-  heroImage: "/images/about/About Us.png",
+  heroImage: "/images/about/about.png",
 
   thought: {
     eyebrow: "OUR PHILOSOPHY",
-
+     image:"/images/home/introduction/social-counselling-scene.png",
     title: "The Thought Behind Social Counselling",
-
+     
     paragraphs: [
       `Social Counselling originates from a simple observation:
 
@@ -21,7 +21,7 @@ In today’s times, families are becoming more nuclear and isolated esp in the m
 
   belief: {
     eyebrow: "OUR FUNDAMENTAL BELIEF",
-
+    image:"/images/about/boy.png",
     title: "Our Fundamental Belief",
 
     paragraphs: [

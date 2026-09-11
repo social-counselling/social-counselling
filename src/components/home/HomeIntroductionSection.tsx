@@ -2,7 +2,8 @@ import Image from "next/image";
 
 import Container from "@/components/common/Container";
 import { homeIntroduction } from "@/data/home"
-import SectionSideLeaves from "@/components/common/SectionSideLeaves";;
+
+
 
 export default function HomeIntroductionSection() {
   return (
@@ -17,8 +18,8 @@ export default function HomeIntroductionSection() {
         xl:py-28
       "
     >
-<SectionSideLeaves/>
-   
+
+     
 
       {/* =====================================================
           TOP LEFT BOTANICAL
@@ -80,13 +81,14 @@ export default function HomeIntroductionSection() {
   {/* Title */}
   <p
     className="
-       text-4xl
+       text-2xl
               font-bold
-              uppercase
+
               tracking-[0.32em]
               text-primary
-              sm:text-4xl
-              lg:text-4xl
+              sm:text-2xl
+              lg:text-4xl font-Unkempt
+              
     "
   >
     {homeIntroduction.eyebrow}
@@ -361,7 +363,7 @@ export default function HomeIntroductionSection() {
           BOTTOM LEFT LEAVES
           ===================================================== */}
 
-      {/* <Image
+      <Image
         src="/images/home/introduction/leaf-bottom-left1.png"
         alt=""
         width={220}
@@ -379,13 +381,13 @@ export default function HomeIntroductionSection() {
           lg:w-[170px]
           xl:w-[210px]
         "
-      /> */}
+      />
 
       {/* =====================================================
           BOTTOM RIGHT LEAVES
           ===================================================== */}
 
-      {/* <Image
+      <Image
         src="/images/home/introduction/leaf-bottom-right1.png"
         alt=""
         width={285}
@@ -403,7 +405,7 @@ export default function HomeIntroductionSection() {
           lg:w-[180px]
           xl:w-[220px]
         "
-      /> */}
+      />
 
       {/* =====================================================
           ORGANIC SECTION TRANSITION

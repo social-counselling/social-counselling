@@ -210,7 +210,10 @@ export default function HeroSection() {
           HERO IMAGE
           ===================================================== */}
 
-      <div className="relative w-full xl:h-screen">
+      <div className="relative w-full
+      
+      "
+       >
 
         <Image
           src={heroData.image}
@@ -223,7 +226,7 @@ export default function HeroSection() {
             block
             h-auto
             w-full
-            xl:h-full
+            object-cover
           "
         />
 

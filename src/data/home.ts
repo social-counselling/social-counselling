@@ -25,7 +25,7 @@ export interface CounsellingType {
    ========================================================= */
 
 export const heroData = {
-  image: "/images/hero/Home_page1_hero.png",
+  image: "/images/hero/newHeroHome1.png",
 
   primaryCta: {
     label: "Book a Session",
@@ -283,10 +283,7 @@ export const perspectiveData = {
 
 export const largerPurposeData = {
   eyebrow: "A Larger Purpose",
-
-  title:
-    "Beyond an individual concern, we believe there is a larger purpose.",
-
+  title: "Beyond an individual concern, we believe there is a larger purpose.",
   description:
     "Better understanding can lead to better choices. Better choices can lead to healthier relationships. Healthier relationships can lead to stronger families. And stronger families can contribute to a healthier society and create an excellent ecosystem.",
 
@@ -294,26 +291,27 @@ export const largerPurposeData = {
     {
       id: "understanding",
       title: "Better understanding",
+      image: "/images/home/larger-purpose/better-understanding1.png",
     },
-
     {
       id: "choices",
       title: "Better choices",
+      image: "/images/home/larger-purpose/better-choices1.png",
     },
-
     {
       id: "relationships",
       title: "Healthier relationships",
+      image: "/images/home/larger-purpose/healthier-relationships1.png",
     },
-
     {
       id: "families",
       title: "Stronger families",
+      image: "/images/home/larger-purpose/stronger-families1.png",
     },
-
     {
       id: "society",
-      title: "Healthier society",
+      title: "Healthier society & excellent ecosystem",
+      image: "/images/home/larger-purpose/healthier-society1.png",
     },
   ],
 };

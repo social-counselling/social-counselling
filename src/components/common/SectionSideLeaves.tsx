@@ -1,67 +1,77 @@
-import Image from "next/image";
-
 export default function SectionSideLeaves() {
   return (
     <>
-      {/* LEFT SIDE HANGING LEAVES */}
-      <Image
-        src="/images/decorations/section-leaf-left.png"
-        alt=""
-        width={220}
-        height={1200}
+      {/* LEFT SIDE */}
+      <div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
           left-0
-          top-[90px]
+          top-0
           z-0
-          h-[calc(100%-90px)]
-          w-[65px]
-          object-fill
-          opacity-55
+          h-full
+          w-[55px]
+          overflow-hidden
+          opacity-45
 
-          sm:top-[100px]
-          sm:h-[calc(100%-100px)]
-           sm:w-[55px]
+          sm:w-[65px]
+          sm:opacity-50
 
-          md:w-[65px]
+          md:w-[75px]
 
-          lg:w-[75px]
+          lg:w-[85px]
 
-          xl:w-[85px]
+          xl:w-[95px]
         "
-      />
+      >
+        <div
+          className="
+            h-full
+            w-full
+            bg-[url('/images/contact/section-leaf-leftFull2.png')]
+            bg-left-top
+            bg-[length:100%_auto]
+            bg-repeat-y
+          "
+        />
+      </div>
 
-      {/* RIGHT SIDE HANGING LEAVES */}
-      <Image
-        src="/images/decorations/section-leaf-right.png"
-        alt=""
-        width={220}
-        height={1200}
+      {/* RIGHT SIDE */}
+      <div
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
           right-0
-          top-[90px]
+          top-0
           z-0
-          h-[calc(100%-90px)]
-          w-[65px]
-          object-fill
-          opacity-55
+          h-full
+          w-[55px]
+          overflow-hidden
+          opacity-45
 
-          sm:top-[100px]
-          sm:h-[calc(100%-100px)]
-          sm:w-[55px]
+          sm:w-[65px]
+          sm:opacity-50
 
-          md:w-[65px]
+          md:w-[75px]
 
-          lg:w-[75px]
+          lg:w-[85px]
 
-          xl:w-[85px]
+          xl:w-[95px]
         "
-      />
+      >
+        <div
+          className="
+            h-full
+            w-full
+            bg-[url('/images/contact/section-leaf-rightFull2.png')]
+            bg-right-top
+            bg-[length:100%_auto]
+            bg-repeat-y
+          "
+        />
+      </div>
     </>
   );
 }
