@@ -34,7 +34,6 @@ function ServiceCard({
         border
         border-white/70
         bg-white/70
-
         shadow-[0_5px_18px_rgba(24,59,59,0.07)]
         transition-all
         duration-300
@@ -62,7 +61,7 @@ function ServiceCard({
         }
       `}
     >
-      {  /* =====================================================
+      {/* =====================================================
           ICON
           ===================================================== */}
 
@@ -139,8 +138,6 @@ function ServiceCard({
 
       {/* =====================================================
           ARROW
-
-          Only show on desktop.
           ===================================================== */}
 
       {!compact && (
@@ -204,37 +201,37 @@ function ServiceList({
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden ">
-
+    <section className="relative w-full overflow-hidden">
       {/* =====================================================
           HERO IMAGE
           ===================================================== */}
 
-      <div className="relative w-full
-      
-      "
-       >
+      <div
+        className="
+          relative
+          w-full
 
+          xl:h-[100svh]
+          xl:min-h-[600px]
+          xl:max-h-[1080px]
+        "
+      >
         <Image
           src={heroData.image}
           alt="Social Counselling"
           width={1536}
-          height={1024}
+          height={864}
           priority
           sizes="100vw"
           className="
             block
             h-auto
-            w-full
-            object-cover
+            w-full 
           "
         />
 
         {/* ===================================================
             DESKTOP SERVICE CARDS
-
-            xl and above:
-            Cards stay OVER the hero image.
             =================================================== */}
 
         <Container
@@ -249,15 +246,13 @@ export default function HeroSection() {
         >
           <div
             className="
-              pointer-events-auto rounded-2xl
-              
+              pointer-events-auto
               absolute
               left-3
               top-[16%]
               w-[250px]
             "
           >
-
             <ServiceList />
 
             {/* ===============================================
@@ -281,18 +276,12 @@ export default function HeroSection() {
 
               <ArrowRight className="h-4 w-4" />
             </Button>
-
           </div>
         </Container>
       </div>
 
       {/* =====================================================
           TABLET + MOBILE SERVICES
-
-          Below xl:
-          Image stays completely clean.
-
-          Cards appear BELOW the image.
           ===================================================== */}
 
       <div
@@ -306,7 +295,6 @@ export default function HeroSection() {
         "
       >
         <Container>
-
           <div
             className="
               mx-auto
@@ -314,11 +302,6 @@ export default function HeroSection() {
               max-w-2xl
             "
           >
-
-            {/* ===============================================
-                COMPACT SERVICE CARDS
-                =============================================== */}
-
             <ServiceList compact />
 
             {/* ===============================================
@@ -349,12 +332,9 @@ export default function HeroSection() {
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>
             </div>
-
           </div>
-
         </Container>
       </div>
-
     </section>
   );
 }

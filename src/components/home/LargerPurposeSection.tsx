@@ -229,19 +229,7 @@ export default function LargerPurposeSection() {
                   {item.title}
                 </p>
 
-                {/* Small journey number */}
-
-                <p
-                  className="
-                    mt-1
-                    text-[10px]
-                    font-medium
-                    tracking-[0.18em]
-                    text-primary/70
-                  "
-                >
-                  STEP {index + 1}
-                </p>
+            
               </div>
 
               {/* =================================================
