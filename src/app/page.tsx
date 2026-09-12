@@ -22,8 +22,6 @@ export default function HomePage() {
 
       <CounsellingHelpSection />
 
-
-
       <LargerPurposeSection />
 
       <HomeClosingSection />

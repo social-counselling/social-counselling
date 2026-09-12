@@ -209,44 +209,44 @@ export const counsellingHelpData = {
     "Social Counselling can be helpful when you are already facing a difficulty—whether involving yourself, your family, relationships or an important life decision.",
 
   preparation:
-    "It can also help you prepare for what lies ahead.",
+    "It can also help you prepare for what lies ahead: understanding relationships before marriage, navigating the challenges of parenting, helping teenagers develop maturity and perspective, strengthening family relationships, or finding purpose and continued relevance through later stages of life.",
 
-  situations: [
-    {
-      id: "before-marriage",
-      title: "Before Marriage",
-      description:
-        "Understanding relationships before marriage.",
-    },
+  // situations: [
+  //   {
+  //     id: "before-marriage",
+  //     title: "Before Marriage",
+  //     description:
+  //       "Understanding relationships before marriage.",
+  //   },
 
-    {
-      id: "parenting",
-      title: "Parenting",
-      description:
-        "Navigating the challenges of parenting.",
-    },
+  //   {
+  //     id: "parenting",
+  //     title: "Parenting",
+  //     description:
+  //       "Navigating the challenges of parenting.",
+  //   },
 
-    {
-      id: "teenagers",
-      title: "Teenagers",
-      description:
-        "Helping teenagers develop maturity and perspective.",
-    },
+  //   {
+  //     id: "teenagers",
+  //     title: "Teenagers",
+  //     description:
+  //       "Helping teenagers develop maturity and perspective.",
+  //   },
 
-    {
-      id: "family",
-      title: "Family Relationships",
-      description:
-        "Strengthening family relationships.",
-    },
+  //   {
+  //     id: "family",
+  //     title: "Family Relationships",
+  //     description:
+  //       "Strengthening family relationships.",
+  //   },
 
-    {
-      id: "later-life",
-      title: "Later Stages of Life",
-      description:
-        "Finding purpose and continued relevance through later stages of life.",
-    },
-  ],
+  //   {
+  //     id: "later-life",
+  //     title: "Later Stages of Life",
+  //     description:
+  //       "Finding purpose and continued relevance through later stages of life.",
+  //   },
+  // ],
 };
 
 /* =========================================================

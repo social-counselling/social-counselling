@@ -77,7 +77,7 @@ export default function SocialCounsellingSection() {
             className="
               text-2xl
               font-bold
-              uppercase
+
               tracking-[0.32em]
               text-primary
               sm:text-2xl
@@ -246,9 +246,15 @@ export default function SocialCounsellingSection() {
                     <div key={paragraph}>
                       <p
                         className="
-                           text-[15px] leading-7 text-slate-600 sm:text-base sm:leading-8 lg:text-[17px] lg:leading-8
-                          xl:text-[17px]
-                     xl:leading-9
+                          text-[16px]
+            leading-7
+            text-slate-600
+            sm:text-lg
+            sm:leading-8 
+            lg:text-[19px]
+            lg:leading-8
+            xl:text-[20px]
+            xl:leading-9
                         "
                       >
                         {paragraph}

@@ -21,7 +21,7 @@ In today’s times, families are becoming more nuclear and isolated esp in the m
 
   belief: {
     eyebrow: "OUR FUNDAMENTAL BELIEF",
-    image:"/images/about/boy.png",
+    image:"/images/about/lady.png",
     title: "Our Fundamental Belief",
 
     paragraphs: [

@@ -135,7 +135,7 @@ export default function AboutBelief() {
         >
 
           {/* =================================================
-              LEFT — BOY IMAGE
+              LEFT — Lady IMAGE
               ================================================= */}
 
         <div
@@ -154,26 +154,11 @@ export default function AboutBelief() {
   "
 >
 
-            {/* Soft background glow behind character */}
-            {/* <div
-              aria-hidden="true"
-              className="
-                pointer-events-none
-                absolute
-                bottom-[8%]
-                left-1/2
-                h-[65%]
-                w-[70%]
-                -translate-x-1/2
-                rounded-full
-                bg-primary/5
-                blur-3xl
-              "
-            /> */}
+            
 
             <Image
             src= {aboutData.belief.image}
-              alt="Young person representing belief and positive guidance"
+              alt="Young lady representing belief and positive guidance"
               width={900}
               height={1000}
               priority
@@ -218,21 +203,7 @@ export default function AboutBelief() {
               {aboutData.belief.eyebrow}
             </p>
 
-            {/* Heading */}
-            {/* <h2
-              className="
-                mt-4
-                text-2xl
-                font-bold
-                leading-tight
-                text-secondary
-                sm:text-3xl
-                lg:text-4xl
-                xl:text-5xl
-              "
-            >
-              {aboutData.belief.title}
-            </h2> */}
+          
 
             {/* Decorative divider */}
             <div
@@ -278,11 +249,11 @@ export default function AboutBelief() {
                   <p
                     key={index}
                     className="
-                      text-base
-                      leading-7
+                      text-lg
+                      leading-9
                       text-slate-600
                       sm:text-lg
-                      sm:leading-8
+                      sm:leading-9
                     "
                   >
                     {paragraph}

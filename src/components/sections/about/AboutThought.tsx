@@ -244,11 +244,11 @@ export default function AboutThought() {
                   <p
                     key={index}
                     className="
-                      text-base
-                      leading-7
-                      text-slate-600
+                      text-lg
+                      leading-8
+                      text-slate-700
                       sm:text-lg
-                      sm:leading-8
+                      sm:leading-9
                     "
                   >
                     {paragraph}

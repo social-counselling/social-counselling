@@ -2,7 +2,7 @@ export const visionMissionData = {
   vision: {
     title: "Vision",
 
-    image: "/images/vision-mission/imageOfVission.png",
+    image: "/images/vision-mission/Vision.png",
 
     paragraphs: [
       "Our Vision is to create a society wherein each person strives to become a better human being every day.",
@@ -16,7 +16,7 @@ export const visionMissionData = {
   mission: {
     title: "Mission",
 
-    image: "/images/vision-mission/mission.png",
+    image: "/images/vision-mission/Missions.png",
 
     paragraphs: [
       "Our Mission is to inspire every human being to engage in rightful thinking filled with humility and empathy, and to make decisions post considering human values, principles and broader social perspectives rather than narrow self-interest.",

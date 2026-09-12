@@ -1,16 +1,23 @@
 import Image from "next/image";
+import { IoArrowRedoSharp } from "react-icons/io5";
 
 import Container from "@/components/common/Container";
-
 import { largerPurposeData } from "@/data/home";
-
 
 export default function LargerPurposeSection() {
   return (
-    <section className="relative overflow-hidden bg-white py-14 sm:py-16 lg:py-20">
-
+    <section
+      className="
+        relative
+        overflow-hidden
+        bg-white
+        py-14
+        sm:py-16
+        lg:py-20
+      "
+    >
       {/* =====================================================
-          TOP BOTANICAL
+          TOP LEFT BOTANICAL
           ===================================================== */}
 
       <Image
@@ -33,6 +40,10 @@ export default function LargerPurposeSection() {
         "
       />
 
+      {/* =====================================================
+          TOP RIGHT BOTANICAL
+          ===================================================== */}
+
       <Image
         src="/images/home/introduction/leaf-top-right 3.png"
         alt=""
@@ -54,65 +65,101 @@ export default function LargerPurposeSection() {
       />
 
       <Container className="relative z-10">
-
-        {/* =====================================================
+        {/* ===================================================
             SECTION INTRO
-            ===================================================== */}
+            =================================================== */}
 
         <div className="mx-auto max-w-4xl text-center">
+          {/* Eyebrow */}
 
           <p
             className="
+              font-Unkempt
               text-2xl
               font-bold
               tracking-[0.25em]
               text-primary
-              sm:text-2xl
+              sm:text-3xl
               lg:text-4xl
-              font-Unkempt
             "
           >
             {largerPurposeData.eyebrow}
           </p>
 
-          <h2 className="mt-4 text-2xl font-semibold tracking-tight text-secondary sm:text-3xl lg:text-4xl">
+          {/* Title */}
+
+          <h2
+            className="
+              mt-4
+              text-2xl
+              font-semibold
+              leading-tight
+              tracking-tight
+              text-secondary
+              sm:text-3xl
+              lg:text-4xl
+            "
+          >
             {largerPurposeData.title}
           </h2>
 
-          <div className="mt-5 flex justify-center">
+          {/* Divider */}
+
+          <div className="mt-5 flex items-center justify-center gap-3">
+            <span className="h-px w-10 bg-primary/20 sm:w-14" />
+
             <Image
               src="/images/home/introduction/leaf-divider.png"
               alt=""
               width={140}
               height={40}
               aria-hidden="true"
-              className="h-auto w-[95px] opacity-60"
+              className="
+                h-auto
+                w-[85px]
+                opacity-60
+                sm:w-[95px]
+              "
             />
+
+            <span className="h-px w-10 bg-primary/20 sm:w-14" />
           </div>
 
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">
+          {/* Description */}
+
+          <p
+            className="
+              mx-auto
+              mt-5
+              max-w-3xl
+              text-base
+              leading-7
+              text-slate-600
+              sm:text-lg
+              sm:leading-8
+            "
+          >
             {largerPurposeData.description}
           </p>
-
         </div>
 
-        {/* =====================================================
+        {/* ===================================================
             JOURNEY
-            ===================================================== */}
+            =================================================== */}
 
         <div
           className="
             mx-auto
             mt-10
             grid
-            max-w-[1500px]
+            max-w-[1050px]
             grid-cols-1
-            gap-5
+            gap-7
             sm:grid-cols-2
             md:mt-12
-            md:gap-6
+            md:gap-8
             xl:grid-cols-5
-            xl:gap-4
+            xl:gap-5
           "
         >
           {largerPurposeData.journey.map((item, index) => (
@@ -122,35 +169,83 @@ export default function LargerPurposeSection() {
                 relative
                 mx-auto
                 w-full
-                max-w-[380px]
+                max-w-[300px]
                 xl:max-w-none
               "
             >
-
               {/* =================================================
-                  CARD IMAGE
+                  IMAGE CARD
                   ================================================= */}
 
-              <div className="relative overflow-hidden">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={700}
-                  height={700}
-                  className="
-                    block
-                    h-auto
-                    w-full
-                    object-contain
-                    transition-transform
-                    duration-500
-                    hover:scale-[1.02]
-                  "
-                />
+              <div
+                className="
+                  group
+                  overflow-hidden
+                  rounded-[24px]
+                  border
+                  border-slate-100
+                  bg-white
+                  shadow-[0_10px_30px_rgba(24,59,59,0.08)]
+                  transition-all
+                  duration-300
+                  hover:-translate-y-1
+                  hover:shadow-[0_16px_38px_rgba(24,59,59,0.13)]
+                "
+              >
+                <div className="overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={700}
+                    height={700}
+                    className="
+                      block
+                      aspect-square
+                      h-auto
+                      w-full
+                      object-cover
+                      transition-transform
+                      duration-500
+                      group-hover:scale-[1.03]
+                    "
+                  />
+                </div>
               </div>
 
               {/* =================================================
-                  DESKTOP CONNECTING ARROW
+                  TITLE BELOW IMAGE
+                  ================================================= */}
+
+              <div className="mt-3 text-center">
+                <p
+                  className="
+                    text-sm
+                    font-semibold
+                    leading-5
+                    text-secondary
+                    sm:text-base
+                  "
+                >
+                  {item.title}
+                </p>
+
+                {/* Small journey number */}
+
+                <p
+                  className="
+                    mt-1
+                    text-[10px]
+                    font-medium
+                    tracking-[0.18em]
+                    text-primary/70
+                  "
+                >
+                  STEP {index + 1}
+                </p>
+              </div>
+
+              {/* =================================================
+                  CONNECTING ARROW
                   ================================================= */}
 
               {index < largerPurposeData.journey.length - 1 && (
@@ -159,90 +254,67 @@ export default function LargerPurposeSection() {
                   className="
                     pointer-events-none
                     absolute
-                    right-[-18px]
-                    top-1/2
+                    -right-[25px]
+                    top-[42%]
                     z-20
                     hidden
                     -translate-y-1/2
                     xl:block
                   "
                 >
-                  <svg
-                    width="38"
-                    height="38"
-                    viewBox="0 0 38 38"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3 19H28"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      className="text-primary"
-                    />
-
-                    <path
-                      d="M21 10L30 19L21 28"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="text-primary"
-                    />
-                  </svg>
+                  <IoArrowRedoSharp
+                    className="
+                      h-7
+                      w-7
+                      text-[#2563eb]
+                      drop-shadow-[0_2px_4px_rgba(37,99,235,0.15)]
+                    "
+                  />
                 </div>
               )}
-
             </div>
           ))}
         </div>
 
+        {/* ===================================================
+            JOURNEY END DECORATION
+            =================================================== */}
+
+        <div
+          className="
+            mx-auto
+            mt-9
+            flex
+            max-w-4xl
+            items-center
+            justify-center
+            gap-4
+            sm:mt-11
+          "
+        >
+          <span className="h-px flex-1 bg-primary/10" />
+
+          <Image
+            src="/images/home/introduction/horizontal_leaves1.png"
+            alt=""
+            width={140}
+            height={40}
+            aria-hidden="true"
+            className="
+              h-auto
+              w-[80px]
+              opacity-50
+              sm:w-[90px]
+            "
+          />
+
+          <span className="h-px flex-1 bg-primary/10" />
+        </div>
       </Container>
 
       {/* =====================================================
-          BOTTOM BOTANICAL
+          BOTTOM WAVE
           ===================================================== */}
-
-      {/* <Image
-        src="/images/home/introduction/leaf-bottom-left1.png"
-        alt=""
-        width={220}
-        height={290}
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          bottom-0
-          left-0
-          z-0
-          w-[75px]
-          opacity-25
-          sm:w-[105px]
-          lg:w-[145px]
-          xl:w-[180px]
-        "
-      />
-
-      <Image
-        src="/images/home/introduction/leaf-bottom-right1.png"
-        alt=""
-        width={285}
-        height={270}
-        aria-hidden="true"
-        className="
-          pointer-events-none
-          absolute
-          bottom-0
-          right-0
-          z-0
-          w-[80px]
-          opacity-25
-          sm:w-[110px]
-          lg:w-[150px]
-          xl:w-[190px]
-        "
-      /> */}
 
       <div
         className="
@@ -252,10 +324,10 @@ export default function LargerPurposeSection() {
           left-0
           right-0
           z-20
-          h-[55px]
+          h-[45px]
           overflow-hidden
-          sm:h-[65px]
-          lg:h-[75px]
+          sm:h-[55px]
+          lg:h-[65px]
         "
         aria-hidden="true"
       >
@@ -265,7 +337,7 @@ export default function LargerPurposeSection() {
           className="absolute bottom-0 h-full w-full"
         >
           <path
-             fill="#E8F5E9"
+            fill="#E8F5E9"
             d="
               M0 65
               C120 95 210 112 340 102
