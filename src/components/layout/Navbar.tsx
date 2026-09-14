@@ -60,7 +60,6 @@ export default function Navbar() {
           border-white/60
           bg-white/90
           shadow-[0_4px_24px_rgba(24,59,59,0.07)]
-
         "
       >
         <Container>
@@ -105,7 +104,7 @@ export default function Navbar() {
                   h-auto
                   w-[120px]
                   sm:w-[135px]
-                  lg:w-[165px]
+                  min-[1120px]:w-[155px]
                   xl:w-[185px]
                 "
               />
@@ -113,6 +112,7 @@ export default function Navbar() {
 
             {/* ===============================================
                 DESKTOP NAVIGATION
+                Starts at 1120px
                 =============================================== */}
 
             <div
@@ -122,11 +122,13 @@ export default function Navbar() {
                 items-center
                 justify-end
                 gap-3
-                lg:flex
+                min-[1120px]:flex
                 xl:gap-5
               "
             >
-              {/* Navigation Links */}
+              {/* =============================================
+                  NAVIGATION LINKS
+                  ============================================= */}
 
               <div
                 className="
@@ -164,7 +166,9 @@ export default function Navbar() {
                     >
                       {item.label}
 
-                      {/* Active underline */}
+                      {/* ===================================
+                          ACTIVE UNDERLINE
+                          =================================== */}
 
                       {active && (
                         <span
@@ -207,6 +211,7 @@ export default function Navbar() {
 
             {/* ===============================================
                 MOBILE / TABLET MENU BUTTON
+                Visible below 1120px
                 =============================================== */}
 
             <button
@@ -238,7 +243,7 @@ export default function Navbar() {
                 hover:text-primary
                 sm:h-11
                 sm:w-11
-                lg:hidden
+                min-[1120px]:hidden
               "
             >
               {isMenuOpen ? (
@@ -251,6 +256,7 @@ export default function Navbar() {
 
           {/* =================================================
               MOBILE / TABLET MENU
+              Visible below 1120px
               ================================================= */}
 
           <div
@@ -259,7 +265,7 @@ export default function Navbar() {
               transition-all
               duration-300
               ease-out
-              lg:hidden
+              min-[1120px]:hidden
 
               ${
                 isMenuOpen

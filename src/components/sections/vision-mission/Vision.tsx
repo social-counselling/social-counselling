@@ -11,7 +11,7 @@ export default function VisionSection() {
     <section
       className="
         relative
-        mt-25
+        mt-22
         overflow-hidden
         bg-[#fcfdf9]
         py-14

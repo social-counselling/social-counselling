@@ -210,10 +210,9 @@ export default function HeroSection() {
         className="
           relative
           w-full
-
-          xl:h-[100svh]
-          xl:min-h-[600px]
-          xl:max-h-[1080px]
+          md:h-[100svh]
+          md:min-h-[600px]
+          md:max-h-[1080px]
         "
       >
         <Image
@@ -227,6 +226,12 @@ export default function HeroSection() {
             block
             h-auto
             w-full 
+            md:absolute
+            md:inset-0
+            md:h-full
+            md:w-full
+
+            md:object-contain
           "
         />
 
