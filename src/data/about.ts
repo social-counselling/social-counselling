@@ -1,5 +1,5 @@
 export const aboutData = {
-  heroImage: "/images/about/about.png",
+  heroImage: "/images/about/About Us1.png",
 
   thought: {
     eyebrow: "OUR PHILOSOPHY",

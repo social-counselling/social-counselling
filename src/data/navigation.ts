@@ -13,7 +13,7 @@ export const mainNavigation: NavigationItem[] = [
   href:"/about"
   },
   {
-    label:"Vision Mission & Purpose",
+    label:"Vision",
     href:"/vision-mission"
   },
   {
@@ -29,7 +29,7 @@ export const mainNavigation: NavigationItem[] = [
     href: "/blog",
   },
   {
-    label: "Contact Us",
+    label: "What we are NOT",
     href: "/contact",
   },
 ];

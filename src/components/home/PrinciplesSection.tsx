@@ -214,7 +214,9 @@ export default function PrinciplesSection() {
                "
              />
        
-
+ {/* =====================================================
+                 Wave
+                 ===================================================== */}
      <div
         className="
           pointer-events-none

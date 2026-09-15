@@ -27,7 +27,7 @@ const icons = {
 
 export default function ContactUsSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-white">
+    <section className="relative isolate mt-22 overflow-hidden bg-white">
 
       {/* =====================================================
           GLOBAL SIDE BOTANICAL DECORATION

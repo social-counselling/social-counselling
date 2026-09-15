@@ -32,7 +32,7 @@ export default function ServiceCard({
         {/* =====================================================
             IMAGE
             ===================================================== */}
-
+{/* 
         <div
           className="
             relative
@@ -56,7 +56,29 @@ export default function ServiceCard({
               group-hover:scale-[1.025]
             "
           />
-        </div>
+        </div> */}
+
+   <div
+  className="
+    relative
+    aspect-[16/9]
+    w-full
+    overflow-hidden
+    lg:aspect-auto
+    lg:min-h-[285px]
+    rounded-[20px]
+    lg:rounded-l-[20px]
+    lg:rounded-r-none
+  "
+>
+  <Image
+    src={service.image}
+    alt={service.title}
+    fill
+    sizes="(min-width: 1024px) 50vw, 100vw"
+    className="object-contain object-center"
+  />
+</div>
 
         {/* =====================================================
             CONTENT

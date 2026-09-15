@@ -24,7 +24,7 @@ export interface ServiceCardData {
 export const servicesPageData = {
   eyebrow: "Our Services",
 
-  title: "Support for where you are in life.",
+  title: "Support for where ever you are in life.",
 
   description:
     "Social Counselling provides a supportive space to understand situations better, consider different perspectives and make more thoughtful choices.",
@@ -37,7 +37,7 @@ export const servicesPageData = {
       subtitle: "Maturity, responsibility and conscious thinking.",
       href: "/services/teenager-youth-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+        "/images/services/Teen Counselling.png",
     },
 
     {
@@ -48,7 +48,7 @@ export const servicesPageData = {
         "Confidence, motivation, clarity and preparedness to move forward.",
       href: "/services/student-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+        "/images/services/Student Counselling.png",
     },
 
     {
@@ -58,7 +58,7 @@ export const servicesPageData = {
       subtitle: "Marriage Counselling",
       href: "/services/marriage-counselling/pre-marriage",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+         "/images/services/Pre Marriage Counselling.png",
     },
 
     {
@@ -68,7 +68,7 @@ export const servicesPageData = {
       subtitle: "Marriage Counselling",
       href: "/services/marriage-counselling/post-marriage",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+         "/images/services/Post Marriage Counselling.png",
     },
 
     {
@@ -78,7 +78,7 @@ export const servicesPageData = {
       subtitle: "Marriage Counselling",
       href: "/services/marriage-counselling/compatibility-assessment",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+       "/images/services/Compatibility.png",
     },
 
     {
@@ -89,7 +89,7 @@ export const servicesPageData = {
         "Greater clarity and understanding for the way forward.",
       href: "/services/couple-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+          "/images/services/Student Counselling.png",
     },
 
     {
@@ -100,7 +100,7 @@ export const servicesPageData = {
         "Clarity, acceptance, purpose and continued engagement.",
       href: "/services/senior-citizens-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+         "/images/services/Student Counselling.png",
     },
 
     {
@@ -111,7 +111,7 @@ export const servicesPageData = {
         "A space to be heard, understood and encouraged to move forward.",
       href: "/services/womens-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+         "/images/services/Student Counselling.png",
     },
 
     {
@@ -122,7 +122,7 @@ export const servicesPageData = {
         "Preparation, expectation setting, focus, responsibility and conscious thinking.",
       href: "/services/corporate-employee-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+         "/images/services/Student Counselling.png",
     },
 
     {
@@ -133,7 +133,7 @@ export const servicesPageData = {
         "Greater clarity, a different perspective and a constructive way forward.",
       href: "/services/individual-counselling",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+          "/images/services/Student Counselling.png",
     },
 
     {
@@ -144,7 +144,7 @@ export const servicesPageData = {
         "An open door when your concern does not fit neatly into a defined service.",
       href: "/services/other-counselling-social-norms",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+         "/images/services/Student Counselling.png",
     },
 
     {
@@ -155,7 +155,7 @@ export const servicesPageData = {
         "Compassionate conversation, attentive hearing and meaningful human connection.",
       href: "/services/empathetic-listening",
       image:
-        "/images/home/social-counselling/social-counselling-scene1.png",
+          "/images/services/Student Counselling.png",
     },
   ] satisfies ServiceCardData[],
 };
