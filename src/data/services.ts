@@ -56,7 +56,7 @@ export const servicesPageData = {
       number: "03",
       title: "Pre-Marriage Counselling",
       subtitle: "Marriage Counselling",
-      href: "/services/marriage-counselling/pre-marriage",
+      href: "/services/pre-marriage",
       image:
          "/images/services/Pre Marriage Counselling.png",
     },
@@ -66,7 +66,7 @@ export const servicesPageData = {
       number: "04",
       title: "Post-Marriage Counselling",
       subtitle: "Marriage Counselling",
-      href: "/services/marriage-counselling/post-marriage",
+      href: "/services/post-marriage",
       image:
          "/images/services/Post Marriage Counselling.png",
     },
@@ -76,7 +76,7 @@ export const servicesPageData = {
       number: "05",
       title: "Compatibility Assessment",
       subtitle: "Marriage Counselling",
-      href: "/services/marriage-counselling/compatibility-assessment",
+      href: "/services/compatibility-assessment",
       image:
        "/images/services/Compatibility.png",
     },
@@ -100,7 +100,7 @@ export const servicesPageData = {
         "Clarity, acceptance, purpose and continued engagement.",
       href: "/services/senior-citizens-counselling",
       image:
-         "/images/services/Student Counselling.png",
+         "/images/services/Senior Citizens Counselling.png",
     },
 
     {
@@ -122,7 +122,7 @@ export const servicesPageData = {
         "Preparation, expectation setting, focus, responsibility and conscious thinking.",
       href: "/services/corporate-employee-counselling",
       image:
-         "/images/services/Student Counselling.png",
+         "/images/services/Corporate Employee Counselling.png",
     },
 
     {
@@ -133,7 +133,7 @@ export const servicesPageData = {
         "Greater clarity, a different perspective and a constructive way forward.",
       href: "/services/individual-counselling",
       image:
-          "/images/services/Student Counselling.png",
+          "/images/services/Individual Counselling.png",
     },
 
     {
@@ -144,7 +144,7 @@ export const servicesPageData = {
         "An open door when your concern does not fit neatly into a defined service.",
       href: "/services/other-counselling-social-norms",
       image:
-         "/images/services/Student Counselling.png",
+         "/images/services/So far yet so close.png",
     },
 
     {
@@ -155,7 +155,7 @@ export const servicesPageData = {
         "Compassionate conversation, attentive hearing and meaningful human connection.",
       href: "/services/empathetic-listening",
       image:
-          "/images/services/Student Counselling.png",
+          "/images/services/Empathetic Listening2.png",
     },
   ] satisfies ServiceCardData[],
 };

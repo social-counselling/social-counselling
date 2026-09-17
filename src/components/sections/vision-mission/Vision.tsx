@@ -8,10 +8,11 @@ export default function VisionSection() {
   const vision = visionMissionData.vision;
 
   return (
+    <div className=" bg-[#fcfdf9] mt-24">
     <section
       className="
         relative
-        mt-22
+
         overflow-hidden
         bg-[#fcfdf9]
         py-14
@@ -522,5 +523,6 @@ export default function VisionSection() {
         </svg>
       </div>
     </section>
+    </div>
   );
 }

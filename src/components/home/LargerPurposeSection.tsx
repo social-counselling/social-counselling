@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { IoArrowRedoSharp } from "react-icons/io5";
+
 
 import Container from "@/components/common/Container";
 import { largerPurposeData } from "@/data/home";
@@ -170,7 +170,7 @@ export default function LargerPurposeSection() {
                 mx-auto
                 w-full
                 max-w-[300px]
-                xl:max-w-none
+               xl:max-w-[155px]
               "
             >
               {/* =================================================
@@ -202,7 +202,8 @@ export default function LargerPurposeSection() {
                       block
                       aspect-square
                       h-auto
-                      w-full
+                      w-[75%]
+                      mx-auto
                       object-cover
                       transition-transform
                       duration-500
@@ -235,31 +236,39 @@ export default function LargerPurposeSection() {
               {/* =================================================
                   CONNECTING ARROW
                   ================================================= */}
-
-              {index < largerPurposeData.journey.length - 1 && (
-                <div
-                  aria-hidden="true"
-                  className="
-                    pointer-events-none
-                    absolute
-                    -right-[25px]
-                    top-[42%]
-                    z-20
-                    hidden
-                    -translate-y-1/2
-                    xl:block
-                  "
-                >
-                  <IoArrowRedoSharp
-                    className="
-                      h-7
-                      w-7
-                      text-[#2563eb]
-                      drop-shadow-[0_2px_4px_rgba(37,99,235,0.15)]
-                    "
-                  />
-                </div>
-              )}
+                 {index < largerPurposeData.journey.length - 1 && (
+  <div
+    aria-hidden="true"
+    className="
+      pointer-events-none
+      absolute
+      -right-[58px]
+      top-1/2
+      z-20
+      hidden
+      w-[75px]
+      -translate-y-1/2
+      xl:block
+    "
+  >
+    <Image
+      src={
+        index % 2 === 0
+          ? "/images/home/larger-purpose/curves upward.png"
+          : "/images/home/larger-purpose/curves downward.png"
+      }
+      alt=""
+      width={150}
+      height={80}
+      className="
+        block
+        h-auto
+        w-full
+        object-contain
+      "
+    />
+  </div>
+)}
             </div>
           ))}
         </div>

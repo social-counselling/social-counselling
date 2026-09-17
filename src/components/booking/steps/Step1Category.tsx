@@ -160,7 +160,7 @@ export default function Step1Category({
               </div>
 
                <p className="mt-4 max-w-3xl text-center text-base leading-7 text-slate-600 sm:text-lg">
-                   " you don't have to face it alone. Support is just a conversation aways."
+                   you do not have to face it alone. Support is just a conversation aways.
         </p>
     </section>
   );

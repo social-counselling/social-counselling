@@ -12,7 +12,7 @@ import {
 
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
-import SectionSideLeaves from "@/components/common/SectionSideLeaves";
+
 import { contactData } from "@/data/contact";
 
 const icons = {
@@ -27,19 +27,19 @@ const icons = {
 
 export default function ContactUsSection() {
   return (
-    <section className="relative isolate mt-22 overflow-hidden bg-white">
+    <section className="relative isolate  overflow-hidden bg-[#eef8f1]">
 
       {/* =====================================================
           GLOBAL SIDE BOTANICAL DECORATION
           ===================================================== */}
 
-      <SectionSideLeaves />
+
 
       {/* =====================================================
           CONTACT HERO
           ===================================================== */}
 
-      <section className="relative bg-[#eef8f1]">
+      <section className="relative mt-22 bg-[#eef8f1]">
 
         {/* Soft decorative glow */}
         <div

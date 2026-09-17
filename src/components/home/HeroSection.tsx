@@ -12,6 +12,7 @@ import {
 
 import MarriageServiceCard from "./MarriageServiceCard";
 
+
 /* =========================================================
    SERVICE CARD
    ========================================================= */
@@ -210,45 +211,75 @@ export default function HeroSection() {
         className="
           relative
           w-full
+          bg-white
           md:h-[100svh]
           md:min-h-[600px]
           md:max-h-[1080px]
         "
       >
-        <Image
-          src={heroData.image}
-          alt="Social Counselling"
-          width={1536}
-          height={864}
-          priority
-          sizes="100vw"
-          className="
-            block
-            h-auto
-            w-full 
-            md:absolute
-            md:inset-0
-            md:h-full
-            md:w-full
+       <Image
+  src={heroData.image}
+  alt="Social Counselling"
+  width={1536}
+  height={864}
+  priority
+  sizes="100vw"
+  className="
+    block
+    h-auto
+    w-full
+z-0
+    md:absolute
+    md:inset-y-0
+    md:right-0
+    md:left-auto
+    md:h-full
+    md:w-[calc(100%_-_160px)]
 
-            md:object-contain
-          "
-        />
+    md:object-cover
+    md:object-center
+  "
+/>
+
+{/* ===================================================
+    LEFT WHITE GRADIENT
+    Keeps the service-card area clean
+    =================================================== */}
+
+<div
+  className="
+    pointer-events-none
+    absolute
+    inset-y-0
+    left-0
+    z-10
+    hidden
+    w-[430px]
+    bg-gradient-to-r
+    from-white
+    via-white/95
+    to-transparent
+    md:block
+    lg:w-[470px]
+    xl:w-[520px]
+  "
+  aria-hidden="true"
+/>
 
         {/* ===================================================
             DESKTOP SERVICE CARDS
             =================================================== */}
 
         <Container
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            z-20
-            hidden
-            xl:block
-          "
-        >
+  className="
+    pointer-events-none
+    absolute
+    inset-0
+    z-20
+    hidden
+    xl:block
+  "
+>
           <div
             className="
               pointer-events-auto
@@ -339,6 +370,45 @@ export default function HeroSection() {
             </div>
           </div>
         </Container>
+      </div>
+       {/* =====================================================
+                 Wave
+                 ===================================================== */}
+     <div
+        className="
+          pointer-events-none
+          absolute
+          bottom-0
+          left-0
+          right-0
+          z-20
+          h-[55px]
+          overflow-hidden
+          sm:h-[65px]
+          lg:h-[75px]
+        "
+        aria-hidden="true"
+      >
+        <svg
+          viewBox="0 0 1440 140"
+          preserveAspectRatio="none"
+          className="absolute bottom-0 h-full w-full"
+        >
+          <path
+             fill="#E8F5E9"
+            d="
+              M0 65
+              C120 95 210 112 340 102
+              C470 92 535 55 665 65
+              C795 75 850 112 970 105
+              C1090 98 1145 65 1250 72
+              C1340 78 1390 92 1440 88
+              L1440 140
+              L0 140
+              Z
+            "
+          />
+        </svg>
       </div>
     </section>
   );
