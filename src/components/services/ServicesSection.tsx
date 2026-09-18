@@ -481,7 +481,7 @@ export default function ServicesSection() {
             <ServiceGroup
               services={servicesPageData.services.slice(3, 6)}
               imagePosition="left"
-              imageSrc="/images/services/Ms Resilience.png"
+              imageSrc="/images/services/Ms Resilience1.png"
               imageAlt="Social Counselling professional"
             />
 
@@ -536,7 +536,7 @@ export default function ServicesSection() {
             <ServiceGroup
               services={servicesPageData.services.slice(6, 9)}
               imagePosition="right"
-              imageSrc="/images/services/Mrs Hope.png"
+              imageSrc="/images/services/Mrs Hope1.png"
               imageAlt="Social Counselling professional"
             />
 
@@ -592,7 +592,7 @@ export default function ServicesSection() {
             <ServiceGroup
               services={servicesPageData.services.slice(9, 12)}
               imagePosition="left"
-              imageSrc="/images/services/Mr Gratitude.png"
+              imageSrc="/images/services/Mr Gratitude1.png"
               imageAlt="Social Counselling professional"
             />
 
