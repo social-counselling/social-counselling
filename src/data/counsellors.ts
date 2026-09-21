@@ -1,173 +1,101 @@
-import type { Counsellor } from "@/types/counsellor";
+export type CounsellorId =
+  | "vikram-srivastava"
+  | "dr-hemali-jariwala"
+  | "kiranmai-patwari";
 
-export const counsellors: Counsellor[] = [
-  {
-    id: "dr-hemali-jariwala",
+export interface CounsellorData {
+  id: CounsellorId;
+  name: string;
+  slug: string;
+  credentials: string[];
+  age?: string;
+  languages: string[];
+  geographicalCoverage: string;
+  specializationAreas: string[];
+  mantra?: string;
+  introduction: string[];
+  image?: string;
+}
 
-    slug: "dr-hemali-jariwala",
-
-    name: "Dr. Hemali Jariwala",
-
-    credentials:
-      "Homeopathy Consultant / Palliative Care Associate / Spiritual Healer",
-
-    experience: "15+ years of dedicated clinical experience",
-
-    languages: [
-      "English",
-      "Hindi",
-      "Gujarati",
-    ],
-
-    geographicalCoverage:
-      "Pan India, especially the western parts like Mumbai and Gujarat",
-
-    specializations: [
-      {
-        id: "women-post-pregnancy",
-        title: "Women's Post-Pregnancy Counselling",
-      },
-      {
-        id: "lifestyle-disorders",
-        title: "Lifestyle Disorders",
-      },
-      {
-        id: "student-counselling",
-        title: "Student Counselling",
-      },
-      {
-        id: "post-separation-trauma",
-        title: "Post-Separation Trauma",
-      },
-      {
-        id: "mental-health",
-        title: "Overall Mental Health",
-      },
-    ],
-
-    shortBio:
-      "A compassionate and trusted practitioner with extensive clinical experience and a holistic approach that considers physical, emotional and psychological wellbeing.",
-
-    fullBio:
-      "Dr. Hemali Jariwala has over 15 years of dedicated clinical experience. Her work includes individualized homoeopathic treatment, palliative care support and adolescent and mental wellness counselling. She works with people across age groups and focuses on compassionate, holistic support.",
-
-    mantra:
-      undefined,
-
-    profileImage:
-      undefined,
-
-    isAvailableForBooking: true,
-  },
-{
-  id: "kiranmai-patwari",
-
-  slug: "kiranmai-patwari",
-
-  name: "Kiranmai Patwari",
-
-  credentials:
-    "Corporate Professional / Trained Counsellor",
-
-  age: 42,
-
-  languages: [
-    "English",
-    "Hindi",
-    "Telugu",
-    "Kannada",
-  ],
-
-  geographicalCoverage:
-    "Pan India",
-
-  specializations: [
-    {
-      id: "family-counselling",
-      title: "Family Counselling",
-    },
-    {
-      id: "marriage-counselling",
-      title: "Marriage Counselling",
-    },
-    {
-      id: "postpartum-counselling",
-      title: "Postpartum Counselling",
-    },
-  ],
-
-  shortBio:
-    "A trained counsellor focused on family and women's counselling, with experience supporting people through family conflict, trauma and postpartum transition.",
-
-  fullBio:
-    "Kiranmai Patwari is a corporate professional and trained counsellor with experience in family and women's counselling.",
-
-  mantra:
-    "Stay positive. Work hard. Spread happiness.",
-
-  profileImage:
-    "/images/counsellors/kiranmai-patwari-profile.png",
-
-  isAvailableForBooking: true,
-},
-
+export const counsellorsData = [
   {
     id: "vikram-srivastava",
-
-    slug: "vikram-srivastava",
-
     name: "Vikram Srivastava",
-
-    credentials:
-      "Ex-Army Officer / Corporate Leader",
-
-    age: 49,
-
-    experience:
-      "About 20 years of counselling experience",
-
-    languages: [
-      "English",
-      "Hindi",
-    ],
-
+    slug: "vikram-srivastava",
+    credentials: ["Ex Army Officer", "Corporate Leader", "Social Advisor"],
+    age: "49 yrs",
+    languages: ["English", "Hindi"],
     geographicalCoverage:
-      "Pan India, especially the northern and central parts of India",
-
-    specializations: [
-      {
-        id: "youth-counselling",
-        title: "Youth Counselling",
-      },
-      {
-        id: "marriage-counselling",
-        title: "Marriage Counselling",
-      },
-      {
-        id: "corporate-employee-counselling",
-        title: "Corporate Employee Counselling",
-      },
+      "Pan India. ESP in the northern and central parts of India",
+    specializationAreas: [
+      "Youth counselling",
+      "Marriage counselling (Pre, Post, compatibility)",
+      "Corporate employee counselling",
     ],
-
-    shortBio:
-      "An experienced counsellor known for building a quick connection with people and helping them identify a thoughtful and practical path forward.",
-
-    fullBio:
-      "Vikram Srivastava is an Ex-Army Officer and Corporate Leader who is passionate about counselling people in need. He is described as being able to connect quickly with people and guide them with compassion and thoughtfulness. His experience includes youth counselling, marriage counselling, corporate employee counselling and work with juvenile correctional facilities.",
-
-    mantra:
-      "Stay positive. Work hard. Spread happiness.",
-
-    profileImage:"/images/counsellors/VIKRAMSRIVASTAVA.jpg",
-
-    isAvailableForBooking: true,
+    mantra: "Resilience, dedication & hard work.",
+    introduction: [
+      "Vikram is passionate about giving counselling to people in need.",
+      "Vikram establishes a quick connect with people and guides them about the path forward with great compassion and thoughtfulness.",
+      "He relates to teenagers very well and is able to drive the right behaviors in them with ease such that it looks a win-win.",
+      "Developing patience in people, right thinking, correcting povs and developing child into a great human being are his core strengths.",
+      "Vikram has been counselling juvenile delinquents across child correctional facilities and has been well appreciated for the work.",
+      "It started as a freelance activity, He now has about 20 yrs of experience in this field and pursues it passionately",
+    ],
+    image: "/images/counsellors/vikram-srivastava.png",
   },
-];
+  {
+    id: "dr-hemali-jariwala",
+    name: "Dr. Hemali Jariwala",
+    slug: "dr-hemali-jariwala",
+    credentials: [
+      "Homeopathy Consultant",
+      "Palliative Care Associate",
+      "Spiritual Healer",
+    ],
+    languages: ["English", "Hindi", "Gujrati"],
+    geographicalCoverage:
+      "Pan India. ESP for the western parts like Mumbai and Gujrat",
+    specializationAreas: [
+      "Women’s post pregnancy counselling",
+      "Lifestyle disorders",
+      "Student counselling for anxiety, depression, examination stress, and emotional well-being",
+      "Post separation trauma",
+      "Overall mental health",
+    ],
+    introduction: [
+      "With over 15 years of dedicated clinical experience, Dr. Hemali Jariwala is a compassionate and trusted Homoeopathy physician practicing across Mumbai and Gujrat. she has successfully treated patients across all age groups for a wide range of acute and chronic health conditions through individualized homoeopathic treatment plans. Her patient-centric approach emphasizes holistic healing by considering the physical, emotional, and psychological aspects of every individual.",
+      "Additionally, she is associated with Palliative Care Services, where she provides supportive care to patients living with dementia, Alzheimer's disease, and other chronic debilitating conditions. Her work focuses on improving quality of life, symptom management, and providing compassionate support to both patients and their families.",
+      "Dr. Jariwala is also actively involved in adolescent and mental wellness counselling, helping teenagers navigate personal and societal challenges such as anxiety, depression, examination stress, low self-esteem, emotional disturbances, peer pressure, society influence and behavorial concerns. She believes that timely counselling and empathetic guidance play a vital role in building emotional resilience and confidence among young individuals.",
+      "A committed learner, Dr. Jariwala is actively associated with the HHF Homoeopathic Foundation, where she regularly participates in continuing medical education programs, clinical seminars, and academic discussions.",
+    ],
+    image: "/images/counsellors/dr-hemali-jariwala.png",
+  },
+  {
+    id: "kiranmai-patwari",
+    name: "Kiranmai Patwari",
+    slug: "kiranmai-patwari",
+    credentials: ["Corporate Professional", "Trained Counsellor"],
+    age: "42 yrs",
+    languages: ["English", "Hindi", "Telugu", "Kannada"],
+    geographicalCoverage: "Pan India",
+    specializationAreas: [
+      "Family counselling",
+      "Marriage counselling (pre, post, compatibility)",
+      "Postpartum counselling",
+    ],
+    mantra: "Stay positive. Work hard. Spread happiness.",
+    introduction: [
+      "I am qualified and experienced in family and women's counselling. My path here was shaped by family counselling shows and first hand experience with women's issues in modern society. The ability to listen, understand, talk and convince brought me on this platform today. I believe that strength and perseverance create destiny.",
+      "You can expect A safe, non-judgemental space to talk through family conflict, trauma, or the postpartum transition — with practical guidance drawn from diverse experience.",
+    ],
+    image: "/images/counsellors/kiranmai-patwari.png",
+  },
+] satisfies CounsellorData[];
 
-export function getCounsellorBySlug(
-  slug: string
-): Counsellor | undefined {
-  return counsellors.find(
-    (counsellor) => counsellor.slug === slug
-  );
+export const counsellorBySlug = Object.fromEntries(
+  counsellorsData.map((counsellor) => [counsellor.slug, counsellor]),
+) as Record<string, CounsellorData>;
+
+export function getCounsellorBySlug(slug: string) {
+  return counsellorBySlug[slug];
 }

@@ -1,276 +1,89 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, MapPin } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, Languages, MapPin, Sparkles } from "lucide-react";
+import type { CounsellorData } from "@/data/counsellors";
 
-import type { Counsellor } from "@/types/counsellor";
-
-import CounsellorImagePreview from "./CounsellorImagePreview";
-
-interface CounsellorCardProps {
-  counsellor: Counsellor;
-}
-
-function getInitials(name: string) {
-  return name
-    .replace("Dr. ", "")
+export default function CounsellorCard({
+  counsellor,
+}: {
+  counsellor: CounsellorData;
+}) {
+  const initials = counsellor.name
+    .replace(/^Dr\.\s*/i, "")
     .split(" ")
-    .filter(Boolean)
     .slice(0, 2)
     .map((part) => part[0])
     .join("")
     .toUpperCase();
-}
-
-export default function CounsellorCard({
-  counsellor,
-}: CounsellorCardProps) {
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-
-  const initials = getInitials(counsellor.name);
-
-  const isKiranmai =
-    counsellor.slug === "kiranmai-patwari";
-
-  const handleCardClick = () => {
-    if (isKiranmai && counsellor.profileImage) {
-      setIsPreviewOpen(true);
-    }
-  };
 
   return (
-    <>
-      <article
-        onClick={handleCardClick}
-        className={`
-          group
-          overflow-hidden
-          rounded-[28px]
-          border
-          border-border
-          bg-white
-          shadow-[var(--shadow-soft)]
-          transition-all
-          duration-300
-          hover:-translate-y-1
-          hover:shadow-[var(--shadow-card)]
-          ${
-            isKiranmai
-              ? "cursor-pointer"
-              : ""
-          }
-        `}
-      >
-        {/* Profile image */}
-        <div
-          className="
-            relative
-            aspect-[4/3]
-            overflow-hidden
-            bg-primary-light
-          "
-        >
-          {counsellor.profileImage ? (
-            <Image
-              src={counsellor.profileImage}
-              alt={counsellor.name}
-              fill
-              sizes="
-                (max-width: 640px) 100vw,
-                (max-width: 1024px) 50vw,
-                33vw
-              "
-              className="
-                object-cover
-                transition-transform
-                duration-500
-                group-hover:scale-[1.03]
-              "
-            />
-          ) : (
-            <div
-              className="
-                flex
-                h-full
-                items-center
-                justify-center
-                bg-gradient-to-br
-                from-primary-light
-                via-white
-                to-secondary-light
-              "
-            >
-              <div
-                className="
-                  flex
-                  h-28
-                  w-28
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-white
-                  text-3xl
-                  font-semibold
-                  text-primary
-                  shadow-[var(--shadow-soft)]
-                "
-              >
-                {initials}
-              </div>
-            </div>
-          )}
-
-          {counsellor.isAvailableForBooking && (
-            <div
-              className="
-                absolute
-                left-4
-                top-4
-                rounded-full
-                border
-                border-white/80
-                bg-white/90
-                px-3
-                py-1.5
-                text-xs
-                font-semibold
-                text-primary
-                shadow-sm
-                backdrop-blur-md
-              "
-            >
-              Available for booking
-            </div>
-          )}
-        </div>
-
-        {/* Content */}
-        <div className="p-5 sm:p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
-            Counsellor
-          </p>
-
-          <h3 className="mt-2 text-xl font-semibold tracking-tight text-secondary">
-            {counsellor.name}
-          </h3>
-
-          <p className="mt-2 text-sm leading-6 text-text-secondary">
-            {counsellor.credentials}
-          </p>
-
-          {/* Coverage */}
-          <div className="mt-4 flex items-start gap-2 text-sm text-text-secondary">
-            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-
-            <span>
-              {counsellor.geographicalCoverage}
+    <article className="group overflow-hidden rounded-[28px] border border-white/80 bg-white/80 shadow-[0_10px_35px_rgba(24,59,59,0.08)] backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_45px_rgba(24,59,59,0.13)]">
+      <div className="relative h-[270px] overflow-hidden bg-[#eaf4e6]">
+        {counsellor.image ? (
+          <Image
+            src={counsellor.image}
+            alt={counsellor.name}
+            fill
+            sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+            className="object-contain object-bottom transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <span className="flex h-28 w-28 items-center justify-center rounded-full bg-white text-3xl font-semibold text-primary shadow-sm">
+              {initials}
             </span>
           </div>
-
-          {/* Specializations */}
-          <div className="mt-5">
-            <p className="text-sm font-semibold text-secondary">
-              Areas of support
-            </p>
-
-            <div className="mt-3 flex flex-wrap gap-2">
-              {counsellor.specializations
-                .slice(0, 3)
-                .map((specialization) => (
-                  <span
-                    key={specialization.id}
-                    className="
-                      rounded-full
-                      bg-background-soft
-                      px-3
-                      py-1.5
-                      text-xs
-                      font-medium
-                      text-text-secondary
-                    "
-                  >
-                    {specialization.title}
-                  </span>
-                ))}
-            </div>
-          </div>
-
-          {/* Action */}
-          {!isKiranmai && (
-            <Link
-              href={`/counsellors/${counsellor.slug}`}
-              onClick={(event) =>
-                event.stopPropagation()
-              }
-              className="
-                mt-6
-                inline-flex
-                items-center
-                gap-2
-                text-sm
-                font-semibold
-                text-primary
-                transition-colors
-                hover:text-primary-dark
-              "
-            >
-              View profile
-
-              <ArrowRight
-                className="
-                  h-4
-                  w-4
-                  transition-transform
-                  duration-200
-                  group-hover:translate-x-1
-                "
-              />
-            </Link>
-          )}
-
-          {/* Kiranmai action */}
-          {isKiranmai && (
-            <button
-              type="button"
-              className="
-                mt-6
-                inline-flex
-                items-center
-                gap-2
-                text-sm
-                font-semibold
-                text-primary
-              "
-            >
-              View profile
-
-              <ArrowRight
-                className="
-                  h-4
-                  w-4
-                  transition-transform
-                  duration-200
-                  group-hover:translate-x-1
-                "
-              />
-            </button>
-          )}
-        </div>
-      </article>
-
-      {/* Kiranmai image preview */}
-      {isPreviewOpen &&
-        counsellor.profileImage && (
-          <CounsellorImagePreview
-            image={counsellor.profileImage}
-            name={counsellor.name}
-            onClose={() =>
-              setIsPreviewOpen(false)
-            }
-          />
         )}
-    </>
+        <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1.5 text-xs font-semibold text-primary shadow-sm">
+          Counsellor
+        </span>
+      </div>
+
+      <div className="p-6">
+        <h2 className="font-serif text-2xl font-semibold leading-tight text-secondary">
+          {counsellor.name}
+        </h2>
+
+        <p className="mt-2 text-sm font-semibold leading-5 text-[#2f7d48]">
+          {counsellor.credentials.join(" / ")}
+        </p>
+
+        <div className="mt-5 space-y-3 text-sm text-slate-600">
+          <div className="flex items-start gap-2.5">
+            <Languages className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span>{counsellor.languages.join(" / ")}</span>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <span>{counsellor.geographicalCoverage}</span>
+          </div>
+        </div>
+
+        <div className="mt-5">
+          <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-primary">
+            <Sparkles className="h-4 w-4" />
+            Specialization
+          </div>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {counsellor.specializationAreas.map((item) => (
+              <span
+                key={item}
+                className="rounded-full bg-[#edf6e9] px-3 py-1.5 text-xs font-medium leading-4 text-secondary"
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <Link
+          href={`/counsellors/${counsellor.slug}`}
+          className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-blue-600 transition-colors hover:text-blue-700"
+        >
+          View Profile
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+        </Link>
+      </div>
+    </article>
   );
 }

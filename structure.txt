@@ -1,0 +1,250 @@
+.
+./.DS_Store
+./postcss.config.mjs
+./tsconfig.tsbuildinfo
+./next-env.d.ts
+./README.md
+./public
+./public/.DS_Store
+./public/file.svg
+./public/images
+./public/images/home
+./public/images/home/.DS_Store
+./public/images/home/introduction
+./public/images/home/larger-purpose
+./public/images/home/social-counselling
+./public/images/contact
+./public/images/contact/section-leaf-leftFull.png
+./public/images/contact/newmainSideLeaf.png
+./public/images/contact/section-leaf-left1.png
+./public/images/contact/contact-hero-mobile.png
+./public/images/contact/mainSideLeavs.png
+./public/images/contact/ChatGPT Image Sep 10, 2026, 08_53_24 AM.png
+./public/images/contact/contact-hero-desktop.png
+./public/images/contact/section-leaf-rightFull2.png
+./public/images/contact/section-leaf-right.png
+./public/images/contact/section-leaf-leftFull2.png
+./public/images/contact/section-leaf-rightFull.png
+./public/images/contact/section-leaf-left.png
+./public/images/.DS_Store
+./public/images/testimonials
+./public/images/booking
+./public/images/booking/empathetic-listening1.png
+./public/images/booking/.DS_Store
+./public/images/booking/divider.png
+./public/images/booking/empathetic-listening.png
+./public/images/booking/social-counselling1.png
+./public/images/booking/social-counselling.png
+./public/images/booking/HANDWRITTEN.png
+./public/images/vision-mission
+./public/images/vision-mission/floating-leaf-1.png
+./public/images/vision-mission/mission.png
+./public/images/vision-mission/floating-leaf-2.png
+./public/images/vision-mission/floating-leaf-3.png
+./public/images/vision-mission/Vision.png
+./public/images/vision-mission/.DS_Store
+./public/images/vision-mission/leaf-top-right.png
+./public/images/vision-mission/flower-right.png
+./public/images/vision-mission/imageOfVission.png
+./public/images/vision-mission/leaf-top-left.png
+./public/images/vision-mission/Missions.png
+./public/images/vision-mission/flower-accent.png
+./public/images/vision-mission/Purpose.png
+./public/images/vision-mission/leaf-divider.png
+./public/images/vision-mission/flower-left.png
+./public/images/about
+./public/images/about/.DS_Store
+./public/images/about/About Us.png
+./public/images/about/lady.png
+./public/images/about/about.png
+./public/images/about/About Us1.png
+./public/images/about/boy.png
+./public/images/counsellors
+./public/images/counsellors/.DS_Store
+./public/images/counsellors/VIKRAMSRIVASTAVA.jpg
+./public/images/counsellors/kiranmai-patwari-profile.png
+./public/images/blog
+./public/images/decorations
+./public/images/decorations/.DS_Store
+./public/images/decorations/ChatGPT Image Sep 9, 2026, 07_25_26 AM copy.png
+./public/images/decorations/section-leaf-right.png
+./public/images/decorations/section-leaf-left.png
+./public/images/logo
+./public/images/logo/.DS_Store
+./public/images/logo/logo.png
+./public/images/logo/logo2.png
+./public/images/logo/mainLogo.png
+./public/images/icons
+./public/images/icons/individual.png
+./public/images/icons/corporate.png
+./public/images/icons/teenagers.png
+./public/images/icons/senior-citizens.png
+./public/images/icons/marriage.png
+./public/images/hero
+./public/images/hero/.DS_Store
+./public/images/hero/Home Page1.png
+./public/images/hero/mainHero4.png
+./public/images/hero/mainHome2.png
+./public/images/hero/Home Page 3.png
+./public/images/hero/newHeroHome1.png
+./public/images/hero/mainHero3.png
+./public/images/hero/Home_page1_hero.png
+./public/images/hero/newHeroHome.png
+./public/images/services
+./public/images/services/section-leaf-leftFull.png
+./public/images/services/Mrs Hope.png
+./public/images/services/services-hero-bg1.png
+./public/images/services/Mr Courage.png
+./public/images/services/Pre Marriage Counselling.png
+./public/images/services/Ms Resilience.png
+./public/images/services/.DS_Store
+./public/images/services/Post Marriage Counselling.png
+./public/images/services/leaf-top-right.png
+./public/images/services/bottom-left-leaves.png
+./public/images/services/Empathetic Listening2.png
+./public/images/services/Mr Courage1.png
+./public/images/services/bottom-right-leaves.png
+./public/images/services/Corporate Employee Counselling.png
+./public/images/services/leaf-top-left.png
+./public/images/services/card-leaf-pattern.png
+./public/images/services/hero-text-right.png
+./public/images/services/Senior Citizens Counselling.png
+./public/images/services/Ms Resilience1.png
+./public/images/services/Mr Gratitude1.png
+./public/images/services/Student Counselling.png
+./public/images/services/So far yet so close.png
+./public/images/services/leaf-divider.png
+./public/images/services/services-hero-bg.png
+./public/images/services/Mr Gratitude.png
+./public/images/services/Teen Counselling.png
+./public/images/services/Individual Counselling.png
+./public/images/services/Mrs Hope1.png
+./public/images/services/hero-text-left.png
+./public/images/services/section-leaf-rightFull.png
+./public/images/services/Compatibility.png
+./public/vercel.svg
+./public/next.svg
+./public/globe.svg
+./public/window.svg
+./package-lock.json
+./package.json
+./tsconfig.json
+./AGENTS.md
+./structure.txt
+./eslint.config.mjs
+./CLAUDE.md
+./next.config.ts
+./src
+./src/types
+./src/types/character.ts
+./src/types/counsellor.ts
+./src/types/common.ts
+./src/types/admin-service.ts
+./src/types/home.ts
+./src/types/service.ts
+./src/.DS_Store
+./src/app
+./src/app/contact
+./src/app/contact/page.tsx
+./src/app/favicon.ico
+./src/app/.DS_Store
+./src/app/book-session
+./src/app/book-session/page.tsx
+./src/app/vision-mission
+./src/app/vision-mission/page.tsx
+./src/app/admin
+./src/app/admin/counsellors
+./src/app/admin/layout.tsx
+./src/app/admin/page.tsx
+./src/app/admin/services
+./src/app/about
+./src/app/about/page.tsx
+./src/app/counsellors
+./src/app/counsellors/page.tsx
+./src/app/counsellors/[slug]
+./src/app/layout.tsx
+./src/app/page.tsx
+./src/app/globals.css
+./src/app/services
+./src/app/services/page.tsx
+./src/app/services/[slug]
+./src/app/services/admin-services-api.ts
+./src/components
+./src/components/ui
+./src/components/ui/Card.tsx
+./src/components/ui/Button.tsx
+./src/components/home
+./src/components/home/SocialCounsellingSection.tsx
+./src/components/home/CounsellingHelpSection.tsx
+./src/components/home/curves downward.png
+./src/components/home/HomeClosingSection.tsx
+./src/components/home/PrinciplesSection.tsx
+./src/components/home/HomeIntroductionSection.tsx
+./src/components/home/MarriageServiceCard.tsx
+./src/components/home/OurRoleSection.tsx
+./src/components/home/HeroSection.tsx
+./src/components/home/LargerPurposeSection.tsx
+./src/components/sections
+./src/components/sections/contact
+./src/components/sections/.DS_Store
+./src/components/sections/vision-mission
+./src/components/sections/about
+./src/components/.DS_Store
+./src/components/auth
+./src/components/booking
+./src/components/booking/BookingNavigation.tsx
+./src/components/booking/cards
+./src/components/booking/BookSessionShell.tsx
+./src/components/booking/steps
+./src/components/booking/BookingProgress.tsx
+./src/components/booking/BookingJourney.tsx
+./src/components/booking/BookingHero.tsx
+./src/components/layout
+./src/components/layout/Navbar.tsx
+./src/components/layout/Footer.tsx
+./src/components/admin
+./src/components/admin/AdminShell.tsx
+./src/components/admin/AdminSidebar.tsx
+./src/components/admin/AdminHeader.tsx
+./src/components/admin/services
+./src/components/admin/AdminCounsellorsPage.tsx
+./src/components/counsellors
+./src/components/counsellors/CounsellorsSection.tsx
+./src/components/counsellors/CounsellorCard.tsx
+./src/components/counsellors/CounsellorProfilePage.tsx
+./src/components/dashboard
+./src/components/common
+./src/components/common/.DS_Store
+./src/components/common/Container.tsx
+./src/components/common/SectionSideLeaves.tsx
+./src/components/services
+./src/components/services/.DS_Store
+./src/components/services/ServiceDetailPage.tsx
+./src/components/services/ServicesSection.tsx
+./src/components/services/ServiceCard.tsx
+./src/components/services/ServiceGroup.tsx
+./src/hooks
+./src/lib
+./src/lib/payments
+./src/lib/.DS_Store
+./src/lib/utils.ts
+./src/lib/api.ts
+./src/lib/validations
+./src/lib/email
+./src/data
+./src/data/contact.ts
+./src/data/counsellors.ts
+./src/data/.DS_Store
+./src/data/faq.ts
+./src/data/navigation.ts
+./src/data/characters.ts
+./src/data/admin-navigation.ts
+./src/data/admin-services.ts
+./src/data/about.ts
+./src/data/booking.ts
+./src/data/testimonials.ts
+./src/data/home.ts
+./src/data/visionMission.ts
+./src/data/service-details.ts
+./src/data/services.ts
+./src/services
