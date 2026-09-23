@@ -268,15 +268,7 @@ export default function Navbar() {
               <Button
                 href={navigationCta.href}
                 size="md"
-                className="
-        ml-2
-        shrink-0
-        rounded-full
-        px-4
-        min-[1350px]:ml-3
-        min-[1350px]:px-7
-      "
-              >
+                className=" ml-2 shrink-0 rounded-full px-4  min-[1350px]:ml-3 min-[1350px]:px-7  ">
                 {navigationCta.label}
               </Button>
             </nav>
