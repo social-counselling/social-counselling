@@ -9,16 +9,13 @@ import { useEffect, useState } from "react";
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
 
-import {
-  mainNavigation,
-  navigationCta,
-} from "@/data/navigation";
+import { mainNavigation, navigationCta } from "@/data/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   /* =========================================================
      SCROLL STATE
@@ -61,14 +58,7 @@ export default function Navbar() {
   };
 
   return (
-    <header
-      className="
-        fixed
-        inset-x-0
-        top-0
-        z-50
-      "
-    >
+    <header className="fixed inset-x-0 top-0 z-50 ">
       {/* =====================================================
           MAIN HEADER
           ===================================================== */}
@@ -79,11 +69,7 @@ export default function Navbar() {
           duration-300
           ease-out
 
-          ${
-            isScrolled
-              ? "pt-0"
-              : "sm:pt-0 lg:pt-4 xl:pt-3"
-          }
+          ${isScrolled ? "pt-0" : "sm:pt-0 lg:pt-4 xl:pt-3"}
         `}
       >
         <div
@@ -96,22 +82,18 @@ export default function Navbar() {
             duration-300
             ease-out
 
-            ${
-              isScrolled
-                ? "pt-0"
-                : "pt-2 sm:pt-0 lg:pt-4 xl:pt-2"
-            }
+            ${isScrolled ? "pt-0" : "pt-2 sm:pt-0 lg:pt-4 xl:pt-2"}
           `}
         >
           {/* =================================================
               LOGO
               ================================================= */}
 
-            <Link
-  href="/"
-  aria-label="Social Counselling home"
-  onClick={closeMenu}
-  className="
+          <Link
+            href="/"
+            aria-label="Social Counselling home"
+            onClick={closeMenu}
+            className="
     relative
     z-10
     flex
@@ -126,14 +108,14 @@ export default function Navbar() {
     transition-all
     duration-300
 "
->
-  <Image
-    src="/images/logo/logo2.png"
-    alt="Social Counselling"
-    width={180}
-    height={70}
-    priority
-    className="
+          >
+            <Image
+              src="/images/logo/logo2.png"
+              alt="Social Counselling"
+              width={180}
+              height={70}
+              priority
+              className="
       h-auto
       w-[100px]
       sm:w-[115px]
@@ -142,28 +124,26 @@ export default function Navbar() {
       min-[1350px]:w-[195px]
       xl:w-[195px]
     "
-  />
-</Link>
+            />
+          </Link>
 
           {/* =================================================
               DESKTOP NAVIGATION
               ================================================= */}
 
-
-<div
-  className="
+          <div
+            className="
     relative
     hidden
     lg:flex
     items-center
   "
->
-  {/* =================================================
+          >
+            {/* =================================================
       HORIZONTAL BOTANICAL LEAF
       ================================================= */}
 
-
-{/* <div
+            {/* <div
   className="
     pointer-events-none
     absolute
@@ -195,12 +175,12 @@ export default function Navbar() {
   />
 </div> */}
 
-  {/* =================================================
+            {/* =================================================
       NAVIGATION PILL
       ================================================= */}
 
-  <nav
-    className="
+            <nav
+              className="
       relative
       z-10
       flex
@@ -222,26 +202,26 @@ export default function Navbar() {
       xl:px-3
       xl:py-2.5
     "
-  >
-    {/* =============================================
+            >
+              {/* =============================================
         NAVIGATION LINKS
         ============================================= */}
 
-    <div
-      className="
+              <div
+                className="
         flex
         items-center
         xl:gap-2
       "
-    >
-      {mainNavigation.map((item) => {
-        const active = isActive(item.href);
+              >
+                {mainNavigation.map((item) => {
+                  const active = isActive(item.href);
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={`
               relative
               whitespace-nowrap
               rounded-full
@@ -257,18 +237,14 @@ export default function Navbar() {
 
               xl:px-4
 
-              ${
-                active
-                  ? "text-primary"
-                  : "text-secondary hover:text-primary"
-              }
+              ${active ? "text-primary" : "text-secondary hover:text-primary"}
             `}
-          >
-            {item.label}
+                    >
+                      {item.label}
 
-            {active && (
-              <span
-                className="
+                      {active && (
+                        <span
+                          className="
                   absolute
                   bottom-0
                   left-1/2
@@ -278,21 +254,21 @@ export default function Navbar() {
                   rounded-full
                   bg-primary
                 "
-              />
-            )}
-          </Link>
-        );
-      })}
-    </div>
+                        />
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
 
-    {/* =============================================
+              {/* =============================================
         BOOK SESSION BUTTON
         ============================================= */}
 
-    <Button
-      href={navigationCta.href}
-      size="md"
-      className="
+              <Button
+                href={navigationCta.href}
+                size="md"
+                className="
         ml-2
         shrink-0
         rounded-full
@@ -300,11 +276,11 @@ export default function Navbar() {
         min-[1350px]:ml-3
         min-[1350px]:px-7
       "
-    >
-      {navigationCta.label}
-    </Button>
-  </nav>
-</div>
+              >
+                {navigationCta.label}
+              </Button>
+            </nav>
+          </div>
 
           {/* =================================================
               MOBILE / TABLET MENU BUTTON
@@ -313,14 +289,10 @@ export default function Navbar() {
           <button
             type="button"
             aria-label={
-              isMenuOpen
-                ? "Close navigation menu"
-                : "Open navigation menu"
+              isMenuOpen ? "Close navigation menu" : "Open navigation menu"
             }
             aria-expanded={isMenuOpen}
-            onClick={() =>
-              setIsMenuOpen((previous) => !previous)
-            }
+            onClick={() => setIsMenuOpen((previous) => !previous)}
             className="
               flex
               h-10
