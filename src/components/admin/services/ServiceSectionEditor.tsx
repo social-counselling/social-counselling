@@ -29,12 +29,31 @@ export default function ServiceSectionEditor({
   onChange,
   onDelete,
 }: Props) {
+  /*
+   * Older services may not have these
+   * arrays in their stored content.
+   *
+   * Always work with safe arrays inside
+   * the editor so old services don't crash.
+   */
+  const paragraphs = Array.isArray(
+    section.content
+  )
+    ? section.content
+    : [];
+
+  const subSections = Array.isArray(
+    section.subSections
+  )
+    ? section.subSections
+    : [];
+
   const updateParagraph = (
     paragraphIndex: number,
     value: string
   ) => {
     const content = [
-      ...section.content,
+      ...paragraphs,
     ];
 
     content[paragraphIndex] = value;
@@ -42,6 +61,7 @@ export default function ServiceSectionEditor({
     onChange({
       ...section,
       content,
+      subSections,
     });
   };
 
@@ -49,9 +69,10 @@ export default function ServiceSectionEditor({
     onChange({
       ...section,
       content: [
-        ...section.content,
+        ...paragraphs,
         "",
       ],
+      subSections,
     });
   };
 
@@ -59,7 +80,7 @@ export default function ServiceSectionEditor({
     paragraphIndex: number
   ) => {
     const content =
-      section.content.filter(
+      paragraphs.filter(
         (_, index) =>
           index !== paragraphIndex
       );
@@ -70,6 +91,7 @@ export default function ServiceSectionEditor({
         content.length > 0
           ? content
           : [""],
+      subSections,
     });
   };
 
@@ -82,8 +104,9 @@ export default function ServiceSectionEditor({
 
     onChange({
       ...section,
+      content: paragraphs,
       subSections: [
-        ...section.subSections,
+        ...subSections,
         newSubSection,
       ],
     });
@@ -93,15 +116,18 @@ export default function ServiceSectionEditor({
     index: number,
     value: ServiceSubSection
   ) => {
-    const subSections = [
-      ...section.subSections,
+    const updatedSubSections = [
+      ...subSections,
     ];
 
-    subSections[index] = value;
+    updatedSubSections[index] =
+      value;
 
     onChange({
       ...section,
-      subSections,
+      content: paragraphs,
+      subSections:
+        updatedSubSections,
     });
   };
 
@@ -110,8 +136,9 @@ export default function ServiceSectionEditor({
   ) => {
     onChange({
       ...section,
+      content: paragraphs,
       subSections:
-        section.subSections.filter(
+        subSections.filter(
           (_, i) => i !== index
         ),
     });
@@ -119,13 +146,10 @@ export default function ServiceSectionEditor({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-slate-200">
-
       {/* HEADER */}
 
       <div className="flex items-center justify-between gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3">
-
         <div className="flex items-center gap-3">
-
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#238BE6]/10 text-xs font-bold text-[#238BE6]">
             {String(index + 1).padStart(
               2,
@@ -136,11 +160,9 @@ export default function ServiceSectionEditor({
           <span className="text-sm font-semibold text-[#183b3b]">
             Section {index + 1}
           </span>
-
         </div>
 
         <div className="flex items-center gap-1">
-
           <button
             type="button"
             className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-white hover:text-slate-700"
@@ -162,19 +184,15 @@ export default function ServiceSectionEditor({
           >
             <Trash2 className="h-4 w-4" />
           </button>
-
         </div>
-
       </div>
 
       {/* BODY */}
 
       <div className="space-y-5 p-4 sm:p-5">
-
         {/* HEADING */}
 
         <div>
-
           <label className="mb-2 block text-sm font-medium text-slate-700">
             Section Heading
             <span className="ml-1 text-red-500">
@@ -183,25 +201,25 @@ export default function ServiceSectionEditor({
           </label>
 
           <input
-            value={section.title}
+            value={section.title ?? ""}
             onChange={(e) =>
               onChange({
                 ...section,
-                title: e.target.value,
+                title:
+                  e.target.value,
+                content: paragraphs,
+                subSections,
               })
             }
             placeholder="Why It Matters"
             className="input-admin"
           />
-
         </div>
 
         {/* CONTENT */}
 
         <div>
-
           <div className="mb-2 flex items-center justify-between">
-
             <label className="text-sm font-medium text-slate-700">
               Paragraphs
             </label>
@@ -214,23 +232,26 @@ export default function ServiceSectionEditor({
               <Plus className="h-3.5 w-3.5" />
               Add Paragraph
             </button>
-
           </div>
 
           <div className="space-y-3">
+            {paragraphs.length === 0 && (
+              <p className="rounded-xl bg-slate-50 px-4 py-3 text-xs text-slate-400">
+                No paragraphs available.
+              </p>
+            )}
 
-            {section.content.map(
+            {paragraphs.map(
               (
                 paragraph,
                 paragraphIndex
               ) => (
                 <div
-                  key={paragraphIndex}
+                  key={`${section.id || index}-paragraph-${paragraphIndex}`}
                   className="flex gap-2"
                 >
-
                   <textarea
-                    value={paragraph}
+                    value={paragraph ?? ""}
                     onChange={(e) =>
                       updateParagraph(
                         paragraphIndex,
@@ -253,21 +274,16 @@ export default function ServiceSectionEditor({
                   >
                     <Trash2 className="h-4 w-4" />
                   </button>
-
                 </div>
               )
             )}
-
           </div>
-
         </div>
 
         {/* SUBSECTIONS */}
 
         <div className="border-t border-slate-100 pt-5">
-
           <div className="mb-3">
-
             <h3 className="text-sm font-semibold text-[#183b3b]">
               Subsections
             </h3>
@@ -275,18 +291,19 @@ export default function ServiceSectionEditor({
             <p className="mt-1 text-xs text-slate-400">
               Optional. Use subsections when a section contains multiple topics.
             </p>
-
           </div>
 
           <div className="space-y-3">
-
-            {section.subSections.map(
+            {subSections.map(
               (
                 subSection,
                 subIndex
               ) => (
                 <ServiceSubSectionEditor
-                  key={subSection.id}
+                  key={
+                    subSection.id ||
+                    `${section.id || index}-subsection-${subIndex}`
+                  }
                   subSection={
                     subSection
                   }
@@ -305,7 +322,6 @@ export default function ServiceSectionEditor({
                 />
               )
             )}
-
           </div>
 
           <button
@@ -316,11 +332,8 @@ export default function ServiceSectionEditor({
             <Plus className="h-4 w-4" />
             Add Subsection
           </button>
-
         </div>
-
       </div>
-
     </div>
   );
 }

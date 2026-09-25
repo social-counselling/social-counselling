@@ -1,24 +1,26 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 
 import ServiceForm from "@/components/admin/services/ServiceForm";
-import { getAdminService } from "@/app/services/admin-services-api";
+import { getAdminService } from "@/services/admin/services.api";
 import type { ServiceFormData } from "@/types/admin-service";
 
 export default function CreateServicePage() {
-  const searchParams = useSearchParams();
-  const serviceId = searchParams.get("id");
+  const [serviceId, setServiceId] = useState<string | null>(null);
 
-  const [initialData, setInitialData] =
-    useState<ServiceFormData | null>(null);
+  const [initialData, setInitialData] = useState<ServiceFormData | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (!serviceId) {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    setServiceId(id);
+
+    if (!id) {
       setInitialData(null);
       return;
     }
@@ -28,39 +30,32 @@ export default function CreateServicePage() {
         setLoading(true);
         setError("");
 
-        const service = await getAdminService(serviceId);
+        const service = await getAdminService(id);
 
         setInitialData({
-          serviceNumber: service.serviceNumber ?? "",
           category: service.category,
           title: service.title,
           subtitle: service.subtitle ?? "",
-          slug: service.slug,
+          slug: service.slug ?? "",
           heroImageUrl: service.heroImageUrl ?? "",
           imageUrl: service.imageUrl ?? "",
           content: service.content ?? {
             sections: [],
           },
-          contentStatus: service.contentStatus,
-          isPublished: service.isPublished,
           isActive: service.isActive,
           sortOrder: service.sortOrder,
         });
       } catch (err) {
         console.error("Failed to load service:", err);
 
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Failed to load service",
-        );
+        setError(err instanceof Error ? err.message : "Failed to load service");
       } finally {
         setLoading(false);
       }
     };
 
     loadService();
-  }, [serviceId]);
+  }, []);
 
   if (loading) {
     return (
@@ -71,11 +66,7 @@ export default function CreateServicePage() {
   }
 
   if (error) {
-    return (
-      <div className="p-8 text-center text-sm text-red-600">
-        {error}
-      </div>
-    );
+    return <div className="p-8 text-center text-sm text-red-600">{error}</div>;
   }
 
   return (

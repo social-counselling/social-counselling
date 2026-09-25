@@ -25,11 +25,15 @@ export default function ServiceContentEditor({
   content,
   onChange,
 }: Props) {
+  const sections = Array.isArray(content?.sections)
+    ? content.sections
+    : [];
+
   const addSection = () => {
     onChange({
       ...content,
       sections: [
-        ...content.sections,
+        ...sections,
         createSection(),
       ],
     });
@@ -39,15 +43,15 @@ export default function ServiceContentEditor({
     index: number,
     section: ServiceSection
   ) => {
-    const sections = [
-      ...content.sections,
+    const updatedSections = [
+      ...sections,
     ];
 
-    sections[index] = section;
+    updatedSections[index] = section;
 
     onChange({
       ...content,
-      sections,
+      sections: updatedSections,
     });
   };
 
@@ -56,7 +60,7 @@ export default function ServiceContentEditor({
   ) => {
     onChange({
       ...content,
-      sections: content.sections.filter(
+      sections: sections.filter(
         (_, i) => i !== index
       ),
     });
@@ -64,11 +68,8 @@ export default function ServiceContentEditor({
 
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-
       <div className="mb-6 flex items-start justify-between gap-4">
-
         <div className="flex items-center gap-3">
-
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#183b3b] text-sm font-bold text-white">
             02
           </span>
@@ -82,7 +83,6 @@ export default function ServiceContentEditor({
               Add as many sections and subsections as required.
             </p>
           </div>
-
         </div>
 
         <button
@@ -93,14 +93,11 @@ export default function ServiceContentEditor({
           <Plus className="h-4 w-4" />
           Add Section
         </button>
-
       </div>
 
       <div className="space-y-4">
-
-        {content.sections.length === 0 && (
+        {sections.length === 0 && (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-slate-50 px-5 py-12 text-center">
-
             <p className="text-sm font-semibold text-slate-600">
               No sections yet
             </p>
@@ -108,14 +105,16 @@ export default function ServiceContentEditor({
             <p className="mt-1 text-xs text-slate-400">
               Add your first content section.
             </p>
-
           </div>
         )}
 
-        {content.sections.map(
+        {sections.map(
           (section, index) => (
             <ServiceSectionEditor
-              key={section.id}
+              key={
+                section.id ||
+                `section-${index}`
+              }
               section={section}
               index={index}
               onChange={(value) =>
@@ -130,7 +129,6 @@ export default function ServiceContentEditor({
             />
           )
         )}
-
       </div>
 
       <button
@@ -141,7 +139,6 @@ export default function ServiceContentEditor({
         <Plus className="h-4 w-4" />
         Add New Section
       </button>
-
     </section>
   );
 }

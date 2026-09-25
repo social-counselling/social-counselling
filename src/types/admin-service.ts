@@ -15,27 +15,19 @@ export interface ServiceContent {
   sections: ServiceSection[];
 }
 
-export type ServiceContentStatus =
-  | "WIP"
-  | "READY";
-
 export interface AdminService {
-  id: string;
-  serviceNumber: string;
+  serviceId: number;
   category: string;
   title: string;
-  subtitle: string;
-  slug: string;
+  subtitle: string | null;
+  slug: string | null;
 
-  heroImageUrl: string;
-  imageUrl: string;
+  heroImageUrl: string | null;
+  imageUrl: string | null;
 
-  content: ServiceContent;
+  content: ServiceContent | null;
 
-  contentStatus: ServiceContentStatus;
-  isPublished: boolean;
   isActive: boolean;
-
   sortOrder: number;
 
   createdAt: string;
@@ -43,7 +35,6 @@ export interface AdminService {
 }
 
 export interface ServiceFormData {
-  serviceNumber: string;
   category: string;
   title: string;
   subtitle: string;
@@ -54,9 +45,6 @@ export interface ServiceFormData {
 
   content: ServiceContent;
 
-  contentStatus: ServiceContentStatus;
-  isPublished: boolean;
   isActive: boolean;
-
   sortOrder: number;
 }
