@@ -1,6 +1,7 @@
 import {
   BarChart3,
   CalendarDays,
+  Clock3,
   FileText,
   LayoutDashboard,
   MessageSquare,
@@ -31,6 +32,12 @@ export const adminNavigation: AdminNavigationItem[] = [
     label: "Counsellors",
     href: "/admin/counsellors",
     icon: UserRoundCheck,
+  },
+
+  {
+    label: "Slots",
+    href: "/admin/slots",
+    icon: Clock3,
   },
   {
     label: "Bookings",

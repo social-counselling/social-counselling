@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-
-
 export const metadata: Metadata = {
   title: {
     default: "Social Counselling",
@@ -22,15 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-
-      <Navbar/>
-
-          {children}
-
-          <Footer />
-
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
