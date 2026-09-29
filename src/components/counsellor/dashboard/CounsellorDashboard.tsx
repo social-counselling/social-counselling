@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import { BriefcaseBusiness, Clock3, Star, Award } from "lucide-react";
 
-import { getAdminCounsellor } from "@/services/admin/counsellors.api";
-import { getAdminCounsellorSlots } from "@/services/admin/counsellor-slots.api";
-
-const TEMP_COUNSELLOR_ID = "5";
+import {
+  getCounsellorDashboard,
+  getCounsellorSlots,
+  type CounsellorDashboardResponse,
+  type CounsellorSlot,
+} from "@/services/counsellor/dashboard.api";
 
 function formatTime(time: string) {
   return new Date(time).toLocaleTimeString("en-IN", {
@@ -17,35 +19,46 @@ function formatTime(time: string) {
   });
 }
 
-export default function CounsellorDashboard() {
-  const [counsellor, setCounsellor] = useState<Awaited<
-    ReturnType<typeof getAdminCounsellor>
-  > | null>(null);
+function getTodayDate() {
+  return new Date().toLocaleDateString("en-CA", {
+    timeZone: "Asia/Kolkata",
+  });
+}
 
-  const [todaySlots, setTodaySlots] = useState<
-    Awaited<ReturnType<typeof getAdminCounsellorSlots>>
-  >([]);
+export default function CounsellorDashboard() {
+  const [dashboard, setDashboard] =
+    useState<CounsellorDashboardResponse | null>(null);
+
+  const [todaySlots, setTodaySlots] = useState<CounsellorSlot[]>([]);
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadDashboard() {
       try {
-        const today = new Date().toLocaleDateString("en-CA", {
-          timeZone: "Asia/Kolkata",
-        });
+        setLoading(true);
+        setError("");
 
-        const [counsellorData, slotsData] = await Promise.all([
-          getAdminCounsellor(TEMP_COUNSELLOR_ID),
-          getAdminCounsellorSlots(Number(TEMP_COUNSELLOR_ID), today),
+        const today = getTodayDate();
+
+        const [dashboardData, slotsData] = await Promise.all([
+          getCounsellorDashboard(),
+          getCounsellorSlots(today),
         ]);
 
-        console.log("COUNSELLOR DASHBOARD RESPONSE:", counsellorData);
-        console.log("TODAY SLOTS RESPONSE:", slotsData);
-        setCounsellor(counsellorData);
+        console.log("COUNSELLOR DASHBOARD RESPONSE:", dashboardData);
+
+        console.log("COUNSELLOR TODAY SLOTS RESPONSE:", slotsData);
+
+        setDashboard(dashboardData);
         setTodaySlots(slotsData);
       } catch (error) {
-        console.error("Failed to load counsellor dashboard", error);
+        console.error("Failed to load counsellor dashboard:", error);
+
+        setError(
+          error instanceof Error ? error.message : "Unable to load dashboard.",
+        );
       } finally {
         setLoading(false);
       }
@@ -59,6 +72,7 @@ export default function CounsellorDashboard() {
       <div className="p-6">
         <div className="animate-pulse">
           <div className="h-8 w-64 rounded bg-gray-200" />
+
           <div className="mt-3 h-4 w-80 rounded bg-gray-200" />
 
           <div className="mt-8 grid gap-4 md:grid-cols-3">
@@ -66,31 +80,33 @@ export default function CounsellorDashboard() {
             <div className="h-32 rounded-xl bg-gray-200" />
             <div className="h-32 rounded-xl bg-gray-200" />
           </div>
+
+          <div className="mt-8 h-64 rounded-xl bg-gray-200" />
         </div>
       </div>
     );
   }
 
-  if (!counsellor) {
+  if (error || !dashboard) {
     return (
       <div className="p-6">
         <div className="rounded-xl border border-red-200 bg-red-50 p-5 text-sm text-red-700">
-          Unable to load counsellor information.
+          {error || "Unable to load counsellor information."}
         </div>
       </div>
     );
   }
 
-  const fullName = `${counsellor.user.firstName} ${
-    counsellor.user.lastName ?? ""
-  }`.trim();
+  const { counsellor, services } = dashboard;
+
+  const firstName = counsellor.name.split(" ")[0];
 
   return (
     <div className="p-6">
       {/* Welcome */}
       <div>
         <h1 className="text-2xl font-semibold text-gray-900">
-          Welcome back, {counsellor.user.firstName} 👋
+          Welcome back, {firstName} 👋
         </h1>
 
         <p className="mt-1 text-sm text-gray-500">
@@ -107,7 +123,7 @@ export default function CounsellorDashboard() {
               <p className="text-sm text-gray-500">My Services</p>
 
               <p className="mt-2 text-2xl font-semibold text-gray-900">
-                {counsellor.services.length ?? 0}
+                {services.length}
               </p>
             </div>
 
@@ -141,7 +157,7 @@ export default function CounsellorDashboard() {
               <p className="text-sm text-gray-500">Rating</p>
 
               <p className="mt-2 text-2xl font-semibold text-gray-900">
-                {counsellor.avgRating.toFixed(1)}
+                {Number(counsellor.avgRating ?? 0).toFixed(1)}
               </p>
             </div>
 
@@ -199,33 +215,43 @@ export default function CounsellorDashboard() {
       {/* Specializations */}
       <div className="mt-8 rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
         <h2 className="text-lg font-semibold text-gray-900">
-          My Specializations
+          Professional Information
         </h2>
 
-        {counsellor.specializations.length === 0 ? (
-          <p className="mt-4 text-sm text-gray-500">
-            No specializations added yet.
-          </p>
-        ) : (
-          <div className="mt-4 flex flex-wrap gap-2">
-            {counsellor.specializations.map((specialization) => (
-              <span
-                key={specialization}
-                className="rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-sm text-gray-700"
-              >
-                {specialization}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          <div>
+            <p className="text-sm text-gray-500">Credentials</p>
 
-      {/* Development information */}
-      <div className="mt-8 rounded-xl border border-blue-200 bg-blue-50 p-4">
-        <p className="text-sm text-blue-800">
-          Development mode: currently viewing the counsellor profile for{" "}
-          <strong>{fullName}</strong> (ID: {TEMP_COUNSELLOR_ID}).
-        </p>
+            <p className="mt-1 text-sm font-medium text-gray-900">
+              {counsellor.credentials || "Not added"}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-gray-500">Total Reviews</p>
+
+            <p className="mt-1 text-sm font-medium text-gray-900">
+              {counsellor.totalReviews}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-gray-500">Experience</p>
+
+            <p className="mt-1 text-sm font-medium text-gray-900">
+              {counsellor.experienceText ||
+                `${counsellor.experienceYears ?? 0} years`}
+            </p>
+          </div>
+
+          <div>
+            <p className="text-sm text-gray-500">Account Status</p>
+
+            <span className="mt-1 inline-flex rounded-full bg-green-50 px-2.5 py-1 text-xs font-medium text-green-700">
+              {counsellor.status}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -3,33 +3,55 @@
 import { useEffect, useState } from "react";
 import { Bell, ChevronDown } from "lucide-react";
 
-import { getAdminCounsellor } from "@/services/admin/counsellors.api";
+import { getCurrentUser } from "@/services/auth/auth.api";
 
-const TEMP_COUNSELLOR_ID = "5";
+interface CurrentUser {
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string | null;
+  role: string;
+  profileImageUrl: string | null;
+  counsellorId: number | null;
+}
 
 export default function CounsellorHeader() {
-  const [counsellor, setCounsellor] =
-    useState<Awaited<ReturnType<typeof getAdminCounsellor>> | null>(
-      null,
-    );
+  const [user, setUser] = useState<CurrentUser | null>(null);
+
   useEffect(() => {
-    getAdminCounsellor(TEMP_COUNSELLOR_ID)
-      .then((data) => {
-        setCounsellor(data);
+    let mounted = true;
+
+    getCurrentUser()
+      .then((response) => {
+        if (mounted) {
+          setUser(response.user);
+        }
       })
       .catch(() => {
-        setCounsellor(null);
+        if (mounted) {
+          setUser(null);
+        }
       });
+
+    return () => {
+      mounted = false;
+    };
   }, []);
 
- const fullName = counsellor?.user
-  ? `${counsellor.user.firstName} ${
-      counsellor.user.lastName ?? ""
-    }`.trim()
-  : "Counsellor";
+  const fullName = user
+    ? `${user.firstName} ${user.lastName ?? ""}`.trim()
+    : "Counsellor";
+
+  const initials = fullName
+    .split(" ")
+    .filter(Boolean)
+    .map((name) => name.charAt(0))
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-6">
+    <header className="flex h-16 shrink-0 items-center justify-between border-b border-gray-200 bg-white px-6">
       {/* Page identity */}
       <div>
         <p className="text-sm font-medium text-gray-900">Counsellor Panel</p>
@@ -57,15 +79,15 @@ export default function CounsellorHeader() {
           type="button"
           className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-gray-50"
         >
-          {counsellor?.user?.profileImageUrl ? (
+          {user?.profileImageUrl ? (
             <img
-              src={counsellor.user.profileImageUrl}
+              src={user.profileImageUrl}
               alt={fullName}
               className="h-9 w-9 rounded-full object-cover"
             />
           ) : (
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
-              {fullName.charAt(0).toUpperCase()}
+              {initials || "C"}
             </div>
           )}
 

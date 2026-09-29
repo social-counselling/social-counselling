@@ -4,11 +4,9 @@ import { useState } from "react";
 import { X } from "lucide-react";
 
 import {
-  getAdminCounsellorSlots,
-  type AdminCounsellorSlot,
-} from "@/services/admin/counsellor-slots.api";
-
-const TEMP_COUNSELLOR_ID = 5;
+  getCounsellorSlots,
+  type CounsellorSlot,
+} from "@/services/counsellor/availability.api";
 
 interface Props {
   onClose: () => void;
@@ -46,7 +44,7 @@ export default function UpcomingAvailability({ onClose }: Props) {
   const [upcomingAvailability, setUpcomingAvailability] = useState<
     {
       date: string;
-      assignments: AdminCounsellorSlot[];
+      assignments: CounsellorSlot[];
     }[]
   >([]);
 
@@ -54,7 +52,7 @@ export default function UpcomingAvailability({ onClose }: Props) {
 
   const [error, setError] = useState("");
 
-  const handleLoadRange = async () => {
+  async function handleLoadRange() {
     if (!rangeStart || !rangeEnd) {
       setError("Please select both start and end dates.");
       return;
@@ -67,6 +65,7 @@ export default function UpcomingAvailability({ onClose }: Props) {
 
     setLoading(true);
     setError("");
+    setUpcomingAvailability([]);
 
     try {
       const start = new Date(`${rangeStart}T00:00:00`);
@@ -85,24 +84,28 @@ export default function UpcomingAvailability({ onClose }: Props) {
 
       const results = await Promise.all(
         dates.map(async (date) => {
-          const data = await getAdminCounsellorSlots(TEMP_COUNSELLOR_ID, date);
+          const data = await getCounsellorSlots(date);
 
           return {
             date,
-            assignments: data,
+            assignments: data.filter(
+              (assignment) => assignment.status === "AVAILABLE",
+            ),
           };
         }),
       );
 
       setUpcomingAvailability(results);
-    } catch (err) {
+    } catch (error) {
+      console.error("Failed to load availability:", error);
+
       setError(
-        err instanceof Error ? err.message : "Failed to load availability",
+        error instanceof Error ? error.message : "Failed to load availability",
       );
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">

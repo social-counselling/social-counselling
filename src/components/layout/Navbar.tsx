@@ -6,16 +6,26 @@ import { Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import { getCurrentUser } from "@/services/auth/auth.api";
+import { getAccessToken } from "@/lib/auth/auth-storage";
+
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
 
-import { mainNavigation, navigationCta } from "@/data/navigation";
+import {
+  mainNavigation,
+  navigationCta,
+  navigationAuthCta,
+} from "@/data/navigation";
 
 export default function Navbar() {
   const pathname = usePathname();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [profileHref, setProfileHref] = useState("/");
 
   /* =========================================================
      SCROLL STATE
@@ -34,6 +44,58 @@ export default function Navbar() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const checkAuthentication = async () => {
+      const token = getAccessToken();
+
+      if (!token) {
+        if (mounted) {
+          setIsAuthenticated(false);
+          setProfileHref("/");
+        }
+        return;
+      }
+
+      try {
+        const response = await getCurrentUser();
+
+        if (!mounted) return;
+
+        setIsAuthenticated(true);
+
+        switch (response.user.role) {
+          case "ADMIN":
+            setProfileHref("/admin");
+            break;
+
+          case "COUNSELLOR":
+            setProfileHref("/counsellor");
+            break;
+
+          case "CLIENT":
+            setProfileHref("/");
+            break;
+
+          default:
+            setProfileHref("/");
+        }
+      } catch {
+        if (mounted) {
+          setIsAuthenticated(false);
+          setProfileHref("/");
+        }
+      }
+    };
+
+    checkAuthentication();
+
+    return () => {
+      mounted = false;
     };
   }, []);
 
@@ -56,6 +118,13 @@ export default function Navbar() {
   const closeMenu = () => {
     setIsMenuOpen(false);
   };
+
+  const authButton = isAuthenticated
+    ? {
+        label: "Profile",
+        href: profileHref,
+      }
+    : navigationAuthCta;
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 ">
@@ -268,8 +337,20 @@ export default function Navbar() {
               <Button
                 href={navigationCta.href}
                 size="md"
-                className=" ml-2 shrink-0 rounded-full px-4  min-[1350px]:ml-3 min-[1350px]:px-7  ">
+                className=" ml-2 shrink-0 rounded-full px-4  min-[1350px]:ml-3 min-[1350px]:px-7  "
+              >
                 {navigationCta.label}
+              </Button>
+              {/* =============================================
+                            Login BUTTON
+                  ============================================= */}
+              <Button
+                href={authButton.href}
+                variant="outline"
+                size="md"
+                className="ml-2 shrink-0 rounded-full px-4 min-[1350px]:ml-3 min-[1350px]:px-7"
+              >
+                {authButton.label}
               </Button>
             </nav>
           </div>
@@ -347,22 +428,7 @@ export default function Navbar() {
             }
           `}
         >
-          <div
-            className="
-              rounded-[22px]
-
-              border
-              border-white/60
-
-              bg-white/80
-
-              p-3
-
-              shadow-[0_12px_40px_rgba(24,59,59,0.12)]
-
-              backdrop-blur-xl
-            "
-          >
+          <div className=" rounded-[22px] border  border-white/60  bg-white/80   p-3   shadow-[0_12px_40px_rgba(24,59,59,0.12)]   backdrop-blur-xl ">
             {/* ===============================================
                 MOBILE LINKS
                 =============================================== */}
@@ -376,20 +442,7 @@ export default function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={closeMenu}
-                    className={`
-                      flex
-                      items-center
-                      justify-between
-
-                      rounded-xl
-
-                      px-4
-                      py-3.5
-
-                      text-sm
-                      font-medium
-
-                      transition-colors
+                    className={`  flex  items-center  justify-between rounded-xl  px-4   py-3.5   text-sm  font-medium   transition-colors
 
                       ${
                         active
@@ -401,14 +454,7 @@ export default function Navbar() {
                     <span>{item.label}</span>
 
                     {active && (
-                      <span
-                        className="
-                          h-2
-                          w-2
-                          rounded-full
-                          bg-primary
-                        "
-                      />
+                      <span className="   h-2  w-2  rounded-full bg-primary  " />
                     )}
                   </Link>
                 );
@@ -419,14 +465,7 @@ export default function Navbar() {
                 MOBILE CTA
                 =============================================== */}
 
-            <div
-              className="
-                mt-2
-                border-t
-                border-border
-                pt-0
-              "
-            >
+            <div className=" mt-2 border-t  border-border  pt-0 ">
               <Button
                 href={navigationCta.href}
                 size="lg"
@@ -434,6 +473,16 @@ export default function Navbar() {
                 onClick={closeMenu}
               >
                 {navigationCta.label}
+              </Button>
+
+              <Button
+                href={authButton.href}
+                variant="outline"
+                size="md"
+                className="w-full"
+                onClick={closeMenu}
+              >
+                {authButton.label}
               </Button>
             </div>
           </div>

@@ -68,7 +68,7 @@ export default function AdminSidebar({
         <div className="flex h-[82px] shrink-0 items-center justify-between border-b border-white/10 px-5">
 
           <Link
-            href="/admin"
+            href="/"
             onClick={onClose}
             className="flex items-center gap-3"
           >

@@ -3,25 +3,38 @@
 import { useEffect, useState } from "react";
 import { BriefcaseBusiness, IndianRupee, Star } from "lucide-react";
 
-import { getAdminCounsellor } from "@/services/admin/counsellors.api";
-
-const TEMP_COUNSELLOR_ID = "5";
-
-type Counsellor = Awaited<ReturnType<typeof getAdminCounsellor>>;
+import {
+  getCounsellorServices,
+  type CounsellorService,
+} from "@/services/counsellor/services.api";
 
 export default function CounsellorServices() {
-  const [counsellor, setCounsellor] = useState<Counsellor | null>(null);
-
+  const [services, setServices] = useState<CounsellorService[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     async function loadServices() {
       try {
-        const data = await getAdminCounsellor(TEMP_COUNSELLOR_ID);
+        setLoading(true);
+        setError("");
 
-        setCounsellor(data);
+        const data = await getCounsellorServices();
+
+        console.log("COUNSELLOR SERVICES RESPONSE:", data);
+
+        setServices(data);
       } catch (error) {
-        console.error("Failed to load counsellor services", error);
+        console.error(
+          "Failed to load counsellor services:",
+          error,
+        );
+
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Unable to load services.",
+        );
       } finally {
         setLoading(false);
       }
@@ -43,7 +56,7 @@ export default function CounsellorServices() {
     );
   }
 
-  if (!counsellor) {
+  if (error) {
     return (
       <div className="p-6">
         <div className="rounded-xl border border-red-200 bg-red-50 p-6">
@@ -52,20 +65,20 @@ export default function CounsellorServices() {
           </h1>
 
           <p className="mt-1 text-sm text-red-700">
-            Counsellor information could not be loaded.
+            {error}
           </p>
         </div>
       </div>
     );
   }
 
-  const services = counsellor.services ?? [];
-
   return (
     <div className="p-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-2xl font-semibold text-gray-900">My Services</h1>
+        <h1 className="text-2xl font-semibold text-gray-900">
+          My Services
+        </h1>
 
         <p className="mt-1 text-sm text-gray-500">
           View the counselling services currently assigned to you.
@@ -77,7 +90,9 @@ export default function CounsellorServices() {
         <div className="rounded-xl border border-gray-200 bg-white p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Services</p>
+              <p className="text-sm text-gray-500">
+                Total Services
+              </p>
 
               <p className="mt-2 text-2xl font-semibold text-gray-900">
                 {services.length}
@@ -93,10 +108,12 @@ export default function CounsellorServices() {
         <div className="rounded-xl border border-gray-200 bg-white p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Average Rating</p>
+              <p className="text-sm text-gray-500">
+                Average Rating
+              </p>
 
               <p className="mt-2 text-2xl font-semibold text-gray-900">
-                {counsellor.avgRating.toFixed(1)}
+                —
               </p>
             </div>
 
@@ -109,10 +126,12 @@ export default function CounsellorServices() {
         <div className="rounded-xl border border-gray-200 bg-white p-5">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm text-gray-500">Total Reviews</p>
+              <p className="text-sm text-gray-500">
+                Total Reviews
+              </p>
 
               <p className="mt-2 text-2xl font-semibold text-gray-900">
-                {counsellor.totalReviews}
+                —
               </p>
             </div>
 
@@ -203,7 +222,9 @@ export default function CounsellorServices() {
                     <div className="flex items-center justify-between text-xs text-gray-500">
                       <span>Service Status</span>
 
-                      <span className="font-medium text-green-600">Active</span>
+                      <span className="font-medium text-green-600">
+                        Active
+                      </span>
                     </div>
                   </div>
                 </div>

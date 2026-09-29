@@ -1,19 +1,16 @@
 "use client";
 
-import {
-  getAdminCounsellorSlots,
-  createAdminCounsellorSlot,
-  deleteAdminCounsellorSlot,
-  type AdminCounsellorSlot,
-} from "@/services/admin/counsellor-slots.api";
-
-import { getAdminSlots, type AdminSlot } from "@/services/admin/slots.api";
-
 import { useEffect, useState } from "react";
-
 import { X } from "lucide-react";
 
-const TEMP_COUNSELLOR_ID = 5;
+import {
+  createCounsellorSlot,
+  deleteCounsellorSlot,
+  getCounsellorAvailableSlots,
+  getCounsellorSlots,
+  type CounsellorAvailableSlot,
+  type CounsellorSlot,
+} from "@/services/counsellor/availability.api";
 
 interface Props {
   onClose: () => void;
@@ -37,35 +34,48 @@ function getTodayDate() {
 export default function SingleDateAvailability({ onClose }: Props) {
   const [date, setDate] = useState("");
 
-  const [slots, setSlots] = useState<AdminSlot[]>([]);
+  const [slots, setSlots] = useState<CounsellorAvailableSlot[]>([]);
 
-  const [assignments, setAssignments] = useState<AdminCounsellorSlot[]>([]);
+  const [assignments, setAssignments] = useState<CounsellorSlot[]>([]);
 
   const [selectedSlotIds, setSelectedSlotIds] = useState<number[]>([]);
 
   const [loading, setLoading] = useState(false);
-
+  const [loadingSlots, setLoadingSlots] = useState(true);
   const [saving, setSaving] = useState(false);
 
   const [error, setError] = useState("");
 
   /*
-   * Load master slots
+   * Load master time slots.
    */
   useEffect(() => {
-    getAdminSlots()
-      .then((data) => {
+    async function loadSlots() {
+      try {
+        setLoadingSlots(true);
+        setError("");
+
+        const data = await getCounsellorAvailableSlots();
+
+        console.log("COUNSELLOR AVAILABLE SLOTS RESPONSE:", data);
+
         setSlots(data.filter((slot) => slot.isActive));
-      })
-      .catch((err) => {
+      } catch (error) {
+        console.error("Failed to load available slots:", error);
+
         setError(
-          err instanceof Error ? err.message : "Failed to load time slots",
+          error instanceof Error ? error.message : "Failed to load time slots",
         );
-      });
+      } finally {
+        setLoadingSlots(false);
+      }
+    }
+
+    loadSlots();
   }, []);
 
   /*
-   * Load existing availability
+   * Load counsellor availability for selected date.
    */
   useEffect(() => {
     if (!date) {
@@ -74,83 +84,98 @@ export default function SingleDateAvailability({ onClose }: Props) {
       return;
     }
 
-    setLoading(true);
-    setError("");
+    async function loadAvailability() {
+      try {
+        setLoading(true);
+        setError("");
 
-    getAdminCounsellorSlots(TEMP_COUNSELLOR_ID, date)
-      .then((data) => {
+        const data = await getCounsellorSlots(date);
+
+        console.log("COUNSELLOR DATE AVAILABILITY RESPONSE:", data);
+
         setAssignments(data);
 
-        setSelectedSlotIds(data.map((assignment) => assignment.slotId));
-      })
-      .catch((err) => {
-        setError(
-          err instanceof Error ? err.message : "Failed to load availability",
+        setSelectedSlotIds(
+          data
+            .filter((assignment) => assignment.status === "AVAILABLE")
+            .map((assignment) => assignment.slot.id),
         );
-      })
-      .finally(() => {
+      } catch (error) {
+        console.error("Failed to load availability:", error);
+
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Failed to load availability",
+        );
+      } finally {
         setLoading(false);
-      });
+      }
+    }
+
+    loadAvailability();
   }, [date]);
 
   /*
-   * Local slot selection
+   * Select / unselect a slot.
    */
-  const toggleSlot = (slotId: number) => {
+  function toggleSlot(slotId: number) {
     setSelectedSlotIds((current) =>
       current.includes(slotId)
         ? current.filter((id) => id !== slotId)
         : [...current, slotId],
     );
-  };
+  }
 
   /*
-   * Save all changes
+   * Save availability changes.
    */
-  const handleSave = async () => {
+  async function handleSave() {
     if (!date) {
       setError("Please select a date.");
       return;
     }
 
-    setSaving(true);
-    setError("");
-
     try {
-      const originalSlotIds = assignments.map(
-        (assignment) => assignment.slotId,
+      setSaving(true);
+      setError("");
+
+      const currentAvailableAssignments = assignments.filter(
+        (assignment) => assignment.status === "AVAILABLE",
+      );
+
+      const currentAvailableSlotIds = currentAvailableAssignments.map(
+        (assignment) => assignment.slot.id,
       );
 
       /*
-       * Slots that need to be deleted
+       * Slots that were previously available
+       * but are now unselected.
        */
-      const slotsToDelete = assignments.filter(
-        (assignment) => !selectedSlotIds.includes(assignment.slotId),
+      const slotsToDelete = currentAvailableAssignments.filter(
+        (assignment) => !selectedSlotIds.includes(assignment.slot.id),
       );
 
       /*
-       * Slots that need to be created
+       * Slots that are newly selected.
        */
       const slotsToCreate = selectedSlotIds.filter(
-        (slotId) => !originalSlotIds.includes(slotId),
+        (slotId) => !currentAvailableSlotIds.includes(slotId),
       );
 
       /*
-       * Delete removed slots
+       * Block removed availability.
        */
       await Promise.all(
-        slotsToDelete.map((assignment) =>
-          deleteAdminCounsellorSlot(assignment.id),
-        ),
+        slotsToDelete.map((assignment) => deleteCounsellorSlot(assignment.id)),
       );
 
       /*
-       * Create newly selected slots
+       * Create new availability.
        */
       await Promise.all(
         slotsToCreate.map((slotId) =>
-          createAdminCounsellorSlot({
-            counsellorId: TEMP_COUNSELLOR_ID,
+          createCounsellorSlot({
             slotId,
             date,
           }),
@@ -158,21 +183,27 @@ export default function SingleDateAvailability({ onClose }: Props) {
       );
 
       /*
-       * Reload saved state
+       * Reload final state from backend.
        */
-      const updated = await getAdminCounsellorSlots(TEMP_COUNSELLOR_ID, date);
+      const updated = await getCounsellorSlots(date);
 
       setAssignments(updated);
 
-      setSelectedSlotIds(updated.map((assignment) => assignment.slotId));
-    } catch (err) {
+      setSelectedSlotIds(
+        updated
+          .filter((assignment) => assignment.status === "AVAILABLE")
+          .map((assignment) => assignment.slot.id),
+      );
+    } catch (error) {
+      console.error("Failed to save availability:", error);
+
       setError(
-        err instanceof Error ? err.message : "Failed to save availability",
+        error instanceof Error ? error.message : "Failed to save availability",
       );
     } finally {
       setSaving(false);
     }
-  };
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
@@ -230,7 +261,7 @@ export default function SingleDateAvailability({ onClose }: Props) {
                 </p>
               </div>
 
-              {loading ? (
+              {loadingSlots || loading ? (
                 <p className="text-sm text-gray-500">Loading availability...</p>
               ) : slots.length === 0 ? (
                 <p className="text-sm text-gray-500">
@@ -306,7 +337,7 @@ export default function SingleDateAvailability({ onClose }: Props) {
           <button
             type="button"
             onClick={handleSave}
-            disabled={saving || !date || loading}
+            disabled={saving || !date || loading || loadingSlots}
             className="rounded-lg bg-gray-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {saving ? "Saving..." : "Save Availability"}

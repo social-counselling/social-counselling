@@ -38,3 +38,8 @@ export const navigationCta = {
   label: "Book a Session",
   href: "/book-session",
 };
+
+export const navigationAuthCta = {
+  label: "Login",
+  href: "/login",
+};
