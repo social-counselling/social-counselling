@@ -1,4 +1,4 @@
-export type CounsellorStatus = "ACTIVE" | "INACTIVE" | "BLOCKED";
+export type CounsellorStatus = "ACTIVE" | "INACTIVE";
 
 export interface CounsellorUser {
   id: string;
@@ -9,7 +9,7 @@ export interface CounsellorUser {
   profileImageUrl: string | null;
   dateOfBirth: string | null;
   gender: "MALE" | "FEMALE" | "OTHER";
-  status: "ACTIVE" | "INACTIVE" | "BLOCKED";
+  status: CounsellorStatus;
 }
 export interface CounsellorLanguage {
   id: string;

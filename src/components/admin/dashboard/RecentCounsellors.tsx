@@ -162,12 +162,10 @@ export default function RecentCounsellors() {
                   className={`hidden shrink-0 rounded-full px-3 py-1 text-xs font-medium sm:inline-flex ${
                     counsellor.status === "ACTIVE"
                       ? "bg-emerald-50 text-emerald-700"
-                      : counsellor.status === "BLOCKED"
-                        ? "bg-red-50 text-red-700"
-                        : "bg-amber-50 text-amber-700"
+                      : "bg-red-50 text-red-700"
                   }`}
                 >
-                  {counsellor.status}
+                  {counsellor.status === "ACTIVE" ? "Active" : "Inactive"}
                 </span>
               </div>
             );

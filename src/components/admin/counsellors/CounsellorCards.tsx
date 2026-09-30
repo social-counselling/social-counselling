@@ -6,7 +6,8 @@ import Link from "next/link";
 import {
   Eye,
   Pencil,
-  Trash2,
+  CheckCircle2,
+  PowerOff,
 } from "lucide-react";
 
 import type {
@@ -14,7 +15,7 @@ import type {
 } from "@/types/admin-counsellor";
 
 import {
-  deleteAdminCounsellor,
+  updateAdminCounsellorStatus,
 } from "@/services/admin/counsellors.api";
 
 interface Props {
@@ -24,7 +25,7 @@ interface Props {
 export default function CounsellorCards({
   counsellors,
 }: Props) {
-  const [deletingId, setDeletingId] =
+  const [updatingStatusId, setUpdatingStatusId] =
     useState<number | null>(null);
 
   /**
@@ -59,7 +60,7 @@ export default function CounsellorCards({
     return `/${normalizedPath}`;
   };
 
-  const handleDelete = async (
+  const handleStatusChange = async (
     counsellor: AdminCounsellor,
   ) => {
     const fullName = [
@@ -69,8 +70,14 @@ export default function CounsellorCards({
       .filter(Boolean)
       .join(" ");
 
+    const nextStatus =
+      counsellor.status === "ACTIVE" ? "INACTIVE" : "ACTIVE";
+
+    const actionLabel =
+      nextStatus === "ACTIVE" ? "enable" : "disable";
+
     const confirmed = window.confirm(
-      `Are you sure you want to delete "${fullName}"?`,
+      `Are you sure you want to ${actionLabel} "${fullName}"?`,
     );
 
     if (!confirmed) {
@@ -78,26 +85,27 @@ export default function CounsellorCards({
     }
 
     try {
-      setDeletingId(counsellor.id);
+      setUpdatingStatusId(counsellor.id);
 
-      await deleteAdminCounsellor(
+      await updateAdminCounsellorStatus(
         String(counsellor.id),
+        nextStatus,
       );
 
       window.location.reload();
     } catch (error) {
       console.error(
-        "DELETE COUNSELLOR ERROR:",
+        "UPDATE COUNSELLOR STATUS ERROR:",
         error,
       );
 
       alert(
         error instanceof Error
           ? error.message
-          : "Failed to delete counsellor",
+          : `Failed to ${actionLabel} counsellor`,
       );
     } finally {
-      setDeletingId(null);
+      setUpdatingStatusId(null);
     }
   };
 
@@ -252,19 +260,30 @@ export default function CounsellorCards({
                 <button
                   type="button"
                   disabled={
-                    deletingId === counsellor.id
+                    updatingStatusId === counsellor.id
                   }
                   onClick={() =>
-                    handleDelete(counsellor)
+                    handleStatusChange(counsellor)
                   }
-                  className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-red-100 text-xs font-semibold text-red-500 transition hover:bg-red-50 disabled:opacity-50"
+                  className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:opacity-50 ${
+                    counsellor.status === "ACTIVE"
+                      ? "border-amber-100 text-amber-600 hover:bg-amber-50"
+                      : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
+                  }`}
                 >
-                  <Trash2 className="h-3.5 w-3.5" />
+                  {counsellor.status === "ACTIVE" ? (
+                    <PowerOff className="h-3.5 w-3.5" />
+                  ) : (
+                    <CheckCircle2 className="h-3.5 w-3.5" />
+                  )}
 
-                  {deletingId ===
-                  counsellor.id
-                    ? "Deleting..."
-                    : "Delete"}
+                  {updatingStatusId === counsellor.id
+                    ? counsellor.status === "ACTIVE"
+                      ? "Disabling..."
+                      : "Enabling..."
+                    : counsellor.status === "ACTIVE"
+                      ? "Disable"
+                      : "Enable"}
                 </button>
               </div>
             </div>

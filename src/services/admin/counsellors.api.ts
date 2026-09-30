@@ -3,6 +3,7 @@ import { apiClient } from "@/lib/api-client";
 import type {
   AdminCounsellor,
   CounsellorFormData,
+  CounsellorStatus,
 } from "@/types/admin-counsellor";
 
 export interface AdminCounsellorsMeta {
@@ -21,7 +22,7 @@ export interface AdminCounsellorsParams {
   search?: string;
   specialization?: string;
   languageId?: string;
-  status?: string;
+  status?: CounsellorStatus;
   page?: number;
   limit?: number;
 }
@@ -113,8 +114,14 @@ export function updateAdminCounsellor(
   );
 }
 
-export function deleteAdminCounsellor(id: string) {
-  return apiClient.delete<AdminCounsellor>(
-    `/admin/counsellors/${id}`,
-  );
+export function updateAdminCounsellorStatus(
+  id: string,
+  status: CounsellorStatus,
+) {
+  return apiClient.patch<{
+    message: string;
+    status: CounsellorStatus;
+  }>(`/admin/counsellors/${id}/status`, {
+    status,
+  });
 }

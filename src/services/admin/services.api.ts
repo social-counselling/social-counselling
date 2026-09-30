@@ -64,8 +64,20 @@ export function updateAdminService(
   );
 }
 
-export function deleteAdminService(id: string) {
-  return apiClient.delete<AdminService>(
+export function disableAdminService(id: string) {
+  return apiClient.patch<AdminService>(
     `/admin/services/${id}`,
+    {
+      isActive: false,
+    },
+  );
+}
+
+export function enableAdminService(id: string) {
+  return apiClient.patch<AdminService>(
+    `/admin/services/${id}`,
+    {
+      isActive: true,
+    },
   );
 }

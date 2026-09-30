@@ -21,7 +21,10 @@ import {
   type AdminLanguage,
 } from "@/services/admin/languages.api";
 
-import type { AdminCounsellor } from "@/types/admin-counsellor";
+import type {
+  AdminCounsellor,
+  CounsellorStatus,
+} from "@/types/admin-counsellor";
 
 import CounsellorCards from "./CounsellorCards";
 
@@ -49,7 +52,7 @@ export default function CounsellorsPage() {
 
   const [specialization, setSpecialization] = useState("all");
   const [language, setLanguage] = useState("all");
-  const [status, setStatus] = useState("all");
+  const [status, setStatus] = useState<"all" | CounsellorStatus>("all");
 
   /* ---------------------------------------------------------
    * Languages
@@ -186,8 +189,10 @@ export default function CounsellorsPage() {
   };
 
   const handleStatusChange = (value: string) => {
-    setStatus(value);
-    setPage(1);
+    if (value === "all" || value === "ACTIVE" || value === "INACTIVE") {
+      setStatus(value);
+      setPage(1);
+    }
   };
 
   const resetFilters = () => {
@@ -325,8 +330,6 @@ export default function CounsellorsPage() {
             <option value="ACTIVE">Active</option>
 
             <option value="INACTIVE">Inactive</option>
-
-            <option value="BLOCKED">Blocked</option>
           </select>
 
           {/* RESET */}
