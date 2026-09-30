@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { LogOut, X } from "lucide-react";
+import { logout } from "@/services/auth/auth.api";
+import { clearAccessToken } from "@/lib/auth/auth-storage";
+
+import { usePathname,useRouter  } from "next/navigation";
 
 import { adminNavigation } from "@/data/admin-navigation";
 
@@ -17,6 +20,19 @@ export default function AdminSidebar({
   onClose,
 }: AdminSidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+  try {
+    await logout();
+  } catch {
+    // Continue logout even if the backend request fails.
+  } finally {
+    clearAccessToken();
+    onClose();
+    router.replace("/login");
+  }
+};
 
   const isActive = (href: string) => {
     if (href === "/admin") {
@@ -202,7 +218,20 @@ export default function AdminSidebar({
           </div>
 
         </div>
+{/* Logout */}
+<div className="shrink-0 border-t border-white/10 px-4 py-4">
+  <button
+    type="button"
+    onClick={handleLogout}
+    className="flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium text-white/65 transition hover:bg-white/10 hover:text-white"
+  >
+    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-transparent">
+      <LogOut className="h-[18px] w-[18px]" />
+    </span>
 
+    <span>Logout</span>
+  </button>
+</div>
       </aside>
     </>
   );

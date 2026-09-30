@@ -1,7 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Plus, RefreshCcw, Search, Users } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  RefreshCcw,
+  Search,
+  Users,
+} from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -9,31 +16,115 @@ import {
   type AdminCounsellorsMeta,
 } from "@/services/admin/counsellors.api";
 
+import {
+  getAdminLanguages,
+  type AdminLanguage,
+} from "@/services/admin/languages.api";
+
 import type { AdminCounsellor } from "@/types/admin-counsellor";
 
 import CounsellorCards from "./CounsellorCards";
 
+const PAGE_SIZE = 10;
+const SEARCH_DEBOUNCE_MS = 400;
+
 export default function CounsellorsPage() {
   const [counsellors, setCounsellors] = useState<AdminCounsellor[]>([]);
 
+  const [page, setPage] = useState(1);
+
   const [meta, setMeta] = useState<AdminCounsellorsMeta>({
     page: 1,
-    limit: 10,
+    limit: PAGE_SIZE,
     total: 0,
     totalPages: 1,
   });
 
+  /* ---------------------------------------------------------
+   * Filters
+   * --------------------------------------------------------- */
+
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const [specialization, setSpecialization] = useState("all");
-
   const [language, setLanguage] = useState("all");
-
   const [status, setStatus] = useState("all");
 
-  const [loading, setLoading] = useState(true);
+  /* ---------------------------------------------------------
+   * Languages
+   * --------------------------------------------------------- */
 
+  const [languages, setLanguages] = useState<AdminLanguage[]>([]);
+  const [loadingLanguages, setLoadingLanguages] = useState(true);
+
+  /* ---------------------------------------------------------
+   * UI state
+   * --------------------------------------------------------- */
+
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  /* ---------------------------------------------------------
+   * Debounce search
+   * --------------------------------------------------------- */
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search.trim());
+      setPage(1);
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [search]);
+
+  /* ---------------------------------------------------------
+   * Load active languages
+   * --------------------------------------------------------- */
+
+  useEffect(() => {
+    let mounted = true;
+
+    const loadLanguages = async () => {
+      try {
+        setLoadingLanguages(true);
+
+        const response = await getAdminLanguages();
+
+        if (!mounted) {
+          return;
+        }
+
+        setLanguages(
+          Array.isArray(response)
+            ? response.filter((languageItem) => languageItem.isActive)
+            : [],
+        );
+      } catch (err) {
+        console.error("Failed to load languages:", err);
+
+        if (mounted) {
+          setLanguages([]);
+        }
+      } finally {
+        if (mounted) {
+          setLoadingLanguages(false);
+        }
+      }
+    };
+
+    loadLanguages();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  /* ---------------------------------------------------------
+   * Fetch counsellors
+   * --------------------------------------------------------- */
 
   const fetchCounsellors = useCallback(async () => {
     try {
@@ -41,7 +132,7 @@ export default function CounsellorsPage() {
       setError("");
 
       const response = await getAdminCounsellors({
-        search: search.trim() || undefined,
+        search: debouncedSearch || undefined,
 
         specialization: specialization === "all" ? undefined : specialization,
 
@@ -49,18 +140,18 @@ export default function CounsellorsPage() {
 
         status: status === "all" ? undefined : status,
 
-        page: 1,
-        limit: 10,
+        page,
+        limit: PAGE_SIZE,
       });
 
       setCounsellors(Array.isArray(response.data) ? response.data : []);
 
       setMeta(
         response.meta ?? {
-          page: 1,
-          limit: 10,
+          page,
+          limit: PAGE_SIZE,
           total: 0,
-          totalPages: 0,
+          totalPages: 1,
         },
       );
     } catch (err) {
@@ -69,26 +160,75 @@ export default function CounsellorsPage() {
       setError(
         err instanceof Error ? err.message : "Failed to load counsellors",
       );
+
+      setCounsellors([]);
     } finally {
       setLoading(false);
     }
-  }, [search, specialization, language, status]);
+  }, [debouncedSearch, specialization, language, status, page]);
 
   useEffect(() => {
     fetchCounsellors();
   }, [fetchCounsellors]);
 
+  /* ---------------------------------------------------------
+   * Filter handlers
+   * --------------------------------------------------------- */
+
+  const handleSpecializationChange = (value: string) => {
+    setSpecialization(value);
+    setPage(1);
+  };
+
+  const handleLanguageChange = (value: string) => {
+    setLanguage(value);
+    setPage(1);
+  };
+
+  const handleStatusChange = (value: string) => {
+    setStatus(value);
+    setPage(1);
+  };
+
   const resetFilters = () => {
     setSearch("");
+    setDebouncedSearch("");
     setSpecialization("all");
     setLanguage("all");
     setStatus("all");
+    setPage(1);
   };
+
+  /* ---------------------------------------------------------
+   * Pagination
+   * --------------------------------------------------------- */
+
+  const hasPreviousPage = page > 1;
+  const hasNextPage = page < meta.totalPages;
+
+  const goToPreviousPage = () => {
+    if (!hasPreviousPage || loading) {
+      return;
+    }
+
+    setPage((currentPage) => currentPage - 1);
+  };
+
+  const goToNextPage = () => {
+    if (!hasNextPage || loading) {
+      return;
+    }
+
+    setPage((currentPage) => currentPage + 1);
+  };
+
+  /* ---------------------------------------------------------
+   * Render
+   * --------------------------------------------------------- */
 
   return (
     <div className="p-5 sm:p-6 lg:p-8">
       {/* HEADER */}
-
       <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#238BE6]">
@@ -114,28 +254,30 @@ export default function CounsellorsPage() {
       </div>
 
       {/* FILTERS */}
-
       <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
         <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto_auto_auto_auto]">
           {/* SEARCH */}
-
           <div className="relative min-w-0">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
             <input
+              type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(event) => {
+                setSearch(event.target.value);
+              }}
               placeholder="Search counsellors..."
               className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm outline-none transition placeholder:text-slate-400 focus:border-[#238BE6] focus:bg-white focus:ring-2 focus:ring-[#238BE6]/10"
             />
           </div>
 
           {/* SPECIALIZATION */}
-
           <select
             value={specialization}
-            onChange={(e) => setSpecialization(e.target.value)}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none focus:border-[#238BE6]"
+            onChange={(event) => {
+              handleSpecializationChange(event.target.value);
+            }}
+            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none transition focus:border-[#238BE6] focus:ring-2 focus:ring-[#238BE6]/10"
           >
             <option value="all">All Specializations</option>
 
@@ -151,31 +293,32 @@ export default function CounsellorsPage() {
           </select>
 
           {/* LANGUAGE */}
-
           <select
             value={language}
-            onChange={(e) => setLanguage(e.target.value)}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none focus:border-[#238BE6]"
+            onChange={(event) => {
+              handleLanguageChange(event.target.value);
+            }}
+            disabled={loadingLanguages}
+            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none transition focus:border-[#238BE6] focus:ring-2 focus:ring-[#238BE6]/10 disabled:cursor-not-allowed disabled:bg-slate-50"
           >
-            <option value="all">All Languages</option>
+            <option value="all">
+              {loadingLanguages ? "Loading Languages..." : "All Languages"}
+            </option>
 
-            <option value="English">English</option>
-
-            <option value="Hindi">Hindi</option>
-
-            <option value="Gujarati">Gujarati</option>
-
-            <option value="Telugu">Telugu</option>
-
-            <option value="Kannada">Kannada</option>
+            {languages.map((languageItem) => (
+              <option key={languageItem.id} value={String(languageItem.id)}>
+                {languageItem.name}
+              </option>
+            ))}
           </select>
 
           {/* STATUS */}
-
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none focus:border-[#238BE6]"
+            onChange={(event) => {
+              handleStatusChange(event.target.value);
+            }}
+            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none transition focus:border-[#238BE6] focus:ring-2 focus:ring-[#238BE6]/10"
           >
             <option value="all">All Status</option>
 
@@ -187,7 +330,6 @@ export default function CounsellorsPage() {
           </select>
 
           {/* RESET */}
-
           <button
             type="button"
             onClick={resetFilters}
@@ -199,9 +341,8 @@ export default function CounsellorsPage() {
         </div>
       </div>
 
-      {/* RESULT COUNT */}
-
-      <div className="mb-3 flex items-center justify-between">
+      {/* RESULT SUMMARY */}
+      <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-slate-500">
           Showing{" "}
           <span className="font-semibold text-slate-700">
@@ -215,24 +356,94 @@ export default function CounsellorsPage() {
       </div>
 
       {/* LOADING */}
-
       {loading && (
-        <div className="rounded-2xl border border-slate-200 bg-white p-8 text-center text-sm text-slate-500">
-          Loading counsellors...
+        <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center">
+          <p className="text-sm font-medium text-slate-500">
+            Loading counsellors...
+          </p>
         </div>
       )}
 
       {/* ERROR */}
-
       {!loading && error && (
-        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center text-sm text-red-600">
-          {error}
+        <div className="rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+          <p className="text-sm font-medium text-red-600">{error}</p>
+
+          <button
+            type="button"
+            onClick={fetchCounsellors}
+            className="mt-4 inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700"
+          >
+            <RefreshCcw className="h-4 w-4" />
+            Try Again
+          </button>
         </div>
       )}
 
-      {/* CARDS */}
+      {/* EMPTY */}
+      {!loading && !error && counsellors.length === 0 && (
+        <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100">
+            <Users className="h-5 w-5 text-slate-400" />
+          </div>
 
-      {!loading && !error && <CounsellorCards counsellors={counsellors} />}
+          <h3 className="mt-4 text-sm font-semibold text-slate-700">
+            No counsellors found
+          </h3>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Try changing your search or filters.
+          </p>
+        </div>
+      )}
+
+      {/* COUNSELLOR CARDS */}
+      {!loading && !error && counsellors.length > 0 && (
+        <CounsellorCards counsellors={counsellors} />
+      )}
+
+      {/* PAGINATION */}
+      {!loading && !error && meta.total > 0 && (
+        <div className="mt-5 flex flex-col gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-slate-500">
+            Page{" "}
+            <span className="font-semibold text-slate-700">{meta.page}</span> of{" "}
+            <span className="font-semibold text-slate-700">
+              {meta.totalPages}
+            </span>
+          </p>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={!hasPreviousPage || loading}
+              onClick={goToPreviousPage}
+              className="inline-flex h-9 items-center gap-1 rounded-lg border border-slate-200 px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <ChevronLeft className="h-4 w-4" />
+              Previous
+            </button>
+
+            <span className="min-w-16 text-center text-xs text-slate-500">
+              {meta.page} / {meta.totalPages}
+            </span>
+
+            <button
+              type="button"
+              disabled={!hasNextPage || loading}
+              onClick={goToNextPage}
+              className="inline-flex h-9 items-center gap-1 rounded-lg border border-slate-200 px-3 text-xs font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Next
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+
+          <p className="text-xs text-slate-400">
+            {meta.total} total counsellors
+          </p>
+        </div>
+      )}
     </div>
   );
 }

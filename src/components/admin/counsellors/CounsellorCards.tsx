@@ -129,7 +129,7 @@ export default function CounsellorCards({
                   alt={fullName}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  className="object-cover object-top transition duration-500 group-hover:scale-105"
+                  className="object-contain object-top transition duration-500 group-hover:scale-105"
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-sm text-slate-400">

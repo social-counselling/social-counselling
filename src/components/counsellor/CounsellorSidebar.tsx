@@ -125,6 +125,25 @@ export default function CounsellorSidebar() {
         </div>
       </nav>
 
+      {/* Help */}
+
+      <div className="shrink-0 p-4">
+        <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <p className="text-sm font-semibold text-white">Need Help?</p>
+
+          <p className="mt-1 text-xs leading-5 text-white/50">
+            Check documentation or contact support.
+          </p>
+
+          <button
+            type="button"
+            className="mt-3 w-full rounded-xl bg-white px-3 py-2.5 text-xs font-semibold text-[#103f3d] transition hover:bg-white/90"
+          >
+            Get Help
+          </button>
+        </div>
+      </div>
+
       {/* Logout */}
       <div className="shrink-0 border-t border-gray-200 bg-white p-3">
         <button

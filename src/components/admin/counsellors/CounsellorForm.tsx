@@ -15,6 +15,7 @@ import {
 import CounsellorBasicInfo from "./CounsellorBasicInfo";
 import CounsellorProfessionalInfo from "./CounsellorProfessionalInfo";
 import CounsellorSpecializationEditor from "./CounsellorSpecializationEditor";
+import CounsellorAvailabilityEditor from "./CounsellorAvailabilityEditor";
 
 const emptyCounsellor: CounsellorFormData = {
   user: {
@@ -356,6 +357,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
               data={formData}
               counsellorId={counsellorId}
             />
+            <CounsellorAvailabilityEditor counsellorId={counsellorId} />
 
             {/* BOTTOM ACTIONS */}
 
