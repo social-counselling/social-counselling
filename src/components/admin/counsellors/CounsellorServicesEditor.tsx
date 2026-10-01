@@ -395,7 +395,7 @@ export default function CounsellorServicesEditor({
                 {selected && (
                   <div className="mt-4 border-t border-slate-200 pt-4">
                     <label className="mb-1.5 block text-xs font-semibold text-slate-600">
-                      Price
+                      Fee
                     </label>
 
                     <div className="relative">
