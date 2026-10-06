@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Bell, Menu, Search } from "lucide-react";
 
+import Image from "next/image";
 import { getCurrentUser } from "@/services/auth/auth.api";
 
 interface AdminHeaderProps {
@@ -103,7 +104,7 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition hover:bg-slate-50"
           >
             {user?.profileImageUrl ? (
-              <img
+              <Image
                 src={user.profileImageUrl}
                 alt={fullName}
                 className="h-10 w-10 rounded-full object-cover"

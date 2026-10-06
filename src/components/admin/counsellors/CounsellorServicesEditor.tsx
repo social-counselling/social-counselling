@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Check, Loader2, Plus, Trash2 } from "lucide-react";
+import { Check, Loader2, Plus } from "lucide-react";
 
 import type { CounsellorFormData } from "@/types/admin-counsellor";
 
@@ -30,7 +30,7 @@ interface ServiceItem {
 }
 
 export default function CounsellorServicesEditor({
-  data,
+  
   counsellorId,
 }: Props) {
   const [services, setServices] = useState<ServiceItem[]>([]);

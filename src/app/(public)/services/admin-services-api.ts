@@ -1,4 +1,4 @@
-import type { AdminService ,ServiceFormData ,   } from "@/types/admin-service";
+import type { AdminService, ServiceFormData } from "@/types/admin-service";
 
 export interface AdminServicesMeta {
   page: number;
@@ -24,7 +24,7 @@ export interface AdminServicesParams {
 
 const API_URL =
   process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:3001";
+  "http://backend-social-councelling.vercel.app";
 
 export async function getAdminServices(
   params: AdminServicesParams = {},
@@ -66,9 +66,7 @@ export async function getAdminServices(
   );
 
   if (!response.ok) {
-    throw new Error(
-      `Failed to fetch services: ${response.status}`,
-    );
+    throw new Error(`Failed to fetch services: ${response.status}`);
   }
 
   return response.json();
@@ -88,33 +86,24 @@ export async function createAdminService(
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to create service",
-    );
+    throw new Error(result?.message || "Failed to create service");
   }
 
   return result;
 }
 
-export async function getAdminService(
-  id: string,
-): Promise<AdminService> {
-  const response = await fetch(
-    `${API_URL}/admin/services/${id}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+export async function getAdminService(id: string): Promise<AdminService> {
+  const response = await fetch(`${API_URL}/admin/services/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to fetch service",
-    );
+    throw new Error(result?.message || "Failed to fetch service");
   }
 
   return result;
@@ -124,47 +113,35 @@ export async function updateAdminService(
   id: string,
   data: ServiceFormData,
 ): Promise<AdminService> {
-  const response = await fetch(
-    `${API_URL}/admin/services/${id}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+  const response = await fetch(`${API_URL}/admin/services/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify(data),
+  });
 
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to update service",
-    );
+    throw new Error(result?.message || "Failed to update service");
   }
 
   return result;
 }
 
-export async function deleteAdminService(
-  id: string,
-): Promise<AdminService> {
-  const response = await fetch(
-    `${API_URL}/admin/services/${id}`,
-    {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
+export async function deleteAdminService(id: string): Promise<AdminService> {
+  const response = await fetch(`${API_URL}/admin/services/${id}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+  });
 
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(
-      result?.message || "Failed to delete service",
-    );
+    throw new Error(result?.message || "Failed to delete service");
   }
 
   return result;
