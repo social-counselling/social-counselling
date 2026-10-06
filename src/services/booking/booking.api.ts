@@ -2,7 +2,7 @@ import { apiClient } from "@/lib/api-client";
 
 import type {
   BookingAvailabilityResponse,
-  BookingData,
+  CreateBookingPayload,
   BookingOptionsResponse,
   BookingConfirmation,
 } from "@/types/booking";
@@ -30,7 +30,7 @@ export async function getBookingAvailability(
 }
 
 export async function createBooking(
-  payload: BookingData,
+  payload: CreateBookingPayload,
 ): Promise<BookingConfirmation> {
   const response = await apiClient.post<{
     message: string;

@@ -109,12 +109,15 @@ export default function Step2Service({
                   </div>
 
                   {/* Image */}
+        
                   {service.imageUrl && (
-                    <div className="hidden h-16 w-20 shrink-0 overflow-hidden rounded-xl sm:block">
+                    <div className="relative hidden h-16 w-20 shrink-0 overflow-hidden rounded-xl sm:block">
                       <Image
                         src={service.imageUrl}
                         alt=""
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="80px"
+                        className="object-cover"
                       />
                     </div>
                   )}

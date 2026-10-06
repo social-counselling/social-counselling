@@ -141,7 +141,30 @@ export default function BookSessionShell() {
       try {
         setIsCreatingBooking(true);
 
-        const booking = await createBooking(bookingData);
+        const booking = await createBooking({
+          serviceId: bookingData.serviceId!,
+          counsellorId: bookingData.counsellorId!,
+          counsellorSlotId: bookingData.counsellorSlotId!,
+
+          clientName: bookingData.clientName,
+          clientDob: bookingData.clientDob,
+          gender: bookingData.gender,
+          clientPhone: bookingData.clientPhone,
+          clientEmail: bookingData.clientEmail,
+
+          counseleeSameAsClient: bookingData.counseleeSameAsClient,
+          ...(bookingData.counseleeSameAsClient
+            ? {}
+            : {
+                counseleeName: bookingData.counseleeName,
+                counseleeDob: bookingData.counseleeDob,
+                relationship: bookingData.relationship,
+              }),
+
+          bookingAuthorization: bookingData.bookingAuthorization,
+          termsAccepted: bookingData.termsAccepted,
+          privacyAccepted: bookingData.privacyAccepted,
+        });
 
         setBookingConfirmation(booking);
         setCurrentStep(7);

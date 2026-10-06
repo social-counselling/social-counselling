@@ -146,6 +146,10 @@ export default function Step3Counsellor({
                   (service) => service.category === "EMPATHETIC_LISTENING",
                 );
 
+            const profileImageUrl = counsellor.profileImageUrl
+              ? counsellor.profileImageUrl.replace(/\\/g, "/")
+              : null;
+
             return (
               <button
                 key={counsellor.counsellorId}
@@ -182,13 +186,14 @@ export default function Step3Counsellor({
                   {/* =================================================
                         PROFILE IMAGE
                     ================================================= */}
-
-                  <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full bg-slate-100 sm:h-16 sm:w-16">
-                    {counsellor.profileImageUrl ? (
+                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-slate-100 sm:h-16 sm:w-16">
+                    {profileImageUrl ? (
                       <Image
-                        src={counsellor.profileImageUrl}
+                        src={profileImageUrl}
                         alt={counsellor.name}
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="64px"
+                        className="object-cover"
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-lg font-semibold text-slate-400">

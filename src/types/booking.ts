@@ -89,6 +89,27 @@ export type BookingData = {
   privacyAccepted: boolean;
 };
 
+export type CreateBookingPayload = {
+  serviceId: number;
+  counsellorId: number;
+  counsellorSlotId: number;
+
+  clientName: string;
+  clientDob: string;
+  gender: string;
+  clientPhone: string;
+  clientEmail: string;
+
+  counseleeSameAsClient: boolean;
+  counseleeName?: string;
+  counseleeDob?: string;
+  relationship?: string;
+
+  bookingAuthorization: boolean;
+  termsAccepted: boolean;
+  privacyAccepted: boolean;
+};
+
 export type BookingAvailabilitySlot = {
   counsellorSlotId: number;
   slotId: number;
