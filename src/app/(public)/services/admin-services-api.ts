@@ -22,7 +22,9 @@ export interface AdminServicesParams {
   limit?: number;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://backend-social-councelling.vercel.app";
 
 export async function getAdminServices(
   params: AdminServicesParams = {},
