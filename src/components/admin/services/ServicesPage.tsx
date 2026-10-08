@@ -122,7 +122,7 @@ export default function ServicesPage() {
           >
             <option value="all">All Categories</option>
 
-            <option value="SOCIAL_COUNSELLING">Social Counselling</option>
+            <option className="rounded-xl border border-slate-200 " value="SOCIAL_COUNSELLING">Social Counselling</option>
 
             <option value="EMPATHETIC_LISTENING">Empathetic Listening</option>
           </select>

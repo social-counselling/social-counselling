@@ -24,10 +24,10 @@ export const mainNavigation: NavigationItem[] = [
     label: "Counsellors",
     href: "/counsellors",
   },
-  {
-    label: "Blog",
-    href: "/blog",
-  },
+  // {
+  //   label: "Blog",
+  //   href: "/blog",
+  // },
   {
     label: "What we are NOT",
     href: "/contact",

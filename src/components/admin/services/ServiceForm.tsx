@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Eye, Save, Send } from "lucide-react";
+import { ArrowLeft, Eye, Send } from "lucide-react";
 import Link from "next/link";
 
 import type { ServiceFormData } from "@/types/admin-service";
@@ -134,22 +134,11 @@ export default function ServiceForm({
               type="button"
               disabled={saving}
               onClick={handleSave}
-              className="flex h-10 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
-            >
-              <Save className="h-4 w-4" />
-
-              <span className="hidden sm:inline">Save Draft</span>
-            </button>
-
-            <button
-              type="button"
-              disabled={saving}
-              onClick={handleSave}
               className="flex h-10 items-center gap-2 rounded-xl bg-[#238BE6] px-4 text-sm font-semibold text-white transition hover:bg-[#1477ca] disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
 
-              <span className="hidden sm:inline">Publish</span>
+              <span className="hidden sm:inline">Save</span>
             </button>
           </div>
         </div>

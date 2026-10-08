@@ -69,17 +69,6 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
           >
             <Menu className="h-5 w-5" />
           </button>
-
-          {/* Search */}
-          <div className="relative hidden w-full max-w-[500px] sm:block">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-
-            <input
-              type="search"
-              placeholder="Search anything..."
-              className="h-11 w-full rounded-xl border border-slate-200 bg-slate-50 pl-11 pr-4 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-[#238BE6] focus:bg-white focus:ring-2 focus:ring-[#238BE6]/10"
-            />
-          </div>
         </div>
 
         {/* Right */}
@@ -104,11 +93,15 @@ export default function AdminHeader({ onMenuClick }: AdminHeaderProps) {
             className="flex items-center gap-3 rounded-xl px-2 py-1.5 transition hover:bg-slate-50"
           >
             {user?.profileImageUrl ? (
-              <Image
-                src={user.profileImageUrl}
-                alt={fullName}
-                className="h-10 w-10 rounded-full object-cover"
-              />
+              <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full">
+                <Image
+                  src={user.profileImageUrl.replace(/\\/g, "/")}
+                  alt={fullName}
+                  fill
+                  sizes="40px"
+                  className="object-cover"
+                />
+              </div>
             ) : (
               <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#183b3b] text-sm font-semibold text-white">
                 {initials || "A"}
