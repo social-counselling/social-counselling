@@ -1,5 +1,13 @@
 "use client";
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
 import { useCallback, useEffect, useState } from "react";
 import { Filter, Plus, RefreshCcw, Search } from "lucide-react";
 import Link from "next/link";
@@ -115,31 +123,45 @@ export default function ServicesPage() {
 
           {/* CATEGORY */}
 
-          <select
+          <Select
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none focus:border-[#238BE6]"
+            onValueChange={(value) => setCategory(value ?? "all")}
           >
-            <option value="all">All Categories</option>
+            <SelectTrigger className="h-11 w-full rounded-xl border-slate-200 bg-white text-sm text-slate-600 focus:border-[#238BE6] focus:ring-[#238BE6]/10 lg:w-[190px]">
+              <SelectValue placeholder="Select category" />
+            </SelectTrigger>
 
-            <option className="rounded-xl border border-slate-200 " value="SOCIAL_COUNSELLING">Social Counselling</option>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
 
-            <option value="EMPATHETIC_LISTENING">Empathetic Listening</option>
-          </select>
+              <SelectItem value="SOCIAL_COUNSELLING">
+                Social Counselling
+              </SelectItem>
+
+              <SelectItem value="EMPATHETIC_LISTENING">
+                Empathetic Listening
+              </SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* STATUS */}
 
-          <select
+          <Select
             value={status}
-            onChange={(e) => setStatus(e.target.value)}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none focus:border-[#238BE6]"
+            onValueChange={(value) => setStatus(value ?? "all")}
           >
-            <option value="all">All Status</option>
+            <SelectTrigger className="h-11 w-full rounded-xl border-slate-200 bg-white text-sm text-slate-600 focus:border-[#238BE6] focus:ring-[#238BE6]/10 lg:w-[160px]">
+              <SelectValue placeholder="Select status" />
+            </SelectTrigger>
 
-            <option value="active">Active</option>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
 
-            <option value="inactive">Inactive</option>
-          </select>
+              <SelectItem value="active">Active</SelectItem>
+
+              <SelectItem value="inactive">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* RESET */}
 
