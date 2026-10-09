@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Eye, Send } from "lucide-react";
+import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
 
 import type { ServiceFormData } from "@/types/admin-service";
@@ -122,13 +122,6 @@ export default function ServiceForm({
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              type="button"
-              className="hidden h-10 items-center gap-2 rounded-xl border border-slate-200 px-4 text-sm font-medium text-slate-600 transition hover:bg-slate-50 sm:flex"
-            >
-              <Eye className="h-4 w-4" />
-              Preview
-            </button>
 
             <button
               type="button"

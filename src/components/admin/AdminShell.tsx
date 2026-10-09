@@ -1,9 +1,8 @@
+
 "use client";
 
 import { useState } from "react";
-
 import AdminSidebar from "./AdminSidebar";
-import AdminHeader from "./AdminHeader";
 
 interface AdminShellProps {
   children: React.ReactNode;
@@ -12,39 +11,23 @@ interface AdminShellProps {
 export default function AdminShell({
   children,
 }: AdminShellProps) {
-  const [isSidebarOpen, setIsSidebarOpen] =
-    useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#f5f8f5]">
-
-      {/* Sidebar */}
-
+      {/* Admin Sidebar */}
       <AdminSidebar
         isOpen={isSidebarOpen}
-        onClose={() =>
-          setIsSidebarOpen(false)
-        }
+        onOpen={() => setIsSidebarOpen(true)}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
-      {/* Main Area */}
-
+      {/* Main Content */}
       <div className="min-h-screen lg:pl-[260px]">
-
-        <AdminHeader
-          onMenuClick={() =>
-            setIsSidebarOpen(true)
-          }
-        />
-
-        {/* Page Content */}
-
-        <main className="min-h-[calc(100vh-76px)]">
+        <main className="min-h-screen pt-[70px] lg:pt-0">
           {children}
         </main>
-
       </div>
-
     </div>
   );
 }
