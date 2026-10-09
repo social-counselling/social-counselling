@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, Save, Send } from "lucide-react";
 import Link from "next/link";
 
+import { toast } from "sonner";
+
 import type { CounsellorFormData } from "@/types/admin-counsellor";
 import CounsellorServicesEditor from "./CounsellorServicesEditor";
 import {
@@ -131,6 +133,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
         setError(
           error instanceof Error ? error.message : "Failed to load counsellor",
         );
+        toast.error("Failed to load counsellor.");
       } finally {
         setLoading(false);
       }
@@ -141,17 +144,17 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
 
   const validateForm = () => {
     if (!formData.user.firstName.trim()) {
-      alert("First name is required.");
+      toast.error("First name is required.");
       return false;
     }
 
     if (!formData.user.email.trim()) {
-      alert("Email is required.");
+      toast.error("Email is required.");
       return false;
     }
 
     if (!formData.user.gender) {
-      alert("Gender is required.");
+      toast.error("Gender is required.");
       return false;
     }
 
@@ -209,7 +212,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
 
         console.log("COUNSELLOR UPDATED:", updatedCounsellor);
 
-        alert("Counsellor updated successfully.");
+        toast.success("Counsellor updated successfully.");
       } else {
         /*
          * CREATE MODE
@@ -218,7 +221,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
 
         console.log("COUNSELLOR CREATED:", createdCounsellor);
 
-        alert("Counsellor created successfully.");
+        toast.success("Counsellor created successfully.");
       }
 
       window.location.href = "/admin/counsellors";
@@ -228,7 +231,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
         error,
       );
 
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : isEditMode

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
-
+import { toast } from "sonner";
 import {
   createBooking,
   getBookingOptions,
@@ -171,7 +171,7 @@ export default function BookSessionShell() {
       } catch (error) {
         console.error("Failed to create booking:", error);
 
-        alert(
+        toast.error(
           error instanceof Error
             ? error.message
             : "Unable to create booking. Please try again.",

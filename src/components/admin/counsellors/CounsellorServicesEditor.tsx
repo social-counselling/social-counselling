@@ -5,6 +5,8 @@ import { Check, Loader2, Plus } from "lucide-react";
 
 import type { CounsellorFormData } from "@/types/admin-counsellor";
 
+import { toast } from "sonner";
+
 import {
   createAdminCounsellorService,
   deleteAdminCounsellorService,
@@ -161,7 +163,7 @@ export default function CounsellorServicesEditor({
     );
 
     if (invalidPrice) {
-      alert("Please enter a valid price for every selected service.");
+      toast.error("Please enter a valid price for every selected service.");
       return;
     }
 
@@ -238,11 +240,11 @@ export default function CounsellorServicesEditor({
         }),
       );
 
-      alert("Counsellor services updated successfully.");
+      toast.success("Counsellor services updated successfully.");
     } catch (error) {
       console.error("SAVE COUNSELLOR SERVICES ERROR:", error);
 
-      alert(
+      toast.error(
         error instanceof Error
           ? error.message
           : "Failed to save counsellor services",

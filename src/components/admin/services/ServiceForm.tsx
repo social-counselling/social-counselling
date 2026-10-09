@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ArrowLeft, Send } from "lucide-react";
 import Link from "next/link";
-
+import { toast } from "sonner";
 import type { ServiceFormData } from "@/types/admin-service";
 
 import {
@@ -84,8 +84,8 @@ export default function ServiceForm({
         error,
       );
 
-      alert(
-        error instanceof Error
+      toast.error(
+        error instanceof Error    
           ? error.message
           : mode === "edit"
             ? "Failed to update service"
