@@ -25,17 +25,17 @@ export default function Step1Category({
           Step 1 of 8
         </p>
 
-        <h1 className="mt-3 text-3xl font-semibold leading-tight text-secondary sm:text-4xl">
+        <h1 className="mt-2 text-2xl font-semibold leading-tight text-secondary sm:text-3xl">
           Select Service Category
         </h1>
 
-        <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+        <p className="mt-2 max-w-xl text-xs leading-5 text-slate-600 sm:text-sm">
           Choose the type of support you are looking for to begin your booking.
         </p>
       </div>
 
       {/* Categories */}
-      <div className="mt-8 space-y-4">
+      <div className="mt-5 space-y-3">
         {categories.map((category) => {
           const selected = selectedCategory === category.value;
 
@@ -46,8 +46,8 @@ export default function Step1Category({
               onClick={() => onSelect(category.value)}
               className={`
                 group w-full rounded-2xl border
-                p-5 text-left transition-all
-                duration-200 sm:p-6
+                p-4 text-left transition-all
+                duration-200 sm:p-4
                 ${
                   selected
                     ? "border-primary bg-primary/[0.04] shadow-sm"
@@ -74,11 +74,11 @@ export default function Step1Category({
 
                 {/* Content */}
                 <div className="min-w-0">
-                  <h2 className="text-lg font-semibold text-secondary sm:text-xl">
+                  <h2 className="text-base font-semibold text-secondary sm:text-lg">
                     {category.label}
                   </h2>
 
-                  <p className="mt-1 text-sm leading-6 text-slate-500">
+                  <p className="mt-1 text-xs leading-5 text-slate-500">
                     {category.value === "SOCIAL_COUNSELLING"
                       ? "Professional counselling support for social, personal and relationship concerns."
                       : "A safe and supportive space where you can talk and be heard."}
@@ -91,7 +91,7 @@ export default function Step1Category({
       </div>
 
       {/* Helper text */}
-      <p className="mt-6 text-sm text-slate-500">
+      <p className="mt-4 text-xs text-slate-500">
         Select one option to continue to the next step.
       </p>
     </section>

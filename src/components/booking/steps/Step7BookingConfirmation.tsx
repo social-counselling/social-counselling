@@ -79,7 +79,7 @@ export default function Step7BookingConfirmation({
 }: Step7BookingConfirmationProps) {
   return (
     <section className="flex max-h-[520px] min-h-0 w-full flex-col overflow-hidden">
-      <div className="min-h-0 flex-1 overflow-y-auto pr-1">
+      <div className="min-h-0 flex-1 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-1">
         <div className="space-y-5">
           {/* Success Header */}
           <div className="text-center">

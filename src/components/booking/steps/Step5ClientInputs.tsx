@@ -131,7 +131,7 @@ function InputField({
 }: InputFieldProps) {
   return (
     <div>
-      <label className="mb-1.5 block text-xs font-semibold text-secondary">
+      <label className="mb-1 block text-[11px] font-semibold text-secondary">
         {label}
 
         {required && <span className="ml-1 text-red-500">*</span>}
@@ -153,7 +153,7 @@ function InputField({
           max={max}
           onChange={(event) => onChange(event.target.value)}
           className={`
-            h-10
+            h-9
             w-full
             rounded-lg
             border
@@ -270,7 +270,7 @@ export default function Step5ClientInputs({
     <section
       className="
         flex
-        max-h-[520px]
+        max-h-[500px]
         min-h-0
         w-full
         flex-col
@@ -305,7 +305,7 @@ export default function Step5ClientInputs({
           mt-4
           min-h-0
           flex-1
-          overflow-y-auto
+          overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
           pr-2
           scrollbar-thin
         "
@@ -355,7 +355,7 @@ export default function Step5ClientInputs({
           {/* Gender */}
 
           <div className="mt-3">
-            <label className="mb-1.5 block text-xs font-semibold text-secondary">
+            <label className="mb-1 block text-[11px] font-semibold text-secondary">
               Gender
               <span className="ml-1 text-red-500">*</span>
             </label>
@@ -622,7 +622,7 @@ export default function Step5ClientInputs({
               {/* Relationship */}
 
               <div className="mt-3">
-                <label className="mb-1.5 block text-xs font-semibold text-secondary">
+                <label className="mb-1 block text-[11px] font-semibold text-secondary">
                   Relationship
                   <span className="ml-1 text-red-500">*</span>
                 </label>

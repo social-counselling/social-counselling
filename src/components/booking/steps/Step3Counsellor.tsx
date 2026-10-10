@@ -91,11 +91,11 @@ export default function Step3Counsellor({
           Step 3 of 8
         </p>
 
-        <h1 className="mt-3 text-3xl font-semibold leading-tight text-secondary sm:text-4xl">
+        <h1 className="mt-2 text-2xl font-semibold leading-tight text-secondary sm:text-3xl">
           {title}
         </h1>
 
-        <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+        <p className="mt-2 max-w-xl text-xs leading-5 text-slate-600 sm:text-sm">
           {description}
         </p>
       </div>
@@ -110,9 +110,10 @@ export default function Step3Counsellor({
       <div
         className="
           mt-6
-          max-h-[330px]
+          max-h-[280px]
           space-y-3
           overflow-y-auto
+          [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
           pr-2
           scrollbar-thin
           scrollbar-thumb-slate-300

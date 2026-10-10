@@ -507,8 +507,8 @@ export default function Step4Calendar({
             h-full
             min-h-0
             overflow-y-auto
+            [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
             pr-1
-            scrollbar-thin
           "
         >
           {/* Loading */}

@@ -42,7 +42,7 @@ export default function BookingNavigation({
       <button
         type="button"
         onClick={onNext}
-        disabled={!canContinue || isLoading}
+        disabled={(!canContinue && currentStep !== 5) || isLoading}
         className="
           inline-flex items-center gap-2
           rounded-lg bg-primary

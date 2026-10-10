@@ -128,7 +128,45 @@ export default function BookSessionShell() {
   const canContinue = canContinueBooking(currentStep, bookingData);
 
   const handleNext = async () => {
-    if (!canContinue || isCreatingBooking) {
+    if (isCreatingBooking) return;
+
+    if (currentStep === 5) {
+      const email = bookingData.clientEmail.trim();
+      const phone = bookingData.clientPhone.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
+      const phoneDigits = phone.replace(/\D/g, "");
+      const phonePattern = /^\+?[\d\s().-]+$/;
+
+      if (
+        !bookingData.clientName.trim() ||
+        !bookingData.clientDob ||
+        !bookingData.gender
+      ) {
+        toast.error("Please complete all required client information.");
+        return;
+      }
+      if (!emailPattern.test(email)) {
+        toast.error(
+          "Please enter a valid email address, for example name@example.com.",
+        );
+        return;
+      }
+      if (
+        !phonePattern.test(phone) ||
+        phoneDigits.length < 7 ||
+        phoneDigits.length > 15 ||
+        /^(\d)\1+$/.test(phoneDigits)
+      ) {
+        toast.error("Please enter a valid mobile number with 7–15 digits.");
+        return;
+      }
+      if (!canContinue) {
+        toast.error(
+          "Please check the client and counselee details before continuing.",
+        );
+        return;
+      }
+    } else if (!canContinue) {
       return;
     }
 
@@ -212,8 +250,8 @@ export default function BookSessionShell() {
         BOOKING PROGRESS
        ================================================= */}
       <section className="relative z-10 border-b border-slate-200">
-        <div className="mx-auto w-full max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm sm:px-7">
+        <div className="mx-auto w-full max-w-7xl px-3 py-2 sm:px-5 lg:px-8">
+          <div className="rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm sm:px-5 sm:py-3">
             <BookingProgress currentStep={currentStep} />
           </div>
         </div>
@@ -223,13 +261,13 @@ export default function BookSessionShell() {
         BOOKING AREA
     ================================================= */}
 
-      <section className="mx-auto mt-5 w-full max-w-7xl px-4 pb-8 sm:px-6 lg:px-8">
-        <div className="grid min-h-[650px] overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_10px_40px_rgba(15,23,42,0.08)] lg:grid-cols-[42%_58%]">
+      <section className="mx-auto mt-3 w-full max-w-7xl px-3 pb-4 sm:px-5 lg:px-8">
+        <div className="grid overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_10px_40px_rgba(15,23,42,0.08)] lg:h-[calc(100vh-245px)] lg:min-h-[480px] lg:max-h-[690px] lg:grid-cols-[40%_60%]">
           {/* =================================================
             FIXED IMAGE
         ================================================= */}
 
-          <div className="relative hidden min-h-[650px] overflow-hidden lg:block">
+          <div className="relative hidden h-full min-h-0 overflow-hidden lg:block">
             <Image
               src="/images/booking/BookingPage.png"
               alt="Social Counselling booking"
@@ -263,7 +301,7 @@ export default function BookSessionShell() {
             FORM CONTAINER
         ================================================= */}
 
-          <div className="flex min-w-0 items-start justify-center p-5 sm:p-8 lg:p-10 xl:p-12">
+          <div className="flex min-h-0 min-w-0 items-start justify-center p-4 sm:p-5 lg:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:p-6 xl:p-7">
             <div className="w-full max-w-2xl">
               {/* Loading */}
               {loadingOptions && (
@@ -325,6 +363,7 @@ export default function BookSessionShell() {
                           counsellorSlotId: null,
                           bookingDate: "",
                         });
+                        setCurrentStep(isEmpatheticListening ? 3 : 2);
                       }}
                     />
                   )}
@@ -334,13 +373,14 @@ export default function BookSessionShell() {
                       services={options.services}
                       selectedServiceId={bookingData.serviceId}
                       selectedCategory={bookingData.category}
-                      onSelect={(serviceId) =>
+                      onSelect={(serviceId) => {
                         updateBookingData({
                           serviceId,
                           counsellorId: null,
                           counsellorSlotId: null,
-                        })
-                      }
+                        });
+                        setCurrentStep(3);
+                      }}
                     />
                   )}
 
@@ -350,13 +390,14 @@ export default function BookSessionShell() {
                       selectedCounsellorId={bookingData.counsellorId}
                       selectedServiceId={bookingData.serviceId}
                       selectedCategory={bookingData.category}
-                      onSelect={(counsellorId) =>
+                      onSelect={(counsellorId) => {
                         updateBookingData({
                           counsellorId,
                           counsellorSlotId: null,
                           bookingDate: "",
-                        })
-                      }
+                        });
+                        setCurrentStep(4);
+                      }}
                     />
                   )}
                   {currentStep === 4 && options && (
@@ -371,12 +412,14 @@ export default function BookSessionShell() {
                       }
                       selectedSlotId={bookingData.counsellorSlotId}
                       selectedDate={bookingData.bookingDate}
-                      onSelectSlot={(slotId, date) =>
+                      onSelectSlot={(slotId, date) => {
                         updateBookingData({
                           counsellorSlotId: slotId,
                           bookingDate: date,
-                        })
-                      }
+                        });
+                        // Automatically continue only after an actual time slot is selected.
+                        if (slotId !== null) setCurrentStep(5);
+                      }}
                     />
                   )}
 

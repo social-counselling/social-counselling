@@ -33,17 +33,17 @@ export default function Step2Service({
           Step 2 of 8
         </p>
 
-        <h1 className="mt-3 text-3xl font-semibold leading-tight text-secondary sm:text-4xl">
+        <h1 className="mt-2 text-2xl font-semibold leading-tight text-secondary sm:text-3xl">
           Select a Service
         </h1>
 
-        <p className="mt-3 max-w-xl text-sm leading-6 text-slate-600 sm:text-base">
+        <p className="mt-2 max-w-xl text-xs leading-5 text-slate-600 sm:text-sm">
           Choose the counselling service that best matches your needs.
         </p>
       </div>
 
       {/* Services */}
-      <div className="mt-8 max-h-[390px] space-y-4 overflow-y-auto pr-2">
+      <div className="mt-8 max-h-[390px] space-y-4 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-2">
         {categoryServices.length === 0 ? (
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center">
             <p className="text-sm text-slate-500">
@@ -61,9 +61,9 @@ export default function Step2Service({
                 onClick={() => onSelect(service.serviceId)}
                 className={`
                   group w-full rounded-2xl border
-                  p-5 text-left
+                  p-4 text-left
                   transition-all duration-200
-                  sm:p-6
+                  sm:p-4
                   ${
                     selected
                       ? "border-primary bg-primary/[0.04] shadow-sm"
@@ -93,8 +93,8 @@ export default function Step2Service({
                   <div className="min-w-0 flex-1">
                     <h2
                       className={`
-                        text-lg font-semibold
-                        sm:text-xl
+                        text-base font-semibold
+                        sm:text-lg
                         ${selected ? "text-primary" : "text-secondary"}
                       `}
                     >
@@ -102,14 +102,14 @@ export default function Step2Service({
                     </h2>
 
                     {service.subtitle && (
-                      <p className="mt-1 text-sm leading-6 text-slate-500">
+                      <p className="mt-1 text-xs leading-5 text-slate-500">
                         {service.subtitle}
                       </p>
                     )}
                   </div>
 
                   {/* Image */}
-        
+
                   {service.imageUrl && (
                     <div className="relative hidden h-16 w-20 shrink-0 overflow-hidden rounded-xl sm:block">
                       <Image
@@ -128,7 +128,7 @@ export default function Step2Service({
         )}
       </div>
 
-      <p className="mt-6 text-sm text-slate-500">
+      <p className="mt-4 text-xs text-slate-500">
         Select one service to continue.
       </p>
     </section>
