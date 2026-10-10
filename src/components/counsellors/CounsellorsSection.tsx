@@ -1,10 +1,24 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Container from "@/components/common/Container";
 import SectionSideLeaves from "@/components/common/SectionSideLeaves";
-import { counsellorsData } from "@/data/counsellors";
+import type { CounsellorData } from "@/data/counsellors";
+import { getPublicCounsellors } from "@/services/public/public-content.api";
 import CounsellorCard from "./CounsellorCard";
 
 export default function CounsellorsSection() {
+  const [counsellors, setCounsellors] = useState<CounsellorData[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getPublicCounsellors()
+      .then((items) => { if (!cancelled) setCounsellors(items); })
+      .catch((error: unknown) => console.error("Failed to load public counsellors:", error));
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <main className="relative overflow-hidden bg-[#fcfdf9]">
       <section className="relative mt-22 overflow-hidden bg-[#edf6e9] py-20 sm:py-24 lg:py-28">
@@ -56,7 +70,7 @@ export default function CounsellorsSection() {
         <SectionSideLeaves />
         <Container className="relative z-10">
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {counsellorsData.map((counsellor) => (
+            {counsellors.map((counsellor) => (
               <CounsellorCard key={counsellor.id} counsellor={counsellor} />
             ))}
           </div>

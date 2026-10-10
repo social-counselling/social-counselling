@@ -1,9 +1,26 @@
+export interface StructuredServiceSubSection {
+  id?: string;
+  title: string;
+  content: string[];
+}
+
+export interface StructuredServiceSection {
+  id?: string;
+  title: string;
+  content: string[];
+  subSections?: StructuredServiceSubSection[];
+}
+
+export interface StructuredServiceContent {
+  sections: StructuredServiceSection[];
+}
+
 export interface ServiceDetailData {
   slug: string;
   title: string;
   subtitle: string;
   image: string;
-  content: string;
+  content: string | StructuredServiceContent;
 }
 
 export const serviceDetails = [

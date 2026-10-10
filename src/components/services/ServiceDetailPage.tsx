@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check, ChevronRight } from "lucide-react";
 
 import Container from "@/components/common/Container";
-import type { ServiceDetailData } from "@/data/service-details";
+import type { ServiceDetailData, StructuredServiceContent, StructuredServiceSection } from "@/data/service-details";
 
 interface ServiceDetailPageProps {
   service: ServiceDetailData;
@@ -240,6 +240,91 @@ function ContentRenderer({ content }: { content: string }) {
   );
 }
 
+function StructuredContentRenderer({ content }: { content: StructuredServiceContent }) {
+  const sections = Array.isArray(content.sections) ? content.sections : [];
+
+  return (
+    <div className="space-y-12 sm:space-y-14">
+      {sections.map((section: StructuredServiceSection, index) => {
+        const paragraphs = Array.isArray(section.content)
+          ? section.content.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+          : [];
+        const subSections = Array.isArray(section.subSections) ? section.subSections : [];
+
+        return (
+          <section key={section.id || `${section.title}-${index}`} className="scroll-mt-24">
+            <div className="mb-5 flex items-start gap-4">
+              <span className="mt-1 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#168f91]/10 text-sm font-bold text-[#168f91]">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <div className="min-w-0 flex-1">
+                <h2 className="font-serif text-2xl font-semibold leading-tight text-[#123b69] sm:text-3xl lg:text-4xl">
+                  {section.title}
+                </h2>
+                <div className="mt-3 h-1 w-14 rounded-full bg-[#168f91]/60" />
+              </div>
+            </div>
+
+            {paragraphs.length > 0 && (
+              <div className="ml-0 space-y-4 sm:ml-[52px]">
+                {paragraphs.map((paragraph, paragraphIndex) => (
+                  <p key={`${section.id || index}-p-${paragraphIndex}`} className="text-sm leading-7 text-[#294766] sm:text-base sm:leading-8">
+                    <InlineText text={paragraph} />
+                  </p>
+                ))}
+              </div>
+            )}
+
+            {subSections.length > 0 && (
+              <div className="mt-6 grid gap-4 sm:ml-[52px] sm:grid-cols-2">
+                {subSections.map((subSection, subIndex) => {
+                  const items = Array.isArray(subSection.content)
+                    ? subSection.content.filter((item): item is string => typeof item === "string" && item.trim().length > 0)
+                    : [];
+
+                  return (
+                    <article
+                      key={subSection.id || `${subSection.title}-${subIndex}`}
+                      className="rounded-2xl border border-[#dcebd5] bg-[#fbfdf8] p-5 shadow-[0_6px_20px_rgba(24,59,59,0.04)] sm:p-6"
+                    >
+                      <h3 className="font-serif text-lg font-semibold leading-snug text-[#123b69] sm:text-xl">
+                        {subSection.title}
+                      </h3>
+                      {items.length > 0 && (
+                        <ul className="mt-4 space-y-3">
+                          {items.map((item, itemIndex) => (
+                            <li key={itemIndex} className="flex items-start gap-3 text-sm leading-6 text-[#294766] sm:text-base sm:leading-7">
+                              <Check className="mt-1 h-4 w-4 shrink-0 text-[#168f91]" />
+                              <span><InlineText text={item} /></span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
+function getServiceIntro(content: ServiceDetailData["content"]): string {
+  if (typeof content === "string") {
+    return cleanLine(content.split("\n").find(Boolean) ?? "");
+  }
+
+  for (const section of content.sections ?? []) {
+    const firstParagraph = section.content?.find((item) => typeof item === "string" && item.trim());
+    if (firstParagraph) return firstParagraph;
+  }
+
+  return "Explore the service, understand the support available, and consider a constructive way forward.";
+}
+
 export default function ServiceDetailPage({
   service,
   relatedServices,
@@ -298,7 +383,7 @@ export default function ServiceDetailPage({
 
               <div className="mt-6 max-w-2xl">
                 <p className="text-sm leading-7 text-[#294766] sm:text-base sm:leading-8">
-                  {cleanLine(service.content.split("\n").find(Boolean) ?? "")}
+                  {getServiceIntro(service.content)}
                 </p>
               </div>
 
@@ -409,7 +494,11 @@ export default function ServiceDetailPage({
               </div>
             </div>
 
-            <ContentRenderer content={service.content} />
+            {typeof service.content === "string" ? (
+              <ContentRenderer content={service.content} />
+            ) : (
+              <StructuredContentRenderer content={service.content} />
+            )}
           </div>
         </Container>
       </section>

@@ -1,16 +1,7 @@
 import { notFound } from "next/navigation";
 
-import {
-  counsellorsData,
-  getCounsellorBySlug,
-} from "@/data/counsellors";
 import CounsellorProfilePage from "@/components/counsellors/CounsellorProfilePage";
-
-export function generateStaticParams() {
-  return counsellorsData.map((counsellor) => ({
-    slug: counsellor.slug,
-  }));
-}
+import { getPublicCounsellorById } from "@/services/public/public-content.api";
 
 export default async function CounsellorPage({
   params,
@@ -18,9 +9,7 @@ export default async function CounsellorPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const counsellor = getCounsellorBySlug(slug);
-
+  const counsellor = await getPublicCounsellorById(slug);
   if (!counsellor) notFound();
-
   return <CounsellorProfilePage counsellor={counsellor} />;
 }

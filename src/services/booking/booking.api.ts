@@ -39,3 +39,32 @@ export async function createBooking(
 
   return response.booking;
 }
+
+import type {
+  BookingListQuery,
+  BookingListResponse,
+} from "@/types/booking-list";
+
+/** Retrieve bookings across all counsellors. The backend restricts this to admins. */
+export async function getAdminBookings(
+  query: BookingListQuery = {},
+): Promise<BookingListResponse> {
+  return apiClient.get<BookingListResponse>("/booking/admin", {
+    page: query.page ?? 1,
+    limit: query.limit ?? 10,
+    status: query.status || undefined,
+    search: query.search?.trim() || undefined,
+  });
+}
+
+/** Retrieve bookings assigned to the authenticated counsellor only. */
+export async function getCounsellorBookings(
+  query: BookingListQuery = {},
+): Promise<BookingListResponse> {
+  return apiClient.get<BookingListResponse>("/booking/counsellor", {
+    page: query.page ?? 1,
+    limit: query.limit ?? 10,
+    status: query.status || undefined,
+    search: query.search?.trim() || undefined,
+  });
+}

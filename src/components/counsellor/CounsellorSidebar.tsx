@@ -44,16 +44,16 @@ const navigation = [
     href: "/counsellor/bookings",
     icon: CalendarDays,
   },
-  {
-    label: "My Clients",
-    href: "/counsellor/clients",
-    icon: Users,
-  },
-  {
-    label: "Reviews",
-    href: "/counsellor/reviews",
-    icon: Star,
-  },
+  // {
+  //   label: "My Clients",
+  //   href: "/counsellor/clients",
+  //   icon: Users,
+  // },
+  // {
+  //   label: "Reviews",
+  //   href: "/counsellor/reviews",
+  //   icon: Star,
+  // },
   {
     label: "Settings",
     href: "/counsellor/settings",

@@ -44,29 +44,29 @@ export const adminNavigation: AdminNavigationItem[] = [
     href: "/admin/bookings",
     icon: CalendarDays,
   },
-  {
-    label: "Users",
-    href: "/admin/users",
-    icon: Users,
-  },
-  {
-    label: "Inquiries",
-    href: "/admin/inquiries",
-    icon: MessageSquare,
-  },
-  {
-    label: "Payments",
-    href: "/admin/payments",
-    icon: CreditCard,
-  },
-  {
-    label: "Reports",
-    href: "/admin/reports",
-    icon: BarChart3,
-  },
-  {
-    label: "Settings",
-    href: "/admin/settings",
-    icon: Settings,
-  },
+  // {
+  //   label: "Users",
+  //   href: "/admin/users",
+  //   icon: Users,
+  // },
+  // {
+  //   label: "Inquiries",
+  //   href: "/admin/inquiries",
+  //   icon: MessageSquare,
+  // },
+  // {
+  //   label: "Payments",
+  //   href: "/admin/payments",
+  //   icon: CreditCard,
+  // },
+  // {
+  //   label: "Reports",
+  //   href: "/admin/reports",
+  //   icon: BarChart3,
+  // },
+  // {
+  //   label: "Settings",
+  //   href: "/admin/settings",
+  //   icon: Settings,
+  // },
 ];

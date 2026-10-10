@@ -1,14 +1,27 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import Container from "@/components/common/Container";
-import { servicesPageData } from "@/data/services";
+import { servicesPageCopy } from "@/data/services-page-copy";
+import { getPublicServices } from "@/services/public/public-content.api";
+import type { ServiceCardData } from "@/data/services";
 
 import ServiceGroup from "./ServiceGroup";
 import SectionSideLeaves from "../common/SectionSideLeaves";
 
 export default function ServicesSection() {
+  const [services, setServices] = useState<ServiceCardData[]>([]);
+
+  useEffect(() => {
+    let cancelled = false;
+    getPublicServices()
+      .then((items) => { if (!cancelled) setServices(items); })
+      .catch((error: unknown) => console.error("Failed to load public services:", error));
+    return () => { cancelled = true; };
+  }, []);
+
   return (
     <main className="relative overflow-hidden bg-[#fcfdf9]">
 
@@ -184,7 +197,7 @@ export default function ServicesSection() {
                 lg:text-4xl
               "
             >
-              {servicesPageData.eyebrow}
+              {servicesPageCopy.eyebrow}
             </p>
 
             {/* =================================================
@@ -217,7 +230,7 @@ export default function ServicesSection() {
                 xl:text-[60px]
               "
             >
-              {servicesPageData.title}
+              {servicesPageCopy.title}
             </h1>
 
             {/* =================================================
@@ -270,7 +283,7 @@ export default function ServicesSection() {
                 lg:leading-7
               "
             >
-              {servicesPageData.description}
+              {servicesPageCopy.description}
             </p>
 
           </div>
@@ -425,7 +438,7 @@ export default function ServicesSection() {
             "
           >
             <ServiceGroup
-              services={servicesPageData.services.slice(0, 3)}
+              services={services.slice(0, 3)}
               imagePosition="right"
               imageSrc="/images/services/Mr Courage1.png"
               imageAlt="Social Counselling professional"
@@ -479,7 +492,7 @@ export default function ServicesSection() {
           <div className="mx-auto max-w-6xl">
 
             <ServiceGroup
-              services={servicesPageData.services.slice(3, 6)}
+              services={services.slice(3, 6)}
               imagePosition="left"
               imageSrc="/images/services/Ms Resilience1.png"
               imageAlt="Social Counselling professional"
@@ -534,7 +547,7 @@ export default function ServicesSection() {
           <div className="mx-auto max-w-6xl">
 
             <ServiceGroup
-              services={servicesPageData.services.slice(6, 9)}
+              services={services.slice(6, 9)}
               imagePosition="right"
               imageSrc="/images/services/Mrs Hope1.png"
               imageAlt="Social Counselling professional"
@@ -590,7 +603,7 @@ export default function ServicesSection() {
           <div className="mx-auto max-w-6xl">
 
             <ServiceGroup
-              services={servicesPageData.services.slice(9, 12)}
+              services={services.slice(9, 12)}
               imagePosition="left"
               imageSrc="/images/services/Mr Gratitude1.png"
               imageAlt="Social Counselling professional"
