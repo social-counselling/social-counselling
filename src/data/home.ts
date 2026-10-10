@@ -17,7 +17,7 @@ export interface CounsellingType {
   title: string;
   subtitle: string;
   href: string;
-  icon:string;
+  icon: string;
 }
 
 /* =========================================================
@@ -43,11 +43,11 @@ export const heroData = {
    ========================================================= */
 
 export const counsellingTypes: CounsellingType[] = [
- {
+  {
     id: "teenagers",
     title: "Teenagers Counselling",
     subtitle: "Building confidence, nurturing values",
-    href: "/services/teenagers",
+    href: "/services/teenage-counselling",
     icon: "/images/icons/teenagers.png",
   },
   {
@@ -61,28 +61,24 @@ export const counsellingTypes: CounsellingType[] = [
     id: "senior-citizens",
     title: "Senior Citizens Counselling",
     subtitle: "Transition, relationship and care",
-    href: "/services/senior-citizens",
+    href: "/services/senior-citizens-counselling",
     icon: "/images/icons/senior-citizens.png",
   },
   {
     id: "individual",
     title: "Individual Counselling",
     subtitle: "Guidance to the right path with clarity",
-    href: "/services/individual",
+    href: "/services/individual-counselling",
     icon: "/images/icons/individual.png",
   },
   {
     id: "corporate",
     title: "Corporate Employee Counselling",
     subtitle: "Navigating workplace challenges",
-    href: "/services/corporate",
+    href: "/services/corporate-employee-counselling",
     icon: "/images/icons/corporate.png",
   },
-
-
 ];
-
-
 
 /* =========================================================
    MARRIAGE COUNSELLING TYPES
@@ -92,19 +88,19 @@ export const marriageServices = [
   {
     id: "pre-marriage",
     title: "Pre-marriage Counselling",
-    href: "/services/pre-marriage-counselling",
+    href: "/services/pre-marriage",
   },
 
   {
     id: "post-marriage",
     title: "Post-marriage Counselling",
-    href: "/services/post-marriage-counselling",
+    href: "/services/post-marriage",
   },
 
   {
     id: "compatibility",
     title: "Compatibility Assessment/Check",
-    href: "/services/compatibility-assessment",
+    href: "/services/marriage-compatibility-assessment",
   },
 ];
 /* =========================================================
@@ -135,8 +131,7 @@ export const homeIntroduction = {
 export const socialCounsellingData = {
   eyebrow: "Social Counselling",
 
-  title:
-    "Someone who can listen, understand, reflect, mentor and guide.",
+  title: "Someone who can listen, understand, reflect, mentor and guide.",
 
   paragraphs: [
     "That is where Social Counselling comes in.",
@@ -154,8 +149,7 @@ export const socialCounsellingData = {
 export const principlesData = {
   eyebrow: "Our Approach",
 
-  title:
-    "Our approach is built around three fundamental principles.",
+  title: "Our approach is built around three fundamental principles.",
 
   principles: [
     {
@@ -188,8 +182,7 @@ export const principlesData = {
 export const individualityData = {
   eyebrow: "Every Person Is Different",
 
-  title:
-    "There is therefore no one-size-fits-all answer.",
+  title: "There is therefore no one-size-fits-all answer.",
 
   description:
     "We believe that every person and every situation is different. The nature and extent of guidance will depend upon the individual, the circumstances, their understanding and their willingness to reflect and act.",
@@ -202,8 +195,7 @@ export const individualityData = {
 export const counsellingHelpData = {
   eyebrow: "When Social Counselling Can Help",
 
-  title:
-    "Support for where you are in life.",
+  title: "Support for where you are in life.",
 
   introduction:
     "Social Counselling can be helpful when you are already facing a difficulty—whether involving yourself, your family, relationships or an important life decision.",
@@ -256,8 +248,7 @@ export const counsellingHelpData = {
 export const ourRoleData = {
   eyebrow: "Our Role",
 
-  title:
-    "Our role is not to make decisions on your behalf.",
+  title: "Our role is not to make decisions on your behalf.",
 
   paragraphs: [
     "Nor do we claim to have a ready-made answer for every situation.",
