@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ArrowLeft, Save, Send } from "lucide-react";
 import Link from "next/link";
 
@@ -14,6 +14,9 @@ import {
   updateAdminCounsellor,
 } from "@/services/admin/counsellors.api";
 
+import {
+  createAdminCounsellorService,
+} from "@/services/admin/counsellor-services.api";
 import CounsellorBasicInfo from "./CounsellorBasicInfo";
 import CounsellorProfessionalInfo from "./CounsellorProfessionalInfo";
 import CounsellorSpecializationEditor from "./CounsellorSpecializationEditor";
@@ -54,6 +57,16 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
   const [saving, setSaving] = useState(false);
 
   const [error, setError] = useState<string | null>(null);
+  const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
+  const [sharedServicePrice, setSharedServicePrice] = useState("");
+
+  const handlePendingServicesChange = useCallback(
+    (serviceIds: number[], price: string) => {
+      setSelectedServiceIds(serviceIds);
+      setSharedServicePrice(price);
+    },
+    [],
+  );
 
   const updateField = <K extends keyof CounsellorFormData>(
     field: K,
@@ -166,6 +179,12 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
       return;
     }
 
+    if (!isEditMode && selectedServiceIds.length > 0 &&
+      (!sharedServicePrice.trim() || !Number.isFinite(Number(sharedServicePrice)) || Number(sharedServicePrice) <= 0)) {
+      toast.error("Enter one valid fee greater than ₹0 for the selected services.");
+      return;
+    }
+
     setSaving(true);
 
     try {
@@ -219,7 +238,25 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
          */
         const createdCounsellor = await createAdminCounsellor(payload);
 
-        console.log("COUNSELLOR CREATED:", createdCounsellor);
+        // Service assignments require the counsellor ID, so create them
+        // after the counsellor record exists. No backend changes are needed.
+        if (selectedServiceIds.length > 0) {
+          const createdId = Number(createdCounsellor.id);
+          if (!Number.isFinite(createdId) || createdId <= 0) {
+            throw new Error("Counsellor was created, but its ID was not returned. Services could not be assigned.");
+          }
+
+          const price = Number(sharedServicePrice);
+          await Promise.all(
+            selectedServiceIds.map((serviceId) =>
+              createAdminCounsellorService({
+                counsellorId: createdId,
+                serviceId,
+                price,
+              }),
+            ),
+          );
+        }
 
         toast.success("Counsellor created successfully.");
       }
@@ -359,6 +396,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
             <CounsellorServicesEditor
               data={formData}
               counsellorId={counsellorId}
+              onPendingChange={handlePendingServicesChange}
             />
             <CounsellorAvailabilityEditor counsellorId={counsellorId} />
 
