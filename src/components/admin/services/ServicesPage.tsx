@@ -8,13 +8,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Filter, Plus, RefreshCcw, Search } from "lucide-react";
 import Link from "next/link";
 
 import {
   getAdminServices,
-  type AdminServicesMeta,
 } from "@/services/admin/services.api";
 
 import type { AdminService } from "@/types/admin-service";
@@ -22,14 +21,10 @@ import type { AdminService } from "@/types/admin-service";
 import ServiceCards from "./ServiceCards";
 
 export default function ServicesPage() {
-  const [services, setServices] = useState<AdminService[]>([]);
+  const [allServices, setAllServices] = useState<AdminService[]>([]);
 
-  const [meta, setMeta] = useState<AdminServicesMeta>({
-    page: 1,
-    limit: 10,
-    total: 0,
-    totalPages: 1,
-  });
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 10;
 
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
@@ -43,37 +38,41 @@ export default function ServicesPage() {
     try {
       setLoading(true);
       setError("");
-
-      const response = await getAdminServices({
-        search: search.trim() || undefined,
-
-        category: category === "all" ? undefined : category,
-
-        isActive: status === "all" ? undefined : status === "active",
-
-        page: 1,
-        limit: 10,
-      });
-
-      setServices(response.data);
-      setMeta(response.meta);
+      // Load the catalogue once; all interactive filters run in the browser.
+      const response = await getAdminServices({ page: 1, limit: 1000 });
+      setAllServices(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error("Failed to fetch services:", err);
-
       setError(err instanceof Error ? err.message : "Failed to load services");
     } finally {
       setLoading(false);
     }
-  }, [search, category, status]);
+  }, []);
 
   useEffect(() => {
     fetchServices();
   }, [fetchServices]);
 
+  const filteredServices = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return allServices.filter((service) => {
+      const matchesSearch = !query || [service.title, service.slug ?? "", service.subtitle ?? ""]
+        .some((value) => value.toLowerCase().includes(query));
+      const matchesCategory = category === "all" || service.category === category;
+      const matchesStatus = status === "all" || service.isActive === (status === "active");
+      return matchesSearch && matchesCategory && matchesStatus;
+    }).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0) || a.title.localeCompare(b.title));
+  }, [allServices, search, category, status]);
+
+  useEffect(() => { setPage(1); }, [search, category, status]);
+  const totalPages = Math.max(1, Math.ceil(filteredServices.length / PAGE_SIZE));
+  const services = filteredServices.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+
   const resetFilters = () => {
     setSearch("");
     setCategory("all");
     setStatus("all");
+    setPage(1);
   };
 
   return (
@@ -185,7 +184,7 @@ export default function ServicesPage() {
           <span className="font-semibold text-slate-700">
             {services.length}
           </span>{" "}
-          of <span className="font-semibold text-slate-700">{meta.total}</span>{" "}
+          of <span className="font-semibold text-slate-700">{filteredServices.length}</span>{" "}
           services
         </p>
 
@@ -214,6 +213,16 @@ export default function ServicesPage() {
       {/* SERVICES */}
 
       {!loading && !error && <ServiceCards services={services} />}
+
+      {!loading && !error && filteredServices.length > PAGE_SIZE && (
+        <div className="mt-5 flex items-center justify-between rounded-xl border border-slate-200 bg-white px-4 py-3">
+          <p className="text-xs text-slate-500">Page {page} of {totalPages}</p>
+          <div className="flex gap-2">
+            <button type="button" disabled={page <= 1} onClick={() => setPage((value) => value - 1)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs disabled:opacity-40">Previous</button>
+            <button type="button" disabled={page >= totalPages} onClick={() => setPage((value) => value + 1)} className="rounded-lg border border-slate-200 px-3 py-2 text-xs disabled:opacity-40">Next</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

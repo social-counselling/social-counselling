@@ -105,6 +105,25 @@ export default function ServiceBasicInfo({ data, onChange }: Props) {
           </p>
         </div>
 
+        {/* PUBLIC DISPLAY ORDER */}
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Public Display Order <span className="ml-1 text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            min={0}
+            step={1}
+            value={Number.isFinite(data.sortOrder) ? data.sortOrder : 0}
+            onChange={(e) => onChange("sortOrder", Math.max(0, Math.trunc(Number(e.target.value) || 0)))}
+            className="input-admin"
+            placeholder="1"
+          />
+          <p className="mt-1.5 text-xs text-slate-400">
+            Lower numbers appear first on the public services page. Use 1 for the first position.
+          </p>
+        </div>
+
         {/* HERO IMAGE */}
 
         <div className="sm:col-span-2">

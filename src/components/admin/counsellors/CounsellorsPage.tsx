@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,10 +11,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-import {
-  getAdminCounsellors,
-  type AdminCounsellorsMeta,
-} from "@/services/admin/counsellors.api";
+import { getAdminCounsellors } from "@/services/admin/counsellors.api";
 
 import {
   getAdminLanguages,
@@ -29,26 +26,19 @@ import type {
 import CounsellorCards from "./CounsellorCards";
 
 const PAGE_SIZE = 10;
-const SEARCH_DEBOUNCE_MS = 400;
 
 export default function CounsellorsPage() {
-  const [counsellors, setCounsellors] = useState<AdminCounsellor[]>([]);
+  const [allCounsellors, setAllCounsellors] = useState<AdminCounsellor[]>([]);
 
   const [page, setPage] = useState(1);
 
-  const [meta, setMeta] = useState<AdminCounsellorsMeta>({
-    page: 1,
-    limit: PAGE_SIZE,
-    total: 0,
-    totalPages: 1,
-  });
+
 
   /* ---------------------------------------------------------
    * Filters
    * --------------------------------------------------------- */
 
   const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
 
   const [specialization, setSpecialization] = useState("all");
   const [language, setLanguage] = useState("all");
@@ -67,21 +57,6 @@ export default function CounsellorsPage() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  /* ---------------------------------------------------------
-   * Debounce search
-   * --------------------------------------------------------- */
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search.trim());
-      setPage(1);
-    }, SEARCH_DEBOUNCE_MS);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, [search]);
 
   /* ---------------------------------------------------------
    * Load active languages
@@ -133,46 +108,39 @@ export default function CounsellorsPage() {
     try {
       setLoading(true);
       setError("");
-
-      const response = await getAdminCounsellors({
-        search: debouncedSearch || undefined,
-
-        specialization: specialization === "all" ? undefined : specialization,
-
-        languageId: language === "all" ? undefined : language,
-
-        status: status === "all" ? undefined : status,
-
-        page,
-        limit: PAGE_SIZE,
-      });
-
-      setCounsellors(Array.isArray(response.data) ? response.data : []);
-
-      setMeta(
-        response.meta ?? {
-          page,
-          limit: PAGE_SIZE,
-          total: 0,
-          totalPages: 1,
-        },
-      );
+      // Fetch the counsellor list once; search and filters are client-side.
+      const response = await getAdminCounsellors({ page: 1, limit: 1000 });
+      setAllCounsellors(Array.isArray(response.data) ? response.data : []);
     } catch (err) {
       console.error("Failed to fetch counsellors:", err);
-
-      setError(
-        err instanceof Error ? err.message : "Failed to load counsellors",
-      );
-
-      setCounsellors([]);
+      setError(err instanceof Error ? err.message : "Failed to load counsellors");
+      setAllCounsellors([]);
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, specialization, language, status, page]);
+  }, []);
 
-  useEffect(() => {
-    fetchCounsellors();
-  }, [fetchCounsellors]);
+  useEffect(() => { fetchCounsellors(); }, [fetchCounsellors]);
+
+  const filteredCounsellors = useMemo(() => {
+    const query = search.trim().toLowerCase();
+    return allCounsellors.filter((counsellor) => {
+      const fullName = `${counsellor.user?.firstName ?? ""} ${counsellor.user?.lastName ?? ""}`.toLowerCase();
+      const matchesSearch = !query || [fullName, counsellor.user?.email ?? "", counsellor.user?.phone ?? ""]
+        .some((value) => value.toLowerCase().includes(query));
+      const specializations = Array.isArray(counsellor.specializations) ? counsellor.specializations : [];
+      const matchesSpecialization = specialization === "all" || specializations.some((item) => item.toLowerCase() === specialization.toLowerCase());
+      const languagesForCounsellor = Array.isArray(counsellor.languages) ? counsellor.languages : [];
+      const matchesLanguage = language === "all" || languagesForCounsellor.some((item) => String(item.id) === language) || (Array.isArray(counsellor.languageIds) && counsellor.languageIds.some((id) => String(id) === language));
+      const matchesStatus = status === "all" || counsellor.status === status;
+      return matchesSearch && matchesSpecialization && matchesLanguage && matchesStatus;
+    }).sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  }, [allCounsellors, search, specialization, language, status]);
+
+  useEffect(() => { setPage(1); }, [search, specialization, language, status]);
+  const totalPages = Math.max(1, Math.ceil(filteredCounsellors.length / PAGE_SIZE));
+  const counsellors = filteredCounsellors.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const meta = { page, limit: PAGE_SIZE, total: filteredCounsellors.length, totalPages };
 
   /* ---------------------------------------------------------
    * Filter handlers
@@ -197,7 +165,6 @@ export default function CounsellorsPage() {
 
   const resetFilters = () => {
     setSearch("");
-    setDebouncedSearch("");
     setSpecialization("all");
     setLanguage("all");
     setStatus("all");

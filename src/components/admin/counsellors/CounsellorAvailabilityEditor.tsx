@@ -14,6 +14,7 @@ import { getAdminSlots, type AdminSlot } from "@/services/admin/slots.api";
 
 interface Props {
   counsellorId?: string;
+  onPendingChange?: (date: string, slotIds: number[]) => void;
 }
 
 function getTodayDate() {
@@ -43,7 +44,7 @@ function formatTime(time: string) {
   });
 }
 
-export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
+export default function CounsellorAvailabilityEditor({ counsellorId, onPendingChange }: Props) {
   const isEditMode = Boolean(counsellorId);
 
   const [date, setDate] = useState(getTodayDate());
@@ -130,6 +131,10 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
 
     loadAvailability();
   }, [counsellorId, date]);
+
+  useEffect(() => {
+    if (!isEditMode) onPendingChange?.(date, selectedSlotIds);
+  }, [isEditMode, onPendingChange, date, selectedSlotIds]);
 
   /*
    * Existing assignments by slot ID.
@@ -247,50 +252,6 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
     }
   };
 
-  /*
-   * Create mode.
-   *
-   * Counsellor ID does not exist until the counsellor
-   * has been created.
-   */
-  if (!isEditMode) {
-    return (
-      <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-200 px-5 py-5 sm:px-6">
-          <div className="flex items-start gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#238BE6]">
-              <CalendarDays className="h-5 w-5" />
-            </div>
-
-            <div>
-              <h2 className="text-base font-semibold text-[#183b3b]">
-                Availability
-              </h2>
-
-              <p className="mt-1 text-sm text-slate-500">
-                Save the counsellor first to configure availability.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-5 sm:p-6">
-          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 px-5 py-8 text-center">
-            <CalendarDays className="mx-auto h-8 w-8 text-slate-400" />
-
-            <p className="mt-3 text-sm font-medium text-slate-700">
-              Availability will be available after creation.
-            </p>
-
-            <p className="mt-1 text-xs text-slate-500">
-              Create the counsellor first, then add dates and time slots.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="rounded-2xl border border-slate-200 bg-white shadow-sm">
       {/* HEADER */}
@@ -308,8 +269,9 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
               </h2>
 
               <p className="mt-1 text-sm text-slate-500">
-                Select the date and time slots when this counsellor is
-                available.
+                {isEditMode
+                  ? "Select the date and time slots when this counsellor is available."
+                  : "Choose availability now. Selected slots will be saved after you create the counsellor."}
               </p>
             </div>
           </div>
@@ -396,7 +358,7 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {slots.map((slot) => {
                 const assignment = assignmentMap.get(slot.id);
 
@@ -413,7 +375,7 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
                     disabled={isBooked}
                     onClick={() => toggleSlot(slot.id)}
                     className={[
-                      "relative flex min-h-[72px] items-center justify-between rounded-xl border px-4 py-3 text-left transition",
+                      "relative flex min-h-[54px] items-center justify-between gap-2 rounded-xl border px-3 py-2 text-left transition",
                       isBooked
                         ? "cursor-not-allowed border-amber-200 bg-amber-50"
                         : isSelected
@@ -424,7 +386,7 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
                     ].join(" ")}
                   >
                     <div>
-                      <p className="text-sm font-semibold text-slate-800">
+                      <p className="text-xs font-semibold leading-5 text-slate-800">
                         {formatTime(slot.startTime)} -{" "}
                         {formatTime(slot.endTime)}
                       </p>
@@ -457,7 +419,7 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
                             : "border-slate-300 bg-white text-transparent",
                         ].join(" ")}
                       >
-                        <Check className="h-4 w-4" />
+                        <Check className="h-3 w-3" />
                       </span>
                     )}
                   </button>
@@ -469,26 +431,25 @@ export default function CounsellorAvailabilityEditor({ counsellorId }: Props) {
 
         {/* SAVE */}
 
-        <div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-500">
-            Changes apply only to{" "}
+            {isEditMode ? "Changes apply only to " : "These slots will be assigned for "}
             <span className="font-semibold text-slate-700">{date}</span>.
           </p>
 
-          <button
-            type="button"
-            disabled={saving || loadingSlots || loadingAvailability}
-            onClick={handleSave}
-            className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 text-sm font-semibold text-white transition hover:bg-[#1477ca] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {saving ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Save className="h-4 w-4" />
-            )}
-
-            {saving ? "Saving..." : "Save Availability"}
-          </button>
+          {isEditMode ? (
+            <button
+              type="button"
+              disabled={saving || loadingSlots || loadingAvailability}
+              onClick={handleSave}
+              className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 text-sm font-semibold text-white transition hover:bg-[#1477ca] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              {saving ? "Saving..." : "Save Availability"}
+            </button>
+          ) : (
+            <p className="text-xs font-medium text-[#238BE6]">{selectedSlotIds.length} slots ready to assign after creation</p>
+          )}
         </div>
       </div>
     </section>

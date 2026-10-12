@@ -14,9 +14,8 @@ import {
   updateAdminCounsellor,
 } from "@/services/admin/counsellors.api";
 
-import {
-  createAdminCounsellorService,
-} from "@/services/admin/counsellor-services.api";
+import { createAdminCounsellorService } from "@/services/admin/counsellor-services.api";
+import { createAdminCounsellorSlot } from "@/services/admin/counsellor-slots.api";
 import CounsellorBasicInfo from "./CounsellorBasicInfo";
 import CounsellorProfessionalInfo from "./CounsellorProfessionalInfo";
 import CounsellorSpecializationEditor from "./CounsellorSpecializationEditor";
@@ -59,6 +58,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
   const [sharedServicePrice, setSharedServicePrice] = useState("");
+  const [pendingAvailability, setPendingAvailability] = useState<{ date: string; slotIds: number[] }>({ date: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }), slotIds: [] });
 
   const handlePendingServicesChange = useCallback(
     (serviceIds: number[], price: string) => {
@@ -258,6 +258,24 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
           );
         }
 
+        // Availability can be selected before creation in the UI; persist it
+        // after the new counsellor ID exists.
+        if (pendingAvailability.slotIds.length > 0) {
+          const createdId = Number(createdCounsellor.id);
+          if (!Number.isFinite(createdId) || createdId <= 0) {
+            throw new Error("Counsellor was created, but its ID was not returned. Availability could not be assigned.");
+          }
+          await Promise.all(
+            pendingAvailability.slotIds.map((slotId) =>
+              createAdminCounsellorSlot({
+                counsellorId: createdId,
+                slotId,
+                date: pendingAvailability.date,
+              }),
+            ),
+          );
+        }
+
         toast.success("Counsellor created successfully.");
       }
 
@@ -398,7 +416,10 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
               counsellorId={counsellorId}
               onPendingChange={handlePendingServicesChange}
             />
-            <CounsellorAvailabilityEditor counsellorId={counsellorId} />
+            <CounsellorAvailabilityEditor
+              counsellorId={counsellorId}
+              onPendingChange={(date, slotIds) => setPendingAvailability({ date, slotIds })}
+            />
 
             {/* BOTTOM ACTIONS */}
 
