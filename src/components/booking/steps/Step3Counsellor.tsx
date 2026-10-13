@@ -109,15 +109,8 @@ export default function Step3Counsellor({
 
       <div
         className="
-          mt-6
-          max-h-[280px]
-          space-y-3
-          overflow-y-auto
-          [scrollbar-width:none] [&::-webkit-scrollbar]:hidden
-          pr-2
-          scrollbar-thin
-          scrollbar-thumb-slate-300
-          scrollbar-track-transparent
+          mt-6 grid max-h-[330px] grid-cols-1 gap-2 overflow-y-auto pr-1
+          [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid-cols-2
         "
       >
         {availableCounsellors.length === 0 ? (
@@ -155,17 +148,11 @@ export default function Step3Counsellor({
               <button
                 key={counsellor.counsellorId}
                 type="button"
+                title={[counsellor.bio, counsellor.mantra].filter(Boolean).join(" — ") || counsellor.name}
                 onClick={() => onSelect(counsellor.counsellorId)}
                 className={`
-                    group
-                    w-full
-                    rounded-2xl
-                    border
-                    p-4
-                    text-left
-                    transition-all
-                    duration-200
-                    sm:p-5
+                    group min-w-0 w-full rounded-xl border p-3 text-left
+                    transition-all duration-200
 
                     ${
                       selected
@@ -183,11 +170,11 @@ export default function Step3Counsellor({
                     }
                   `}
               >
-                <div className="flex items-start gap-4">
+                <div className="flex min-w-0 items-center gap-2.5">
                   {/* =================================================
                         PROFILE IMAGE
                     ================================================= */}
-                  <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full bg-slate-100 sm:h-16 sm:w-16">
+                  <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-slate-100">
                     {profileImageUrl ? (
                       <Image
                         src={profileImageUrl}
@@ -197,7 +184,7 @@ export default function Step3Counsellor({
                         className="object-cover"
                       />
                     ) : (
-                      <div className="flex h-full w-full items-center justify-center text-lg font-semibold text-slate-400">
+                      <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-slate-400">
                         {counsellor.name.charAt(0).toUpperCase()}
                       </div>
                     )}
@@ -214,9 +201,8 @@ export default function Step3Counsellor({
                         <h2
                           className={`
                               truncate
-                              text-base
+                              text-sm
                               font-semibold
-                              sm:text-lg
 
                               ${selected ? "text-primary" : "text-secondary"}
                             `}
@@ -235,8 +221,8 @@ export default function Step3Counsellor({
                       <div
                         className={`
                             flex
-                            h-6
-                            w-6
+                            h-4
+                            w-4
                             shrink-0
                             items-center
                             justify-center

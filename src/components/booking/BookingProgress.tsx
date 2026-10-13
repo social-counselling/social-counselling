@@ -25,57 +25,28 @@ export default function BookingProgress({ currentStep }: BookingProgressProps) {
           const isLast = index === steps.length - 1;
 
           return (
-            <div key={step.id} className="flex flex-1 items-start">
-              {/* Step */}
-              <div className="flex w-full flex-col items-center">
-                {/* Circle */}
-                <div
-                  className={`
-                    flex h-7 w-7 items-center justify-center
-                    rounded-full border-2
-                    text-[10px] font-semibold
-                    transition-all duration-300
-                    ${
-                      isCompleted
-                        ? "border-primary bg-primary text-white"
-                        : isActive
-                          ? "border-primary bg-white text-primary shadow-[0_0_0_4px_rgba(32,128,113,0.10)]"
-                          : "border-slate-300 bg-white text-slate-500"
-                    }
-                  `}
-                >
-                  {isCompleted ? <Check className="h-3.5 w-3.5" /> : step.id}
-                </div>
-
-                {/* Label */}
-                <span
-                  className={`
-                    mt-1.5 whitespace-nowrap
-                    text-[9px] font-medium
-                    sm:text-[10px] lg:text-[11px]
-                    ${
-                      isActive
-                        ? "font-semibold text-primary"
-                        : isCompleted
-                          ? "text-secondary"
-                          : "text-slate-500"
-                    }
-                  `}
-                >
-                  {step.label}
-                </span>
+            <div key={step.id} className="relative flex min-w-0 flex-1 flex-col items-center">
+              <div
+                className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-[10px] font-semibold transition-all duration-300 ${
+                  isCompleted
+                    ? "border-primary bg-primary text-white"
+                    : isActive
+                      ? "border-primary bg-white text-primary shadow-[0_0_0_4px_rgba(32,128,113,0.10)]"
+                      : "border-slate-300 bg-white text-slate-500"
+                }`}
+              >
+                {isCompleted ? <Check className="h-3.5 w-3.5" /> : step.id}
               </div>
 
-              {/* Connector */}
               {!isLast && (
-                <div
-                  className={`
-                    mt-[13px] h-px flex-1
-                    transition-colors duration-300
-                    ${isCompleted ? "bg-primary" : "bg-slate-200"}
-                  `}
-                />
+                <div className="absolute left-[calc(50%+14px)] top-[12px] z-0 h-[3px] w-[calc(100%-28px)] overflow-hidden rounded-full bg-slate-200" aria-hidden="true">
+                  <span className={`absolute inset-y-0 left-0 rounded-full bg-primary transition-[width] duration-500 ease-out ${isCompleted ? "w-full" : "w-0"}`} />
+                </div>
               )}
+
+              <span className={`mt-1.5 whitespace-nowrap text-[9px] font-medium sm:text-[10px] lg:text-[11px] ${isActive ? "font-semibold text-primary" : isCompleted ? "text-secondary" : "text-slate-500"}`}>
+                {step.label}
+              </span>
             </div>
           );
         })}

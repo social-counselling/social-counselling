@@ -5,13 +5,9 @@ import { ArrowRight } from "lucide-react";
 import Container from "@/components/common/Container";
 import Button from "@/components/ui/Button";
 
-import {
-  counsellingTypes,
-  heroData,
-} from "@/data/home";
+import { counsellingTypes, heroData } from "@/data/home";
 
 import MarriageServiceCard from "./MarriageServiceCard";
-
 
 /* =========================================================
    SERVICE CARD
@@ -78,11 +74,7 @@ function ServiceCard({
           bg-white
           shadow-sm
 
-          ${
-            compact
-              ? "h-11 w-11"
-              : "h-[48px] w-[48px]"
-          }
+          ${compact ? "h-11 w-11" : "h-[48px] w-[48px]"}
         `}
       >
         <Image
@@ -110,11 +102,7 @@ function ServiceCard({
             leading-tight
             text-secondary
 
-            ${
-              compact
-                ? "line-clamp-2 text-[10px]"
-                : "text-sm xl:text-[13px]"
-            }
+            ${compact ? "line-clamp-2 text-[10px]" : "text-sm xl:text-[13px]"}
           `}
         >
           {service.title}
@@ -164,19 +152,9 @@ function ServiceCard({
    SERVICE LIST
    ========================================================= */
 
-function ServiceList({
-  compact = false,
-}: {
-  compact?: boolean;
-}) {
+function ServiceList({ compact = false }: { compact?: boolean }) {
   return (
-    <div
-      className={
-        compact
-          ? "flex flex-col gap-2"
-          : "flex flex-col gap-2.5"
-      }
-    >
+    <div className={compact ? "flex flex-col gap-2" : "flex flex-col gap-2.5"}>
       {counsellingTypes.map((service) =>
         service.id === "marriage" ? (
           <MarriageServiceCard
@@ -185,12 +163,8 @@ function ServiceList({
             compact={compact}
           />
         ) : (
-          <ServiceCard
-            key={service.id}
-            service={service}
-            compact={compact}
-          />
-        )
+          <ServiceCard key={service.id} service={service} compact={compact} />
+        ),
       )}
     </div>
   );
@@ -217,61 +191,44 @@ export default function HeroSection() {
           md:max-h-[1080px]
         "
       >
-       <Image
-  src={heroData.image}
-  alt="Social Counselling"
-  width={1536}
-  height={864}
-  priority
-  sizes="100vw"
-  className="
+        <Image
+          src={heroData.image}
+          alt="Social Counselling"
+          width={1536}
+          height={864}
+          priority
+          sizes="100vw"
+          className="
     block
     h-auto
     w-full
-z-0
-    md:absolute
-    md:inset-y-0
-    md:right-0
-    md:left-auto
-    md:h-full
-    md:w-[calc(100%_-_160px)]
+    z-0
 
+    md:absolute
+    md:inset-0
+    md:h-full
+    md:w-full
     md:object-cover
     md:object-center
   "
-/>
+        />
 
-{/* ===================================================
+        {/* ===================================================
     LEFT WHITE GRADIENT
     Keeps the service-card area clean
     =================================================== */}
 
-<div
-  className="
-    pointer-events-none
-    absolute
-    inset-y-0
-    left-0
-    z-10
-    hidden
-    w-[430px]
-    bg-gradient-to-r
-    from-white
-    via-white/95
-    to-transparent
-    md:block
-    lg:w-[470px]
-    xl:w-[520px]
-  "
-  aria-hidden="true"
-/>
+        <div
+         
+          aria-hidden="true"
+        />
 
         {/* ===================================================
             DESKTOP SERVICE CARDS
             =================================================== */}
 
         <Container
-  className="
+          className="
     pointer-events-none
     absolute
     inset-0
@@ -279,7 +236,7 @@ z-0
     hidden
     xl:block
   "
->
+        >
           <div
             className="
               pointer-events-auto
@@ -309,7 +266,6 @@ z-0
               "
             >
               View All Services
-
               <ArrowRight className="h-4 w-4" />
             </Button>
           </div>
@@ -364,17 +320,16 @@ z-0
                 "
               >
                 View All Services
-
                 <ArrowRight className="h-3.5 w-3.5" />
               </Button>
             </div>
           </div>
         </Container>
       </div>
-       {/* =====================================================
+      {/* =====================================================
                  Wave
                  ===================================================== */}
-     <div
+      <div
         className="
           pointer-events-none
           absolute
@@ -395,7 +350,7 @@ z-0
           className="absolute bottom-0 h-full w-full"
         >
           <path
-             fill="#E8F5E9"
+            fill="#E8F5E9"
             d="
               M0 65
               C120 95 210 112 340 102

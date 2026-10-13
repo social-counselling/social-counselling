@@ -1,7 +1,6 @@
 "use client";
 
 import { Check } from "lucide-react";
-import Image from "next/image";
 
 import type { BookingService } from "@/types/booking";
 
@@ -22,8 +21,17 @@ export default function Step2Service({
   onSelect,
 }: Step2ServiceProps) {
   const categoryServices = services
-    .filter((service) => service.category === selectedCategory)
-    .sort((a, b) => a.sortOrder - b.sortOrder);
+    .filter((service) =>
+      service.category === selectedCategory ||
+      (selectedCategory === "SOCIAL_COUNSELLING" &&
+        service.category === "EMPATHETIC_LISTENING"),
+    )
+    .sort((a, b) => {
+      const aEmpathetic = a.category === "EMPATHETIC_LISTENING";
+      const bEmpathetic = b.category === "EMPATHETIC_LISTENING";
+      if (aEmpathetic !== bEmpathetic) return aEmpathetic ? 1 : -1;
+      return a.sortOrder - b.sortOrder;
+    });
 
   return (
     <section>
@@ -43,7 +51,7 @@ export default function Step2Service({
       </div>
 
       {/* Services */}
-      <div className="mt-8 max-h-[390px] space-y-4 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden pr-2">
+      <div className="mt-6 grid max-h-[390px] grid-cols-1 gap-2 overflow-y-auto pr-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:grid-cols-2">
         {categoryServices.length === 0 ? (
           <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6 text-center">
             <p className="text-sm text-slate-500">
@@ -58,12 +66,12 @@ export default function Step2Service({
               <button
                 key={service.serviceId}
                 type="button"
+                title={service.subtitle || service.title}
                 onClick={() => onSelect(service.serviceId)}
                 className={`
-                  group w-full rounded-2xl border
-                  p-4 text-left
+                  group flex min-h-[54px] w-full items-center gap-2 rounded-xl border
+                  px-3 py-2.5 text-left
                   transition-all duration-200
-                  sm:p-4
                   ${
                     selected
                       ? "border-primary bg-primary/[0.04] shadow-sm"
@@ -71,11 +79,11 @@ export default function Step2Service({
                   }
                 `}
               >
-                <div className="flex items-start gap-4">
+                <div className="flex min-w-0 flex-1 items-center gap-2.5">
                   {/* Selection */}
                   <div
                     className={`
-                      mt-0.5 flex h-6 w-6
+                      flex h-4 w-4
                       shrink-0 items-center
                       justify-center rounded-full
                       border-2
@@ -89,38 +97,12 @@ export default function Step2Service({
                     {selected && <Check className="h-3.5 w-3.5 text-white" />}
                   </div>
 
-                  {/* Content */}
+                  {/* Compact service name; details appear on hover via tooltip */}
                   <div className="min-w-0 flex-1">
-                    <h2
-                      className={`
-                        text-base font-semibold
-                        sm:text-lg
-                        ${selected ? "text-primary" : "text-secondary"}
-                      `}
-                    >
+                    <h2 className={`truncate text-xs font-semibold sm:text-sm ${selected ? "text-primary" : "text-secondary"}`}>
                       {service.title}
                     </h2>
-
-                    {service.subtitle && (
-                      <p className="mt-1 text-xs leading-5 text-slate-500">
-                        {service.subtitle}
-                      </p>
-                    )}
                   </div>
-
-                  {/* Image */}
-
-                  {service.imageUrl && (
-                    <div className="relative hidden h-16 w-20 shrink-0 overflow-hidden rounded-xl sm:block">
-                      <Image
-                        src={service.imageUrl}
-                        alt=""
-                        fill
-                        sizes="80px"
-                        className="object-cover"
-                      />
-                    </div>
-                  )}
                 </div>
               </button>
             );

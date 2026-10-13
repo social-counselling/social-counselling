@@ -426,6 +426,8 @@ export default function BookSessionShell() {
                   {currentStep === 5 && (
                     <Step5ClientInputs
                       bookingData={bookingData}
+                      serviceId={bookingData.serviceId}
+                      serviceSlug={options.services.find((service) => service.serviceId === bookingData.serviceId)?.slug ?? null}
                       onChange={updateBookingData}
                     />
                   )}

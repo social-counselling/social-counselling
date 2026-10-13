@@ -1,11 +1,13 @@
 "use client";
 
 import { CalendarDays, Mail, Phone, User, Users } from "lucide-react";
+import { toast } from "sonner";
 
 import type { BookingData } from "@/types/booking";
 interface Step5ClientInputsProps {
   bookingData: BookingData;
-
+  serviceId: number | null;
+  serviceSlug: string | null;
   onChange: (data: Partial<BookingData>) => void;
 }
 
@@ -182,9 +184,13 @@ function InputField({
 
 export default function Step5ClientInputs({
   bookingData,
+  serviceId,
+  serviceSlug,
   onChange,
 }: Step5ClientInputsProps) {
   const today = getTodayDate();
+  const isTeenageCounselling =
+    serviceId === 13 || serviceSlug === "teenage-counselling";
 
   /*
    * ----------------------------------------------------
@@ -251,19 +257,21 @@ export default function Step5ClientInputs({
    */
 
   const handleCounseleeDobChange = (value: string) => {
-    /*
-     * Changing DOB can change the
-     * allowed relationship list.
-     *
-     * Clear old relationship so that
-     * an invalid relationship cannot
-     * remain selected.
-     */
+    const selectedAge = calculateAge(value);
+    if (
+      !bookingData.counseleeSameAsClient &&
+      !isTeenageCounselling &&
+      selectedAge !== null &&
+      selectedAge < 18
+    ) {
+      toast.error(
+        "Counselees must be 18 or older for this service. Under-18 bookings are only available for Teenage / Youth Counselling.",
+      );
+      return;
+    }
 
-    onChange({
-      counseleeDob: value,
-      relationship: "",
-    });
+    // Changing DOB can change the allowed relationship list.
+    onChange({ counseleeDob: value, relationship: "" });
   };
 
   return (
@@ -613,7 +621,11 @@ export default function Step5ClientInputs({
                   value={bookingData.counseleeDob}
                   type="date"
                   required
-                  max={today}
+                  max={isTeenageCounselling ? today : (() => {
+                    const cutoff = new Date();
+                    cutoff.setFullYear(cutoff.getFullYear() - 18);
+                    return `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, "0")}-${String(cutoff.getDate()).padStart(2, "0")}`;
+                  })()}
                   icon={<CalendarDays className="h-3.5 w-3.5" />}
                   onChange={handleCounseleeDobChange}
                 />

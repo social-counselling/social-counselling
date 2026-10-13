@@ -210,8 +210,7 @@ export default function Step6ConsentPayment({
               title="Booking Authorization"
               description={
                 <>
-                  I confirm that I am authorized to make this booking and that
-                  the information provided is accurate.
+                  I hereby confirm that I am authorised to request and book Social Counselling services for the proposed Counselee identified in this booking. In case the Counselee is a minor, I understand that counselling service can only be booked by parents / legal guardian.
                 </>
               }
               icon={<LockKeyhole className="h-3.5 w-3.5" />}
