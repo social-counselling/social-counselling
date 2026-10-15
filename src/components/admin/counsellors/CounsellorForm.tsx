@@ -58,12 +58,36 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [selectedServiceIds, setSelectedServiceIds] = useState<number[]>([]);
   const [sharedServicePrice, setSharedServicePrice] = useState("");
-  const [pendingAvailability, setPendingAvailability] = useState<{ date: string; slotIds: number[] }>({ date: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }), slotIds: [] });
+  const [pendingAvailability, setPendingAvailability] = useState<{
+    date: string;
+    slotIds: number[];
+  }>({
+    date: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }),
+    slotIds: [],
+  });
 
   const handlePendingServicesChange = useCallback(
     (serviceIds: number[], price: string) => {
       setSelectedServiceIds(serviceIds);
       setSharedServicePrice(price);
+    },
+    [],
+  );
+
+  const handlePendingAvailabilityChange = useCallback(
+    (date: string, slotIds: number[]) => {
+      setPendingAvailability((current) => {
+        const sameDate = current.date === date;
+        const sameSlots =
+          current.slotIds.length === slotIds.length &&
+          current.slotIds.every((id, index) => id === slotIds[index]);
+
+        if (sameDate && sameSlots) {
+          return current;
+        }
+
+        return { date, slotIds };
+      });
     },
     [],
   );
@@ -179,9 +203,16 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
       return;
     }
 
-    if (!isEditMode && selectedServiceIds.length > 0 &&
-      (!sharedServicePrice.trim() || !Number.isFinite(Number(sharedServicePrice)) || Number(sharedServicePrice) <= 0)) {
-      toast.error("Enter one valid fee greater than ₹0 for the selected services.");
+    if (
+      !isEditMode &&
+      selectedServiceIds.length > 0 &&
+      (!sharedServicePrice.trim() ||
+        !Number.isFinite(Number(sharedServicePrice)) ||
+        Number(sharedServicePrice) <= 0)
+    ) {
+      toast.error(
+        "Enter one valid fee greater than ₹0 for the selected services.",
+      );
       return;
     }
 
@@ -202,7 +233,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
 
           phone: formData.user.phone?.trim() || undefined,
 
-          profileImageUrl: formData.user.profileImageUrl?.trim() || undefined,
+          profileImageUrl: formData.user.profileImageUrl?.trim(),
         },
 
         credentials: formData.credentials?.trim() || undefined,
@@ -243,7 +274,9 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
         if (selectedServiceIds.length > 0) {
           const createdId = Number(createdCounsellor.id);
           if (!Number.isFinite(createdId) || createdId <= 0) {
-            throw new Error("Counsellor was created, but its ID was not returned. Services could not be assigned.");
+            throw new Error(
+              "Counsellor was created, but its ID was not returned. Services could not be assigned.",
+            );
           }
 
           const price = Number(sharedServicePrice);
@@ -263,7 +296,9 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
         if (pendingAvailability.slotIds.length > 0) {
           const createdId = Number(createdCounsellor.id);
           if (!Number.isFinite(createdId) || createdId <= 0) {
-            throw new Error("Counsellor was created, but its ID was not returned. Availability could not be assigned.");
+            throw new Error(
+              "Counsellor was created, but its ID was not returned. Availability could not be assigned.",
+            );
           }
           await Promise.all(
             pendingAvailability.slotIds.map((slotId) =>
@@ -416,11 +451,11 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
               counsellorId={counsellorId}
               onPendingChange={handlePendingServicesChange}
             />
+
             <CounsellorAvailabilityEditor
               counsellorId={counsellorId}
-              onPendingChange={(date, slotIds) => setPendingAvailability({ date, slotIds })}
+              onPendingChange={handlePendingAvailabilityChange}
             />
-
             {/* BOTTOM ACTIONS */}
 
             <div className="flex flex-col-reverse gap-3 border-t border-slate-200 pt-6 sm:flex-row sm:justify-end">

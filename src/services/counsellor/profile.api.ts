@@ -45,6 +45,7 @@ export interface CounsellorProfile {
 }
 
 export interface UpdateCounsellorProfileRequest {
+  profileImageUrl?: string | null;
   credentials?: string;
   bio?: string;
   mantra?: string;

@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useState } from "react";
 import {
   BriefcaseBusiness,
@@ -13,6 +15,8 @@ import {
   X,
 } from "lucide-react";
 
+import ImageUploadField from "@/components/admin/ImageUploadField";
+import { resolveImageUrl } from "@/lib/image-url";
 import {
   getCounsellorProfile,
   updateCounsellorProfile,
@@ -39,6 +43,7 @@ export default function CounsellorProfile() {
     experienceYears: "",
     experienceText: "",
     specializations: "",
+    profileImageUrl: "",
   });
 
   useEffect(() => {
@@ -82,6 +87,7 @@ export default function CounsellorProfile() {
           : "",
       experienceText: counsellor.experienceText ?? "",
       specializations: counsellor.specializations?.join(", ") ?? "",
+      profileImageUrl: counsellor.user.profileImageUrl ?? "",
     });
 
     setError("");
@@ -138,6 +144,7 @@ export default function CounsellorProfile() {
         experienceText: form.experienceText.trim() || undefined,
 
         specializations,
+        profileImageUrl: form.profileImageUrl,
       });
 
       console.log("UPDATED COUNSELLOR PROFILE RESPONSE:", updated);
@@ -231,11 +238,16 @@ export default function CounsellorProfile() {
       <div className="mt-6 rounded-xl border border-gray-200 bg-white p-6">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
           {counsellor.user.profileImageUrl ? (
-            <img
-              src={counsellor.user.profileImageUrl}
-              alt={fullName}
-              className="h-24 w-24 rounded-full object-cover"
-            />
+            <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full">
+              <Image
+                src={resolveImageUrl(counsellor.user.profileImageUrl)}
+                alt={fullName}
+                fill
+                sizes="96px"
+                className="object-cover"
+                unoptimized
+              />
+            </div>
           ) : (
             <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-900 text-2xl font-semibold text-white">
               {fullName.charAt(0).toUpperCase()}

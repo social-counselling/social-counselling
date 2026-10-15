@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import type { ServiceFormData } from "@/types/admin-service";
+import { resolveImageUrl } from "@/lib/image-url";
 
 export default function ServicePreview({ data }: { data: ServiceFormData }) {
   // Normalize optional or legacy service content before rendering.
@@ -29,13 +30,15 @@ export default function ServicePreview({ data }: { data: ServiceFormData }) {
         {/* IMAGE */}
         {data.heroImageUrl && (
           <div className="relative aspect-[16/9] w-full bg-slate-100">
-            <Image
-              src={data.heroImageUrl}
-              alt=""
-              fill
-              sizes="430px"
-              className="object-cover"
-            />
+             <Image
+                              src={resolveImageUrl(data.heroImageUrl)}
+                              alt={data.title}
+                              fill
+                              sizes="(min-width: 1024px) 55vw, 100vw"
+                              className="object-cover object-center transition-transform duration-700 hover:scale-[1.025]"
+                              priority
+                              unoptimized
+                            />
           </div>
         )}
 

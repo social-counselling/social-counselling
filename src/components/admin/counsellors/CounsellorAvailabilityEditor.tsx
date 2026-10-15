@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { CalendarDays, Check, Clock3, Loader2, Save } from "lucide-react";
 
 import {
@@ -44,7 +44,10 @@ function formatTime(time: string) {
   });
 }
 
-export default function CounsellorAvailabilityEditor({ counsellorId, onPendingChange }: Props) {
+export default function CounsellorAvailabilityEditor({
+  counsellorId,
+  onPendingChange,
+}: Props) {
   const isEditMode = Boolean(counsellorId);
 
   const [date, setDate] = useState(getTodayDate());
@@ -132,10 +135,18 @@ export default function CounsellorAvailabilityEditor({ counsellorId, onPendingCh
     loadAvailability();
   }, [counsellorId, date]);
 
-  useEffect(() => {
-    if (!isEditMode) onPendingChange?.(date, selectedSlotIds);
-  }, [isEditMode, onPendingChange, date, selectedSlotIds]);
+  const lastPendingValueRef = useRef<string | null>(null);
 
+  useEffect(() => {
+    if (isEditMode || !onPendingChange) return;
+
+    const nextValue = JSON.stringify({ date, selectedSlotIds });
+
+    if (lastPendingValueRef.current === nextValue) return;
+
+    lastPendingValueRef.current = nextValue;
+    onPendingChange(date, selectedSlotIds);
+  }, [isEditMode, onPendingChange, date, selectedSlotIds]);
   /*
    * Existing assignments by slot ID.
    */
@@ -433,7 +444,9 @@ export default function CounsellorAvailabilityEditor({ counsellorId, onPendingCh
 
         <div className="mt-6 flex flex-col gap-3 border-t border-slate-200 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-500">
-            {isEditMode ? "Changes apply only to " : "These slots will be assigned for "}
+            {isEditMode
+              ? "Changes apply only to "
+              : "These slots will be assigned for "}
             <span className="font-semibold text-slate-700">{date}</span>.
           </p>
 
@@ -444,11 +457,17 @@ export default function CounsellorAvailabilityEditor({ counsellorId, onPendingCh
               onClick={handleSave}
               className="inline-flex h-10 items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 text-sm font-semibold text-white transition hover:bg-[#1477ca] disabled:cursor-not-allowed disabled:opacity-50"
             >
-              {saving ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+              {saving ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Save className="h-4 w-4" />
+              )}
               {saving ? "Saving..." : "Save Availability"}
             </button>
           ) : (
-            <p className="text-xs font-medium text-[#238BE6]">{selectedSlotIds.length} slots ready to assign after creation</p>
+            <p className="text-xs font-medium text-[#238BE6]">
+              {selectedSlotIds.length} slots ready to assign after creation
+            </p>
           )}
         </div>
       </div>

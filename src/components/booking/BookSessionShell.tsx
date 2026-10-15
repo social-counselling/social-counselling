@@ -227,6 +227,9 @@ export default function BookSessionShell() {
   };
 
   const handleBack = () => {
+    // Once booking confirmation is reached, do not allow returning to earlier steps.
+    if (currentStep >= 7) return;
+
     if (currentStep === 3) {
       if (bookingData.category === "EMPATHETIC_LISTENING") {
         setCurrentStep(1);

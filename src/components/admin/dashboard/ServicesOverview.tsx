@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
+import { resolveImageUrl } from "@/lib/image-url";
 
 import { getAdminServices } from "@/services/admin/services.api";
 import type { AdminService } from "@/types/admin-service";
@@ -104,11 +106,16 @@ export default function ServicesOverview() {
             >
               {/* Image */}
               {service.imageUrl ? (
-                <img
-                  src={service.imageUrl}
-                  alt={service.title}
-                  className="h-11 w-11 shrink-0 rounded-xl object-cover"
-                />
+                <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-xl">
+                  <Image
+                    src={resolveImageUrl(service.imageUrl)}
+                    alt={service.title}
+                    fill
+                    sizes="44px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                </div>
               ) : (
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#e7f3f0] text-[#2d716b]">
                   <BriefcaseBusiness className="h-5 w-5" />

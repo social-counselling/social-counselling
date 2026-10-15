@@ -1,12 +1,16 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useState } from "react";
 import { BriefcaseBusiness, IndianRupee, Star } from "lucide-react";
 
+import { resolveImageUrl } from "@/lib/image-url";
 import {
   getCounsellorServices,
   type CounsellorService,
 } from "@/services/counsellor/services.api";
+
 
 export default function CounsellorServices() {
   const [services, setServices] = useState<CounsellorService[]>([]);
@@ -178,11 +182,16 @@ export default function CounsellorServices() {
                 {/* Service Image */}
                 {item.service.imageUrl ? (
                   <div className="h-44 overflow-hidden bg-gray-100">
-                    <img
-                      src={item.service.imageUrl}
-                      alt={item.service.title}
-                      className="h-full w-full object-cover"
-                    />
+                    <div className="relative h-44 w-full">
+                      <Image
+                        src={resolveImageUrl(item.service.imageUrl)}
+                        alt={item.service.title}
+                        fill
+                        sizes="(min-width: 1024px) 33vw, 100vw"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
                   </div>
                 ) : (
                   <div className="flex h-44 items-center justify-center bg-gray-100">

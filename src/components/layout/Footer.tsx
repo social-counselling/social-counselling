@@ -64,6 +64,13 @@ export default function Footer() {
               </Link>
 
               <Link
+                href="/characters"
+                className="text-sm text-white/70 transition hover:text-white"
+              >
+                Our Characters
+              </Link>
+
+              <Link
                 href="/contact"
                 className="text-sm text-white/70 transition hover:text-white"
               >
@@ -105,6 +112,13 @@ export default function Footer() {
                 className="text-sm text-white/70 transition hover:text-white"
               >
                 Terms & Conditions
+              </Link>
+
+              <Link
+                href="/what-we-are-not"
+                className="text-sm text-white/70 transition hover:text-white"
+              >
+                What Social Counselling Is Not
               </Link>
             </div>
           </div>

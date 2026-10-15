@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useState } from "react";
 import Image from "next/image";
+import { resolveImageUrl } from "@/lib/image-url";
+
 import Link from "next/link";
 import { Eye, Pencil, CheckCircle2, PowerOff } from "lucide-react";
 
@@ -88,24 +90,53 @@ export default function CounsellorCards({ counsellors }: Props) {
           return (
             <article
               key={counsellor.id}
-              className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
             >
               {/* IMAGE */}
-
-              <div className="relative h-64 w-full overflow-hidden bg-slate-100">
+              <div className="relative h-60 w-full overflow-hidden bg-slate-100">
                 {profileImage ? (
-                  <Image
-                    src={profileImage}
-                    alt={fullName}
-                    fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    className="object-contain object-top transition duration-500 group-hover:scale-105"
-                  />
+                  <>
+                    {/* Blurred background */}
+                    <Image
+                      src={resolveImageUrl(profileImage)}
+                      alt=""
+                      fill
+                      sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="scale-110 object-cover blur-xl opacity-30"
+                      aria-hidden="true"
+                      unoptimized
+                    />
+
+                    {/* Main photo */}
+                    <Image
+                      src={resolveImageUrl(profileImage)}
+                      alt={fullName}
+                      fill
+                      sizes="(min-width: 1280px) 33vw, (min-width: 768px) 50vw, 100vw"
+                      className="z-10 object-contain p-2"
+                      unoptimized
+                    />
+                  </>
                 ) : (
                   <div className="flex h-full items-center justify-center text-sm text-slate-400">
-                    No image
+                    No profile photo
                   </div>
                 )}
+
+                {/* Keep your existing Active/Inactive badge here */}
+                <div className="absolute right-4 top-4 z-20">
+                  {counsellor.status === "ACTIVE" ? (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50/95 px-3 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                      Active
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50/95 px-3 py-1.5 text-xs font-semibold text-red-600 shadow-sm">
+                      <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
+                      {counsellor.status}
+                    </span>
+                  )}
+                </div>
 
                 {/* STATUS */}
 
@@ -126,7 +157,7 @@ export default function CounsellorCards({ counsellors }: Props) {
 
               {/* CONTENT */}
 
-              <div className="p-5">
+              <div className="flex flex-1 flex-col p-5">
                 <h2 className="text-lg font-semibold text-[#183b3b]">
                   {fullName}
                 </h2>
@@ -168,11 +199,13 @@ export default function CounsellorCards({ counsellors }: Props) {
                   <span className="font-semibold text-slate-700">
                     Languages:
                   </span>{" "}
-                  {counsellor.languages.length > 0
-                    ? counsellor.languages
-                        .map((language) => language.name)
-                        .join(", ")
-                    : "Not specified"}
+                  <span className="rounded-full bg-blue-50 px-2.5 py-1 text-[10px] font-semibold text-[#238BE6]">
+                    {counsellor.languages.length > 0
+                      ? counsellor.languages
+                          .map((language) => language.name)
+                          .join(", ")
+                      : "Not specified"}
+                  </span>
                 </p>
 
                 {/* COVERAGE */}
@@ -186,20 +219,11 @@ export default function CounsellorCards({ counsellors }: Props) {
                   </p>
                 )}
 
-                {/* SERVICES */}
-
-                <p className="mt-2 text-xs text-slate-500">
-                  <span className="font-semibold text-slate-700">
-                    Services:
-                  </span>{" "}
-                  {counsellor.services.length}
-                </p>
-
-                <div className="my-5 border-t border-slate-100" />
+                <div className="mt-auto mb-4 border-t border-slate-100 pt-5" />
 
                 {/* ACTIONS */}
 
-                <div className="flex gap-2">
+                <div className="mt-auto flex gap-2">
                   <Link
                     href={`/counsellors/${counsellor.id}`}
                     target="_blank"

@@ -1,6 +1,7 @@
 "use client";
 
 import type { ServiceFormData } from "@/types/admin-service";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 
 interface Props {
   data: ServiceFormData;
@@ -84,7 +85,26 @@ export default function ServiceBasicInfo({ data, onChange }: Props) {
             className="input-admin resize-none"
           />
         </div>
+        
 
+         {/* PUBLIC DISPLAY ORDER */}
+        <div>
+          <label className="mb-2 block text-sm font-medium text-slate-700">
+            Public Display Order <span className="ml-1 text-red-500">*</span>
+          </label>
+          <input
+            type="number"
+            min={0}
+            step={1}
+            value={Number.isFinite(data.sortOrder) ? data.sortOrder : 0}
+            onChange={(e) => onChange("sortOrder", Math.max(0, Math.trunc(Number(e.target.value) || 0)))}
+            className="input-admin"
+            placeholder="1"
+          />
+          <p className="mt-1.5 text-xs text-slate-400">
+            Lower numbers appear first on the public services page. Use 1 for the first position.
+          </p>
+        </div>
         {/* SLUG */}
 
         <div className="sm:col-span-2">
@@ -105,54 +125,21 @@ export default function ServiceBasicInfo({ data, onChange }: Props) {
           </p>
         </div>
 
-        {/* PUBLIC DISPLAY ORDER */}
-        <div>
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Public Display Order <span className="ml-1 text-red-500">*</span>
-          </label>
-          <input
-            type="number"
-            min={0}
-            step={1}
-            value={Number.isFinite(data.sortOrder) ? data.sortOrder : 0}
-            onChange={(e) => onChange("sortOrder", Math.max(0, Math.trunc(Number(e.target.value) || 0)))}
-            className="input-admin"
-            placeholder="1"
-          />
-          <p className="mt-1.5 text-xs text-slate-400">
-            Lower numbers appear first on the public services page. Use 1 for the first position.
-          </p>
-        </div>
+       
 
-        {/* HERO IMAGE */}
+        <ImageUploadField
+          label="Hero Image"
+          folder="services"
+          value={data.heroImageUrl}
+          onChange={(path) => onChange("heroImageUrl", path)}
+        />
 
-        <div className="sm:col-span-2">
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Hero Image URL
-          </label>
-
-          <input
-            value={data.heroImageUrl}
-            onChange={(e) => onChange("heroImageUrl", e.target.value)}
-            placeholder="/images/services/service.png"
-            className="input-admin"
-          />
-        </div>
-
-        {/* IMAGE */}
-
-        <div className="sm:col-span-2">
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Service Image URL
-          </label>
-
-          <input
-            value={data.imageUrl}
-            onChange={(e) => onChange("imageUrl", e.target.value)}
-            placeholder="/images/services/service.png"
-            className="input-admin"
-          />
-        </div>
+        <ImageUploadField
+          label="Service Card Image"
+          folder="services"
+          value={data.imageUrl}
+          onChange={(path) => onChange("imageUrl", path)}
+        />
       </div>
     </section>
   );

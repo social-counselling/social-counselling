@@ -102,6 +102,17 @@ function getTodayDate() {
   return `${year}-${month}-${day}`;
 }
 
+function getDateYearsAgo(years: number) {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() - years);
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
+
 /*
  * ----------------------------------------------------
  * Input component
@@ -258,16 +269,21 @@ export default function Step5ClientInputs({
 
   const handleCounseleeDobChange = (value: string) => {
     const selectedAge = calculateAge(value);
-    if (
-      !bookingData.counseleeSameAsClient &&
-      !isTeenageCounselling &&
-      selectedAge !== null &&
-      selectedAge < 18
-    ) {
-      toast.error(
-        "Counselees must be 18 or older for this service. Under-18 bookings are only available for Teenage / Youth Counselling.",
-      );
-      return;
+
+    if (!bookingData.counseleeSameAsClient && selectedAge !== null) {
+      if (isTeenageCounselling && selectedAge < 13) {
+        toast.error(
+          "Counselees must be at least 13 years old for Teenage / Youth Counselling.",
+        );
+        return;
+      }
+
+      if (!isTeenageCounselling && selectedAge < 18) {
+        toast.error(
+          "Counselees must be 18 or older for this service. Under-18 bookings are only available for Teenage / Youth Counselling.",
+        );
+        return;
+      }
     }
 
     // Changing DOB can change the allowed relationship list.
@@ -621,11 +637,7 @@ export default function Step5ClientInputs({
                   value={bookingData.counseleeDob}
                   type="date"
                   required
-                  max={isTeenageCounselling ? today : (() => {
-                    const cutoff = new Date();
-                    cutoff.setFullYear(cutoff.getFullYear() - 18);
-                    return `${cutoff.getFullYear()}-${String(cutoff.getMonth() + 1).padStart(2, "0")}-${String(cutoff.getDate()).padStart(2, "0")}`;
-                  })()}
+                  max={getDateYearsAgo(isTeenageCounselling ? 13 : 18)}
                   icon={<CalendarDays className="h-3.5 w-3.5" />}
                   onChange={handleCounseleeDobChange}
                 />

@@ -24,6 +24,13 @@ import type {
 } from "@/types/admin-counsellor";
 
 import CounsellorCards from "./CounsellorCards";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const PAGE_SIZE = 10;
 
@@ -244,60 +251,50 @@ export default function CounsellorsPage() {
           </div>
 
           {/* SPECIALIZATION */}
-          <select
-            value={specialization}
-            onChange={(event) => {
-              handleSpecializationChange(event.target.value);
-            }}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none transition focus:border-[#238BE6] focus:ring-2 focus:ring-[#238BE6]/10"
-          >
-            <option value="all">All Specializations</option>
-
-            <option value="Youth">Youth</option>
-
-            <option value="Marriage">Marriage</option>
-
-            <option value="Corporate">Corporate</option>
-
-            <option value="Family">Family</option>
-
-            <option value="Women">Women</option>
-          </select>
+          <Select value={specialization} onValueChange={(value) => handleSpecializationChange(value ?? "all")}>
+            <SelectTrigger className="h-11 w-full rounded-xl border-slate-200 bg-white text-sm text-slate-600 focus:border-[#238BE6] focus:ring-[#238BE6]/10 lg:w-[190px]">
+              <SelectValue placeholder="All Specializations" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Specializations</SelectItem>
+              <SelectItem value="Youth">Youth</SelectItem>
+              <SelectItem value="Marriage">Marriage</SelectItem>
+              <SelectItem value="Corporate">Corporate</SelectItem>
+              <SelectItem value="Family">Family</SelectItem>
+              <SelectItem value="Women">Women</SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* LANGUAGE */}
-          <select
+          <Select
             value={language}
-            onChange={(event) => {
-              handleLanguageChange(event.target.value);
-            }}
+            onValueChange={(value) => handleLanguageChange(value ?? "all")}
             disabled={loadingLanguages}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none transition focus:border-[#238BE6] focus:ring-2 focus:ring-[#238BE6]/10 disabled:cursor-not-allowed disabled:bg-slate-50"
           >
-            <option value="all">
-              {loadingLanguages ? "Loading Languages..." : "All Languages"}
-            </option>
-
-            {languages.map((languageItem) => (
-              <option key={languageItem.id} value={String(languageItem.id)}>
-                {languageItem.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="h-11 w-full rounded-xl border-slate-200 bg-white text-sm text-slate-600 focus:border-[#238BE6] focus:ring-[#238BE6]/10 lg:w-[170px]">
+              <SelectValue placeholder={loadingLanguages ? "Loading Languages..." : "All Languages"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">{loadingLanguages ? "Loading Languages..." : "All Languages"}</SelectItem>
+              {languages.map((languageItem) => (
+                <SelectItem key={languageItem.id} value={String(languageItem.id)}>
+                  {languageItem.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
           {/* STATUS */}
-          <select
-            value={status}
-            onChange={(event) => {
-              handleStatusChange(event.target.value);
-            }}
-            className="h-11 rounded-xl border border-slate-200 bg-white px-4 text-sm text-slate-600 outline-none transition focus:border-[#238BE6] focus:ring-2 focus:ring-[#238BE6]/10"
-          >
-            <option value="all">All Status</option>
-
-            <option value="ACTIVE">Active</option>
-
-            <option value="INACTIVE">Inactive</option>
-          </select>
+          <Select value={status} onValueChange={(value) => handleStatusChange(value ?? "all")}>
+            <SelectTrigger className="h-11 w-full rounded-xl border-slate-200 bg-white text-sm text-slate-600 focus:border-[#238BE6] focus:ring-[#238BE6]/10 lg:w-[145px]">
+              <SelectValue placeholder="All Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="ACTIVE">Active</SelectItem>
+              <SelectItem value="INACTIVE">Inactive</SelectItem>
+            </SelectContent>
+          </Select>
 
           {/* RESET */}
           <button

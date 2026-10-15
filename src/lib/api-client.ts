@@ -82,7 +82,9 @@ async function request<T>(
 
   const headers = new Headers(fetchOptions.headers);
 
-  headers.set("Content-Type", "application/json");
+  if (typeof FormData === "undefined" || !(fetchOptions.body instanceof FormData)) {
+    headers.set("Content-Type", "application/json");
+  }
 
   if (accessToken) {
     headers.set("Authorization", `Bearer ${accessToken}`);
@@ -151,6 +153,13 @@ export const apiClient = {
     return request<T>(endpoint, {
       method: "POST",
       body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+  },
+
+  upload<T>(endpoint: string, body: FormData) {
+    return request<T>(endpoint, {
+      method: "POST",
+      body,
     });
   },
 

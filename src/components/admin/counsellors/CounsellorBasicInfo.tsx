@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
 
 import type { CounsellorFormData } from "@/types/admin-counsellor";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 
 import {
   getAdminLanguages,
@@ -210,27 +211,12 @@ export default function CounsellorBasicInfo({ data, onChange }: Props) {
           />
         </div>
 
-        {/* PROFILE IMAGE */}
-
-        <div className="sm:col-span-2">
-          <label className="mb-2 block text-sm font-medium text-slate-700">
-            Profile Image URL
-          </label>
-
-          <input
-            type="text"
-            value={data.user.profileImageUrl ?? ""}
-            onChange={(e) =>
-              updateUserField("profileImageUrl", e.target.value || undefined)
-            }
-            placeholder="/images/counsellors/profile.jpg"
-            className="input-admin"
-          />
-
-          <p className="mt-1.5 text-xs text-slate-400">
-            Add the image URL used for the counsellor profile.
-          </p>
-        </div>
+        <ImageUploadField
+          label="Counsellor Profile Photo"
+          folder="counsellors"
+          value={data.user.profileImageUrl}
+          onChange={(path) => updateUserField("profileImageUrl", path)}
+        />
 
         {/* LANGUAGES */}
 

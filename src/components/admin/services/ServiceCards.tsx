@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Eye, Pencil, Power } from "lucide-react";
+import { resolveImageUrl } from "@/lib/image-url";
 
 import type { AdminService } from "@/types/admin-service";
 
@@ -80,17 +81,19 @@ export default function ServiceCards({ services }: Props) {
         {services.map((service) => (
           <article
             key={service.serviceId}
-            className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
+            className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md"
           >
             {/* IMAGE */}
             <div className="relative h-52 w-full overflow-hidden bg-slate-100">
               {service.imageUrl ? (
                 <Image
-                  src={service.imageUrl}
+                  src={resolveImageUrl(service.imageUrl)}
                   alt={service.title}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                  className="object-cover transition duration-500 group-hover:scale-105"
+                  sizes="(min-width: 1024px) 55vw, 100vw"
+                  className="object-cover object-center transition-transform duration-700 hover:scale-[1.025]"
+                  priority
+                  unoptimized
                 />
               ) : (
                 <div className="flex h-full items-center justify-center text-sm text-slate-400">
@@ -98,9 +101,9 @@ export default function ServiceCards({ services }: Props) {
                 </div>
               )}
 
-              {/* SERVICE ID */}
+              {/* PUBLIC ORDER NUMBER */}
               <div className="absolute left-4 top-4 flex h-9 min-w-9 items-center justify-center rounded-xl bg-[#183b3b]/90 px-2 text-xs font-bold text-white backdrop-blur-sm">
-                #{service.serviceId}
+                #{service.sortOrder}
               </div>
 
               {/* STATUS */}
@@ -120,9 +123,10 @@ export default function ServiceCards({ services }: Props) {
             </div>
 
             {/* CONTENT */}
-            <div className="p-5">
+            <div className="flex flex-1 flex-col p-5">
               {/* CATEGORY */}
-              <span className="inline-flex rounded-full bg-blue-50 px-3 py-1.5 text-[11px] font-semibold text-[#238BE6]">
+
+              <span className="self-start inline-flex rounded-full bg-blue-50 px-3 py-1.5 text-[11px] font-semibold text-[#238BE6]">
                 {getCategoryLabel(service.category)}
               </span>
 
@@ -143,19 +147,13 @@ export default function ServiceCards({ services }: Props) {
                 <span className="truncate text-[10px] text-slate-400">
                   /{service.slug}
                 </span>
-
-                <span className="text-[10px] text-slate-300">•</span>
-
-                <span className="text-[10px] text-slate-400">
-                  Order {service.sortOrder}
-                </span>
               </div>
 
               {/* DIVIDER */}
-              <div className="my-5 border-t border-slate-100" />
+              <div className="mt-auto mb-4 border-t border-slate-100 pt-5" />
 
               {/* ACTIONS */}
-              <div className="flex items-center gap-2">
+              <div className="mt-auto flex items-center gap-2">
                 <Link
                   href={`/services/${service.slug}`}
                   target="_blank"

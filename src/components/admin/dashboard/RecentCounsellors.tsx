@@ -3,9 +3,11 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, Mail, Star, Users } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 import { getAdminCounsellors } from "@/services/admin/counsellors.api";
 import type { AdminCounsellor } from "@/types/admin-counsellor";
+import { resolveImageUrl } from "@/lib/image-url";
 
 export default function RecentCounsellors() {
   const [counsellors, setCounsellors] = useState<AdminCounsellor[]>([]);
@@ -117,11 +119,16 @@ export default function RecentCounsellors() {
               >
                 {/* Avatar */}
                 {counsellor.user.profileImageUrl ? (
-                  <img
-                    src={counsellor.user.profileImageUrl}
-                    alt={fullName}
-                    className="h-11 w-11 shrink-0 rounded-full object-cover"
-                  />
+                  <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full">
+                    <Image
+                      src={resolveImageUrl(counsellor.user.profileImageUrl)}
+                      alt={fullName}
+                      fill
+                      sizes="44px"
+                      className="object-cover"
+                      unoptimized
+                    />
+                  </div>
                 ) : (
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#e7f3f0] text-sm font-semibold text-[#2d716b]">
                     {initials || "C"}

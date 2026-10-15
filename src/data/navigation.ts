@@ -30,7 +30,7 @@ export const mainNavigation: NavigationItem[] = [
   // },
   {
     label: "What we are NOT",
-    href: "/contact",
+    href:"/what-we-are-not",
   },
 ];
 

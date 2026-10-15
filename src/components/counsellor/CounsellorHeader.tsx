@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Bell, ChevronDown } from "lucide-react";
+import Image from "next/image";
+import { resolveImageUrl } from "@/lib/image-url";
 
 import { getCurrentUser } from "@/services/auth/auth.api";
 
@@ -80,11 +82,16 @@ export default function CounsellorHeader() {
           className="flex items-center gap-3 rounded-lg px-2 py-1.5 transition-colors hover:bg-gray-50"
         >
           {user?.profileImageUrl ? (
-            <img
-              src={user.profileImageUrl}
-              alt={fullName}
-              className="h-9 w-9 rounded-full object-cover"
-            />
+            <span className="relative h-9 w-9 overflow-hidden rounded-full">
+              <Image
+                src={resolveImageUrl(user.profileImageUrl)}
+                alt={fullName}
+                fill
+                sizes="36px"
+                className="object-cover"
+                unoptimized
+              />
+            </span>
           ) : (
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-900 text-sm font-semibold text-white">
               {initials || "C"}
