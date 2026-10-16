@@ -25,8 +25,7 @@ export interface CounsellingType {
    ========================================================= */
 
 export const heroData = {
-  image: "/images/hero/newheroImage.png",
-
+  image: "/images/hero/Lakeside Perspective and Hope Retreat.png",
   primaryCta: {
     label: "Book a Session",
     href: "/book-session",

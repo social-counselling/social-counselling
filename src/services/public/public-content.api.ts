@@ -152,6 +152,8 @@ function mapCounsellor(counsellor: ApiCounsellor): CounsellorData {
     slug: String(counsellor.id),
     name,
     credentials: asStringArray(counsellor.credentials),
+    experienceYears: typeof counsellor.experienceYears === "number" ? counsellor.experienceYears : null,
+    experienceText: counsellor.experienceText ?? undefined,
     languages: (counsellor.languages ?? []).map((language) => language.name ?? "").filter(Boolean),
     geographicalCoverage: counsellor.coverage?.trim() || "Available online",
     specializationAreas: asStringArray(counsellor.specializations),

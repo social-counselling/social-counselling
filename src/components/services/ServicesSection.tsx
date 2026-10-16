@@ -32,7 +32,7 @@ export default function ServicesSection() {
       <section
         className="
           relative
-          mt-22
+      
           overflow-hidden
           min-h-[520px]
           sm:min-h-[550px]
@@ -89,30 +89,8 @@ export default function ServicesSection() {
           aria-hidden="true"
         />
 
-        <Container className="relative z-20">
-
-          <div
-            className="
-              relative
-              mx-auto
-              flex
-              min-h-[520px]
-              max-w-5xl
-              flex-col
-              items-center
-              justify-center
-              px-4
-              pb-20
-              pt-28
-              text-center
-
-              sm:min-h-[550px]
-              sm:pb-24
-
-              lg:min-h-[570px]
-              lg:pb-28
-            "
-          >
+   <Container className="relative z-20">
+  <div className="relative mx-auto flex min-h-[620px] max-w-5xl flex-col items-center justify-center px-4 pb-24 pt-32 text-center sm:min-h-[660px] sm:pb-28 sm:pt-36 lg:min-h-[700px] lg:pt-40">
 
             {/* =================================================
                 LEFT HANDWRITTEN DECORATION
