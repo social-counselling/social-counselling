@@ -2,7 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Check, Loader2 } from "lucide-react";
-
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import type { CounsellorFormData } from "@/types/admin-counsellor";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
@@ -169,6 +175,8 @@ export default function CounsellorBasicInfo({ data, onChange }: Props) {
           />
         </div>
 
+      
+
         {/* GENDER */}
 
         <div>
@@ -177,21 +185,25 @@ export default function CounsellorBasicInfo({ data, onChange }: Props) {
             <span className="ml-1 text-red-500">*</span>
           </label>
 
-          <select
-            value={data.user.gender}
-            onChange={(e) =>
+          <Select
+            value={data.user.gender || ""}
+            onValueChange={(value) =>
               updateUserField(
                 "gender",
-                e.target.value as CounsellorFormData["user"]["gender"],
+                value as CounsellorFormData["user"]["gender"],
               )
             }
-            className="input-admin"
           >
-            <option value="">Select gender</option>
-            <option value="MALE">Male</option>
-            <option value="FEMALE">Female</option>
-            <option value="OTHER">Other</option>
-          </select>
+            <SelectTrigger className="input-admin w-full">
+              <SelectValue placeholder="Select gender" />
+            </SelectTrigger>
+
+            <SelectContent>
+              <SelectItem value="MALE">Male</SelectItem>
+              <SelectItem value="FEMALE">Female</SelectItem>
+              <SelectItem value="OTHER">Other</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
 
         {/* DATE OF BIRTH */}
