@@ -33,7 +33,7 @@ export default function CounsellorCard({
   return (
     <article className="group mx-auto flex h-full w-full max-w-[390px] min-w-0 flex-col overflow-hidden rounded-[24px] border border-[#dce9e2] bg-white shadow-[0_6px_22px_rgba(24,59,59,0.07)] transition-all duration-300 hover:-translate-y-1 hover:border-[#b8d8c7] hover:shadow-[0_16px_35px_rgba(24,59,59,0.13)]">
       {/* Scenic banner */}
-      <div className="relative h-[145px] shrink-0 overflow-hidden bg-[#dcebe5]">
+      <div className="relative h-[175px] shrink-0 overflow-hidden bg-[#dcebe5]">
         <Image
           src="/images/Tranquil-Alpine-Lake-Valley.png"
           alt=""
@@ -62,18 +62,16 @@ export default function CounsellorCard({
         <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white/30 to-transparent" />
       </div>
 
-      {/* Circular portrait */}
-
-      {/* Bigger circular portrait */}
-      <div className="relative z-10 -mt-12 flex justify-center">
-        <div className="relative h-[108px] w-[108px] shrink-0 rounded-full bg-gradient-to-br from-white via-[#c8e8d7] to-[#4c9b7d] p-[4px] shadow-[0_6px_20px_rgba(24,59,59,0.20)] transition-transform duration-300 group-hover:scale-105">
+      {/*  circular portrait */}
+      <div className="relative z-10 -mt-18 flex justify-center">
+        <div className="relative h-[140px] w-[140px] shrink-0 rounded-full bg-gradient-to-br from-white via-[#c8e8d7] to-[#4c9b7d] p-[4px] shadow-[0_6px_20px_rgba(24,59,59,0.20)] transition-transform duration-300 group-hover:scale-105">
           <div className="relative h-full w-full overflow-hidden rounded-full border-[3px] border-white bg-[#eaf4e6]">
             {counsellor.image ? (
               <Image
                 src={resolveImageUrl(counsellor.image)}
                 alt={counsellor.name}
                 fill
-                sizes="108px"
+                sizes="140px"
                 className="object-cover object-top"
                 unoptimized
               />
@@ -132,8 +130,6 @@ export default function CounsellorCard({
             <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#317d69]" />
 
             <div className="min-w-0">
-            
-
               <p
                 title={coverage || "Coverage not specified"}
                 className="mt-0.5 text-xs font-semibold leading-4 text-[#294f43]"
