@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 import { useEffect, useState } from "react";
+import { formatSlotTime } from "@/lib/time/slot-time";
 import {
   createAdminSlot,
   deleteAdminSlot,
@@ -33,17 +34,6 @@ const emptyForm: SlotForm = {
   endTime: "",
   isActive: true,
 };
-
-function formatTime(value: string) {
-  const date = new Date(value);
-
-  return date.toLocaleTimeString("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
-}
 
 export default function SlotsManagement() {
   const [slots, setSlots] = useState<AdminSlot[]>([]);
@@ -247,13 +237,13 @@ export default function SlotsManagement() {
                   <div className="flex items-center gap-4">
                     <div className="rounded-lg bg-gray-100 px-4 py-2.5">
                       <span className="text-sm font-semibold text-gray-900">
-                        {formatTime(slot.startTime)}
+                        {formatSlotTime(slot.startTime)}
                       </span>
 
                       <span className="mx-2 text-gray-400">→</span>
 
                       <span className="text-sm font-semibold text-gray-900">
-                        {formatTime(slot.endTime)}
+                        {formatSlotTime(slot.endTime)}
                       </span>
                     </div>
 
@@ -403,7 +393,7 @@ export default function SlotsManagement() {
             <AlertDialogDescription>
               Are you sure you want to delete{" "}
               {deletingSlot
-                ? `${formatTime(deletingSlot.startTime)} - ${formatTime(
+                ? `${formatSlotTime(deletingSlot.startTime)} - ${formatSlotTime(
                     deletingSlot.endTime,
                   )}`
                 : "this time slot"}
