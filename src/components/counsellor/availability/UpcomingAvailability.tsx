@@ -7,22 +7,13 @@ import {
   getCounsellorSlots,
   type CounsellorSlot,
 } from "@/services/counsellor/availability.api";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 interface Props {
   onClose: () => void;
 }
 
 function getTodayDate() {
   return new Date().toLocaleDateString("en-CA", {
-    timeZone: "Asia/Kolkata",
-  });
-}
-
-function formatTime(time: string) {
-  return new Date(time).toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
     timeZone: "Asia/Kolkata",
   });
 }
@@ -221,8 +212,8 @@ export default function UpcomingAvailability({ onClose }: Props) {
                             key={assignment.id}
                             className="rounded-lg bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700"
                           >
-                            {formatTime(assignment.slot.startTime)} -{" "}
-                            {formatTime(assignment.slot.endTime)}
+                            {formatSlotTime(assignment.slot.startTime)} -{" "}
+                            {formatSlotTime(assignment.slot.endTime)}
                           </span>
                         ))}
                       </div>

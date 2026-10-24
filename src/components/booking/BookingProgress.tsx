@@ -12,7 +12,7 @@ const steps = [
   { id: 5, label: "Inputs" },
   { id: 6, label: "Consent" },
   { id: 7, label: "Confirm" },
-  { id: 8, label: "Invite" },
+  { id: 8, label: "Complete" },
 ];
 
 export default function BookingProgress({ currentStep }: BookingProgressProps) {

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { CalendarDays, Check, Clock, Loader2 } from "lucide-react";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 import type {
   BookingAvailabilityResponse,
   BookingAvailabilitySlot,
@@ -61,20 +61,6 @@ function formatFullDate(dateString: string) {
     day: "numeric",
     month: "long",
     year: "numeric",
-  });
-}
-
-function formatTime(time: string) {
-  const date = new Date(time);
-
-  if (Number.isNaN(date.getTime())) {
-    return time;
-  }
-
-  return date.toLocaleTimeString("en-IN", {
-    hour: "numeric",
-    minute: "2-digit",
-    hour12: true,
   });
 }
 
@@ -622,11 +608,11 @@ export default function Step4Calendar({
                       />
 
                       <span className="mt-0.5 block text-[11px] font-semibold">
-                        {formatTime(slot.startTime)}
+                        {formatSlotTime(slot.startTime)}
                       </span>
 
                       <span className="mt-0.5 block text-[8px] text-slate-400">
-                        to {formatTime(slot.endTime)}
+                        to {formatSlotTime(slot.endTime)}
                       </span>
                     </button>
                   );

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import {
   createBooking,
@@ -25,6 +26,43 @@ import type {
   BookingOptionsResponse,
   BookingConfirmation,
 } from "@/types/booking";
+
+const INVITE_ACCEPTED_STORAGE_KEY = "social-counselling:booking-invite-accepted";
+const INVITE_NOTICE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
+
+type InviteAcceptedNotice = {
+  bookingNumber: string;
+  acceptedAt: number;
+};
+
+type InvitationCompletion = {
+  bookingNumber: string;
+};
+
+function parseInviteAcceptedNotice(raw: string | null): InviteAcceptedNotice | null {
+  if (!raw) return null;
+
+  try {
+    const parsed = JSON.parse(raw) as Partial<InviteAcceptedNotice>;
+    if (
+      typeof parsed.bookingNumber !== "string" ||
+      typeof parsed.acceptedAt !== "number" ||
+      !Number.isFinite(parsed.acceptedAt)
+    ) {
+      return null;
+    }
+
+    const ageMs = Date.now() - parsed.acceptedAt;
+    if (ageMs < 0 || ageMs > INVITE_NOTICE_MAX_AGE_MS) return null;
+
+    return {
+      bookingNumber: parsed.bookingNumber,
+      acceptedAt: parsed.acceptedAt,
+    };
+  } catch {
+    return null;
+  }
+}
 
 const initialBookingData: BookingData = {
   category: null,
@@ -62,6 +100,8 @@ const initialBookingData: BookingData = {
 
 export default function BookSessionShell() {
   const [currentStep, setCurrentStep] = useState(1);
+  const [invitationCompletion, setInvitationCompletion] =
+    useState<InvitationCompletion | null>(null);
 
   const [bookingData, setBookingData] =
     useState<BookingData>(initialBookingData);
@@ -106,6 +146,55 @@ export default function BookSessionShell() {
 
     loadBookingOptions();
   }, []);
+
+  // When the confirmation link opens this tab, restore Step 8 from the short-lived
+  // marker written only after the backend has accepted the invitation.
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("inviteConfirmed") !== "1") return;
+
+    const notice = parseInviteAcceptedNotice(
+      window.localStorage.getItem(INVITE_ACCEPTED_STORAGE_KEY),
+    );
+    const urlBookingNumber = params.get("bookingNumber");
+
+    if (
+      !notice ||
+      (urlBookingNumber && urlBookingNumber !== notice.bookingNumber)
+    ) {
+      return;
+    }
+
+    setInvitationCompletion({ bookingNumber: notice.bookingNumber });
+    setCurrentStep(8);
+  }, []);
+
+  // If the client still has the booking wizard open in another tab, advance that
+  // existing Step 7 view when the matching invitation is accepted from the email.
+  useEffect(() => {
+    const activeBookingNumber = bookingConfirmation?.bookingNumber;
+    if (!activeBookingNumber) return;
+
+    const applyNotice = (notice: InviteAcceptedNotice | null) => {
+      if (!notice || notice.bookingNumber !== activeBookingNumber) return;
+      setInvitationCompletion({ bookingNumber: notice.bookingNumber });
+      setCurrentStep(8);
+    };
+
+    applyNotice(
+      parseInviteAcceptedNotice(
+        window.localStorage.getItem(INVITE_ACCEPTED_STORAGE_KEY),
+      ),
+    );
+
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key !== INVITE_ACCEPTED_STORAGE_KEY || !event.newValue) return;
+      applyNotice(parseInviteAcceptedNotice(event.newValue));
+    };
+
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, [bookingConfirmation?.bookingNumber]);
 
   /*
    * ----------------------------------------------------
@@ -307,7 +396,7 @@ export default function BookSessionShell() {
           <div className="flex min-h-0 min-w-0 items-start justify-center p-4 sm:p-5 lg:overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:p-6 xl:p-7">
             <div className="w-full max-w-2xl">
               {/* Loading */}
-              {loadingOptions && (
+              {loadingOptions && !invitationCompletion && (
                 <div className="flex min-h-[450px] items-center justify-center">
                   <div className="text-center">
                     <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-primary" />
@@ -319,8 +408,47 @@ export default function BookSessionShell() {
                 </div>
               )}
 
+              {/* Step 8 — final invitation acceptance confirmation */}
+              {invitationCompletion && (
+                <div className="flex min-h-[450px] flex-col items-center justify-center px-2 py-8 text-center sm:px-6">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
+                    <CheckCircle2 className="h-9 w-9" aria-hidden="true" />
+                  </div>
+                  <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
+                    Step 8 of 8 · Complete
+                  </p>
+                  <h1 className="mt-3 text-2xl font-semibold text-slate-900 sm:text-3xl">
+                    Thank you! Your booking is complete.
+                  </h1>
+                  <p className="mt-3 max-w-lg text-sm leading-6 text-slate-600 sm:text-base">
+                    Your confirmation has been received and your invitation acceptance
+                    has been recorded successfully. We look forward to supporting you.
+                  </p>
+                  {invitationCompletion.bookingNumber && (
+                    <div className="mt-6 w-full max-w-sm rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-left">
+                      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+                        Booking number
+                      </p>
+                      <p className="mt-1 text-lg font-semibold text-slate-900">
+                        {invitationCompletion.bookingNumber}
+                      </p>
+                    </div>
+                  )}
+                  <p className="mt-6 max-w-lg text-xs leading-5 text-slate-500">
+                    Please check your email for your session details, calendar invitation,
+                    and invoice. You can safely close this page.
+                  </p>
+                  <a
+                    href="/"
+                    className="mt-7 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary/90"
+                  >
+                    Return to Home
+                  </a>
+                </div>
+              )}
+
               {/* Error */}
-              {!loadingOptions && optionsError && (
+              {!loadingOptions && optionsError && !invitationCompletion && (
                 <div className="flex min-h-[450px] items-center justify-center">
                   <div className="max-w-md rounded-2xl border border-red-200 bg-red-50 p-6 text-center">
                     <h2 className="font-semibold text-red-800">
@@ -341,7 +469,7 @@ export default function BookSessionShell() {
               )}
 
               {/* Steps */}
-              {!loadingOptions && !optionsError && options && (
+              {!loadingOptions && !optionsError && options && !invitationCompletion && (
                 <>
                   {currentStep === 1 && (
                     <Step1Category

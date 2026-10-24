@@ -9,7 +9,7 @@ import {
   deleteAdminCounsellorSlot,
   type AdminCounsellorSlot,
 } from "@/services/admin/counsellor-slots.api";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 import { getAdminSlots, type AdminSlot } from "@/services/admin/slots.api";
 
 interface Props {
@@ -19,27 +19,6 @@ interface Props {
 
 function getTodayDate() {
   return new Date().toLocaleDateString("en-CA", {
-    timeZone: "Asia/Kolkata",
-  });
-}
-
-function formatTime(time: string) {
-  if (!time) {
-    return "";
-  }
-
-  const date = time.includes("T")
-    ? new Date(time)
-    : new Date(`1970-01-01T${time}`);
-
-  if (Number.isNaN(date.getTime())) {
-    return time;
-  }
-
-  return date.toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
     timeZone: "Asia/Kolkata",
   });
 }
@@ -398,8 +377,8 @@ export default function CounsellorAvailabilityEditor({
                   >
                     <div>
                       <p className="text-xs font-semibold leading-5 text-slate-800">
-                        {formatTime(slot.startTime)} -{" "}
-                        {formatTime(slot.endTime)}
+                        {formatSlotTime(slot.startTime)} -{" "}
+                        {formatSlotTime(slot.endTime)}
                       </p>
 
                       {isBooked ? (

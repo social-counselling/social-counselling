@@ -9,22 +9,13 @@ import {
   getAdminCounsellorSlots,
   type AdminCounsellorSlot,
 } from "@/services/admin/counsellor-slots.api";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 interface CounsellorOption {
   id: number;
   user: {
     firstName: string;
     lastName: string | null;
   };
-}
-
-function formatTime(value: string) {
-  return new Date(value).toLocaleTimeString("en-IN", {
-    timeZone: "Asia/Kolkata",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-  });
 }
 
 function formatDate(date: Date) {
@@ -388,8 +379,8 @@ export default function CounsellorAvailabilityManagement() {
                             selected ? "text-white" : "text-gray-900"
                           }`}
                         >
-                          {formatTime(slot.startTime)} →{" "}
-                          {formatTime(slot.endTime)}
+                          {formatSlotTime(slot.startTime)} →{" "}
+                          {formatSlotTime(slot.endTime)}
                         </p>
 
                         {isBooked && (

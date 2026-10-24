@@ -2,22 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { BriefcaseBusiness, Clock3, Star, Award } from "lucide-react";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 import {
   getCounsellorDashboard,
   getCounsellorSlots,
   type CounsellorDashboardResponse,
   type CounsellorSlot,
 } from "@/services/counsellor/dashboard.api";
-
-function formatTime(time: string) {
-  return new Date(time).toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "Asia/Kolkata",
-  });
-}
 
 function getTodayDate() {
   return new Date().toLocaleDateString("en-CA", {
@@ -196,11 +187,11 @@ export default function CounsellorDashboard() {
                 className="rounded-lg border border-gray-200 p-4"
               >
                 <p className="font-medium text-gray-900">
-                  {formatTime(item.slot.startTime)}
+                  {formatSlotTime(item.slot.startTime)}
                 </p>
 
                 <p className="text-sm text-gray-500">
-                  to {formatTime(item.slot.endTime)}
+                  to {formatSlotTime(item.slot.endTime)}
                 </p>
 
                 <span className="mt-3 inline-flex rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
