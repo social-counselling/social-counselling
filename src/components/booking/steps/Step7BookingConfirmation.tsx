@@ -8,7 +8,7 @@ import {
   Phone,
   UserRound,
 } from "lucide-react";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 import type { BookingData } from "@/types/booking";
 
 interface Step7BookingConfirmationProps {
@@ -18,7 +18,7 @@ interface Step7BookingConfirmationProps {
   status: string;
 
   serviceTitle: string;
-  
+
   counsellorName: string;
 
   bookingDate: string;
@@ -39,22 +39,6 @@ function formatDate(date: string) {
     day: "2-digit",
     month: "long",
     year: "numeric",
-  });
-}
-
-function formatTime(time: string) {
-  if (!time) return "—";
-
-  const parsed = new Date(time);
-
-  if (Number.isNaN(parsed.getTime())) {
-    return time;
-  }
-
-  return parsed.toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
   });
 }
 
@@ -156,7 +140,7 @@ export default function Step7BookingConfirmation({
                   <p className="text-xs text-slate-500">Time</p>
 
                   <p className="mt-1 text-sm font-medium text-slate-900">
-                    {formatTime(startTime)} - {formatTime(endTime)}
+                    {formatSlotTime(startTime)} - {formatSlotTime(endTime)}
                   </p>
                 </div>
               </div>

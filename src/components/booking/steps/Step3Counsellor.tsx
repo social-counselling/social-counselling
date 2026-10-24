@@ -2,7 +2,8 @@
 
 import { Check, Star } from "lucide-react";
 import Image from "next/image";
-
+import { resolveImageUrl } from "@/lib/image-url";
+import Link from "next/link";
 import type { BookingCounsellor } from "@/types/booking";
 
 interface Step3CounsellorProps {
@@ -148,7 +149,6 @@ export default function Step3Counsellor({
               <button
                 key={counsellor.counsellorId}
                 type="button"
-                title={[counsellor.bio, counsellor.mantra].filter(Boolean).join(" — ") || counsellor.name}
                 onClick={() => onSelect(counsellor.counsellorId)}
                 className={`
                     group min-w-0 w-full rounded-xl border p-3 text-left
@@ -177,11 +177,13 @@ export default function Step3Counsellor({
                   <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-full bg-slate-100">
                     {profileImageUrl ? (
                       <Image
-                        src={profileImageUrl}
+                        src={resolveImageUrl(profileImageUrl)}
                         alt={counsellor.name}
                         fill
                         sizes="64px"
                         className="object-cover"
+                        priority
+                        unoptimized
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-slate-400">
@@ -198,18 +200,15 @@ export default function Step3Counsellor({
                     {/* Name + Selection */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <h2
-                          className={`
-                              truncate
-                              text-sm
-                              font-semibold
-
-                              ${selected ? "text-primary" : "text-secondary"}
-                            `}
+                        <Link
+                          href={`/counsellors/${counsellor.counsellorId}`}
+                          onClick={(event) => event.stopPropagation()}
+                          className={`block max-w-full truncate text-sm font-semibold underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 ${
+                            selected ? "text-primary" : "text-secondary"
+                          }`}
                         >
                           {counsellor.name}
-                        </h2>
-
+                        </Link>
                         {counsellor.credentials && (
                           <p className="mt-0.5 truncate text-xs font-medium text-slate-500">
                             {counsellor.credentials}

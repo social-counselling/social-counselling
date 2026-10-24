@@ -16,9 +16,8 @@ interface Props {
 
 const DEFAULT_SPECIALIZATIONS = [
   "Marriage Counselling",
-  "Youth Counselling",
+  "Teen/Youth Counselling",
   "Student Counselling",
-  "Teenager Counselling",
   "Individual Counselling",
   "Corporate Employee Counselling",
   "Relationship Counselling",

@@ -5,7 +5,7 @@ import { ArrowLeft, Save, Send } from "lucide-react";
 import Link from "next/link";
 
 import { toast } from "sonner";
-
+import { useRouter } from "next/navigation";
 import type { CounsellorFormData } from "@/types/admin-counsellor";
 import CounsellorServicesEditor from "./CounsellorServicesEditor";
 import {
@@ -48,7 +48,7 @@ interface CounsellorFormProps {
 
 export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
   const isEditMode = Boolean(counsellorId);
-
+  const router = useRouter();
   const [formData, setFormData] = useState<CounsellorFormData>(emptyCounsellor);
 
   const [loading, setLoading] = useState(isEditMode);
@@ -311,10 +311,15 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
           );
         }
 
-        toast.success("Counsellor created successfully.");
+        toast.success(
+          isEditMode
+            ? "Counsellor updated successfully."
+            : "Counsellor created successfully.",
+        );
       }
 
-      window.location.href = "/admin/counsellors";
+      router.push("/admin/counsellors");
+      router.refresh();
     } catch (error) {
       console.error(
         isEditMode ? "UPDATE COUNSELLOR ERROR:" : "CREATE COUNSELLOR ERROR:",
@@ -396,7 +401,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
+            {/* <button
               type="button"
               disabled={saving}
               onClick={handleSave}
@@ -405,7 +410,7 @@ export default function CounsellorForm({ counsellorId }: CounsellorFormProps) {
               <Save className="h-4 w-4" />
 
               <span className="hidden sm:inline">Save Draft</span>
-            </button>
+            </button>  */}
 
             <button
               type="button"

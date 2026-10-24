@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import CounsellorProfilePage from "@/components/counsellors/CounsellorProfilePage";
-import { getPublicCounsellorById } from "@/services/public/public-content.api";
+import { getPublicCounsellorById, getPublicServices } from "@/services/public/public-content.api";
 
 export default async function CounsellorPage({
   params,
@@ -11,5 +11,6 @@ export default async function CounsellorPage({
   const { slug } = await params;
   const counsellor = await getPublicCounsellorById(slug);
   if (!counsellor) notFound();
-  return <CounsellorProfilePage counsellor={counsellor} />;
+  const services = await getPublicServices().catch(() => []);
+  return <CounsellorProfilePage counsellor={counsellor} services={services} />;
 }

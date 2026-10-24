@@ -1,7 +1,11 @@
 "use client";
 
 import { Check } from "lucide-react";
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { BookingService } from "@/types/booking";
 
 interface Step2ServiceProps {
@@ -21,10 +25,11 @@ export default function Step2Service({
   onSelect,
 }: Step2ServiceProps) {
   const categoryServices = services
-    .filter((service) =>
-      service.category === selectedCategory ||
-      (selectedCategory === "SOCIAL_COUNSELLING" &&
-        service.category === "EMPATHETIC_LISTENING"),
+    .filter(
+      (service) =>
+        service.category === selectedCategory ||
+        (selectedCategory === "SOCIAL_COUNSELLING" &&
+          service.category === "EMPATHETIC_LISTENING"),
     )
     .sort((a, b) => {
       const aEmpathetic = a.category === "EMPATHETIC_LISTENING";
@@ -66,7 +71,7 @@ export default function Step2Service({
               <button
                 key={service.serviceId}
                 type="button"
-                title={service.subtitle || service.title}
+          
                 onClick={() => onSelect(service.serviceId)}
                 className={`
                   group flex min-h-[54px] w-full items-center gap-2 rounded-xl border
@@ -98,10 +103,30 @@ export default function Step2Service({
                   </div>
 
                   {/* Compact service name; details appear on hover via tooltip */}
+
                   <div className="min-w-0 flex-1">
-                    <h2 className={`truncate text-xs font-semibold sm:text-sm ${selected ? "text-primary" : "text-secondary"}`}>
-                      {service.title}
-                    </h2>
+                    <Tooltip>
+                      <TooltipTrigger
+                        render={
+                          <span
+                            tabIndex={0}
+                            className={`block w-fit max-w-full truncate text-xs font-semibold outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 sm:text-sm ${
+                              selected ? "text-primary" : "text-secondary"
+                            }`}
+                          />
+                        }
+                      >
+                        {service.title}
+                      </TooltipTrigger>
+
+                      <TooltipContent
+                        side="top"
+                        sideOffset={6}
+                        className="z-50 max-w-xs whitespace-normal break-words rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm leading-5 text-slate-700 shadow-lg"
+                      >
+                        {service.subtitle || service.title}
+                      </TooltipContent>
+                    </Tooltip>
                   </div>
                 </div>
               </button>

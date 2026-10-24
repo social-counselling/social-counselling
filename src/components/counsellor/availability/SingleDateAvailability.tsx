@@ -11,18 +11,9 @@ import {
   type CounsellorAvailableSlot,
   type CounsellorSlot,
 } from "@/services/counsellor/availability.api";
-
+import { formatSlotTime } from "@/lib/time/slot-time";
 interface Props {
   onClose: () => void;
-}
-
-function formatTime(time: string) {
-  return new Date(time).toLocaleTimeString("en-IN", {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
-    timeZone: "Asia/Kolkata",
-  });
 }
 
 function getTodayDate() {
@@ -286,7 +277,7 @@ export default function SingleDateAvailability({ onClose }: Props) {
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="font-medium">
-                              {formatTime(slot.startTime)}
+                              {formatSlotTime(slot.startTime)}
                             </p>
 
                             <p
@@ -294,7 +285,7 @@ export default function SingleDateAvailability({ onClose }: Props) {
                                 selected ? "text-gray-300" : "text-gray-500"
                               }`}
                             >
-                              to {formatTime(slot.endTime)}
+                              to {formatSlotTime(slot.endTime)}
                             </p>
                           </div>
 

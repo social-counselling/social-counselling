@@ -6,6 +6,8 @@ export interface CounsellorData {
   slug: string;
   credentials: string[];
   age?: string;
+  experienceYears?: number | null;
+  experienceText?: string;
   languages: string[];
   geographicalCoverage: string;
   specializationAreas: string[];

@@ -11,10 +11,7 @@ interface Props {
   ) => void;
 }
 
-export default function CounsellorProfessionalInfo({
-  data,
-  onChange,
-}: Props) {
+export default function CounsellorProfessionalInfo({ data, onChange }: Props) {
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
       <div className="mb-6">
@@ -45,9 +42,7 @@ export default function CounsellorProfessionalInfo({
 
           <input
             value={data.credentials ?? ""}
-            onChange={(e) =>
-              onChange("credentials", e.target.value)
-            }
+            onChange={(e) => onChange("credentials", e.target.value)}
             placeholder="Professional Counsellor / Psychologist / Social Advisor"
             className="input-admin"
           />
@@ -63,7 +58,7 @@ export default function CounsellorProfessionalInfo({
           <textarea
             value={data.bio ?? ""}
             onChange={(e) => onChange("bio", e.target.value)}
-            rows={5}
+            rows={8}
             placeholder="Write a short professional biography..."
             className="input-admin resize-none"
           />
@@ -78,10 +73,8 @@ export default function CounsellorProfessionalInfo({
 
           <textarea
             value={data.mantra ?? ""}
-            onChange={(e) =>
-              onChange("mantra", e.target.value)
-            }
-            rows={3}
+            onChange={(e) => onChange("mantra", e.target.value)}
+            rows={2}
             placeholder="Listen, understand and support"
             className="input-admin resize-none"
           />
@@ -96,9 +89,7 @@ export default function CounsellorProfessionalInfo({
 
           <input
             value={data.coverage ?? ""}
-            onChange={(e) =>
-              onChange("coverage", e.target.value)
-            }
+            onChange={(e) => onChange("coverage", e.target.value)}
             placeholder="Pan India"
             className="input-admin"
           />
@@ -115,9 +106,7 @@ export default function CounsellorProfessionalInfo({
             type="number"
             min={0}
             value={
-              data.experienceYears === undefined
-                ? ""
-                : data.experienceYears
+              data.experienceYears === undefined ? "" : data.experienceYears
             }
             onChange={(e) => {
               const value = e.target.value;
@@ -141,12 +130,7 @@ export default function CounsellorProfessionalInfo({
 
           <input
             value={data.experienceText ?? ""}
-            onChange={(e) =>
-              onChange(
-                "experienceText",
-                e.target.value,
-              )
-            }
+            onChange={(e) => onChange("experienceText", e.target.value)}
             placeholder="5+ years of counselling experience"
             className="input-admin"
           />
@@ -163,12 +147,7 @@ export default function CounsellorProfessionalInfo({
             type="number"
             min={0}
             value={data.sortOrder ?? 0}
-            onChange={(e) =>
-              onChange(
-                "sortOrder",
-                Number(e.target.value),
-              )
-            }
+            onChange={(e) => onChange("sortOrder", Number(e.target.value))}
             className="input-admin"
           />
 
