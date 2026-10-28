@@ -11,9 +11,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <Link href="/" className="inline-block">
-              <div className="text-xl font-bold tracking-[0.14em]">
-                SOCIAL
-              </div>
+              <div className="text-xl font-bold tracking-[0.14em]">SOCIAL</div>
 
               <div className="mt-1 text-xs font-semibold tracking-[0.24em] text-white/70">
                 COUNSELLING
@@ -21,8 +19,8 @@ export default function Footer() {
             </Link>
 
             <p className="mt-5 max-w-sm text-sm leading-7 text-white/70">
-              A safe and supportive space where you can be heard,
-              understood, and guided toward a clearer path forward.
+              A safe and supportive space where you can be heard, understood,
+              and guided toward a clearer path forward.
             </p>
 
             <Button
@@ -37,9 +35,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h3 className="text-sm font-semibold">
-              Company
-            </h3>
+            <h3 className="text-sm font-semibold">Company</h3>
 
             <div className="mt-5 flex flex-col gap-3">
               <Link
@@ -81,9 +77,7 @@ export default function Footer() {
 
           {/* Resources */}
           <div>
-            <h3 className="text-sm font-semibold">
-              Resources
-            </h3>
+            <h3 className="text-sm font-semibold">Resources</h3>
 
             <div className="mt-5 flex flex-col gap-3">
               <Link
@@ -125,13 +119,11 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="text-sm font-semibold">
-              Contact
-            </h3>
+            <h3 className="text-sm font-semibold">Contact</h3>
 
             <div className="mt-5 space-y-3 text-sm text-white/70">
-              <p>hello@socialcounselling.com</p>
-              <p>+91 98765 43210</p>
+              <p>socialcounsellinghelpdesk@gmail.com</p>
+              <p>+91 9762670077</p>
               <p>Mon – Sat · 9:00 AM – 8:00 PM</p>
             </div>
           </div>
@@ -139,8 +131,8 @@ export default function Footer() {
 
         <div className="mt-12 border-t border-white/10 pt-6">
           <p className="text-center text-xs text-white/50">
-            © {new Date().getFullYear()} Social Counselling. All
-            rights reserved.
+            © {new Date().getFullYear()} Social Counselling. All rights
+            reserved.
           </p>
         </div>
       </Container>

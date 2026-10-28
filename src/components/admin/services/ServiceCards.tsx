@@ -7,6 +7,8 @@ import { Eye, Pencil, Power } from "lucide-react";
 import { resolveImageUrl } from "@/lib/image-url";
 
 import type { AdminService } from "@/types/admin-service";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 
 import { toast } from "sonner";
 
@@ -31,6 +33,8 @@ interface Props {
 }
 
 export default function ServiceCards({ services }: Props) {
+  const { user } = useDashboardAuth();
+  const canManageServices = hasPermission(user, "services.manage");
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [selectedService, setSelectedService] = useState<AdminService | null>(
     null,
@@ -163,34 +167,33 @@ export default function ServiceCards({ services }: Props) {
                   View
                 </Link>
 
-                <Link
-                  href={`/admin/services/new?id=${service.serviceId}`}
-                  className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-[#183b3b]"
-                >
-                  <Pencil className="h-3.5 w-3.5" />
-                  Edit
-                </Link>
+                {canManageServices && (
+                  <>
+                    <Link
+                      href={`/admin/services/new?id=${service.serviceId}`}
+                      className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 transition hover:border-slate-300 hover:bg-slate-50 hover:text-[#183b3b]"
+                    >
+                      <Pencil className="h-3.5 w-3.5" />
+                      Edit
+                    </Link>
 
-                <button
-                  type="button"
-                  disabled={updatingId === service.serviceId}
-                  onClick={() => setSelectedService(service)}
-                  className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
-                    service.isActive
-                      ? "border-red-100 text-red-500 hover:bg-red-50"
-                      : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
-                  }`}
-                >
-                  <Power className="h-3.5 w-3.5" />
-
-                  {updatingId === service.serviceId
-                    ? service.isActive
-                      ? "Disabling..."
-                      : "Enabling..."
-                    : service.isActive
-                      ? "Disable"
-                      : "Enable"}
-                </button>
+                    <button
+                      type="button"
+                      disabled={updatingId === service.serviceId}
+                      onClick={() => setSelectedService(service)}
+                      className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:cursor-not-allowed disabled:opacity-50 ${
+                        service.isActive
+                          ? "border-red-100 text-red-500 hover:bg-red-50"
+                          : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
+                      }`}
+                    >
+                      <Power className="h-3.5 w-3.5" />
+                      {updatingId === service.serviceId
+                        ? service.isActive ? "Disabling..." : "Enabling..."
+                        : service.isActive ? "Disable" : "Enable"}
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </article>

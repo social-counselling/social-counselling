@@ -19,8 +19,12 @@ import {
 import type { AdminService } from "@/types/admin-service";
 
 import ServiceCards from "./ServiceCards";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 
 export default function ServicesPage() {
+  const { user } = useDashboardAuth();
+  const canManageServices = hasPermission(user, "services.manage");
   const [allServices, setAllServices] = useState<AdminService[]>([]);
 
   const [page, setPage] = useState(1);
@@ -94,13 +98,15 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <Link
-          href="/admin/services/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"
-        >
-          <Plus className="h-4 w-4" />
-          Add Service
-        </Link>
+        {canManageServices && (
+          <Link
+            href="/admin/services/new"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"
+          >
+            <Plus className="h-4 w-4" />
+            Add Service
+          </Link>
+        )}
       </div>
 
       {/* FILTER CARD */}

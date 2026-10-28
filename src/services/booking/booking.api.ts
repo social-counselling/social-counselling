@@ -68,3 +68,19 @@ export async function getCounsellorBookings(
     search: query.search?.trim() || undefined,
   });
 }
+
+/**
+ * Client-owned bookings. The frontend contract is ready for the upcoming backend
+ * RBAC endpoint: GET /booking/client with the same paginated response shape as
+ * the existing admin and counsellor booking endpoints.
+ */
+export async function getClientBookings(
+  query: BookingListQuery = {},
+): Promise<BookingListResponse> {
+  return apiClient.get<BookingListResponse>("/booking/client", {
+    page: query.page ?? 1,
+    limit: query.limit ?? 10,
+    status: query.status || undefined,
+    search: query.search?.trim() || undefined,
+  });
+}

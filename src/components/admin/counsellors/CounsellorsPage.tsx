@@ -24,6 +24,8 @@ import type {
 } from "@/types/admin-counsellor";
 
 import CounsellorCards from "./CounsellorCards";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 import {
   Select,
   SelectContent,
@@ -35,6 +37,8 @@ import {
 const PAGE_SIZE = 10;
 
 export default function CounsellorsPage() {
+  const { user } = useDashboardAuth();
+  const canManageCounsellors = hasPermission(user, "counsellors.manage");
   const [allCounsellors, setAllCounsellors] = useState<AdminCounsellor[]>([]);
 
   const [page, setPage] = useState(1);
@@ -223,13 +227,15 @@ export default function CounsellorsPage() {
           </p>
         </div>
 
-        <Link
-          href="/admin/counsellors/new"
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"
-        >
-          <Plus className="h-4 w-4" />
-          Add Counsellor
-        </Link>
+        {canManageCounsellors && (
+          <Link
+            href="/admin/counsellors/new"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"
+          >
+            <Plus className="h-4 w-4" />
+            Add Counsellor
+          </Link>
+        )}
       </div>
 
       {/* FILTERS */}

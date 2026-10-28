@@ -1,21 +1,11 @@
 import type { Metadata } from "next";
-
-import AdminShell from "@/components/admin/AdminShell";
+import SharedDashboardShell from "@/components/dashboard/SharedDashboardShell";
 
 export const metadata: Metadata = {
-  title: "Admin Panel | Social Counselling",
-  description:
-    "Social Counselling administration panel",
+  title: "Dashboard | Social Counselling",
+  description: "Social Counselling dashboard",
 };
 
-export default function AdminLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  return (
-    <AdminShell>
-      {children}
-    </AdminShell>
-  );
+export default function AdminLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return <SharedDashboardShell allowedRoles={["ADMIN"]}>{children}</SharedDashboardShell>;
 }

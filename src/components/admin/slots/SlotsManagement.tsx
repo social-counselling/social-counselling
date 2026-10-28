@@ -15,6 +15,8 @@ import {
 
 import { useEffect, useState } from "react";
 import { formatSlotTime } from "@/lib/time/slot-time";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 import {
   createAdminSlot,
   deleteAdminSlot,
@@ -36,6 +38,8 @@ const emptyForm: SlotForm = {
 };
 
 export default function SlotsManagement() {
+  const { user } = useDashboardAuth();
+  const canManageSlots = hasPermission(user, "slots.manage");
   const [slots, setSlots] = useState<AdminSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -183,13 +187,11 @@ export default function SlotsManagement() {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={openCreateForm}
-            className="rounded-lg bg-black px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
-          >
-            + Add Slot
-          </button>
+          {canManageSlots && (
+            <button type="button" onClick={openCreateForm} className="rounded-lg bg-black px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800">
+              + Add Slot
+            </button>
+          )}
         </div>
 
         {/* Error */}
@@ -219,13 +221,11 @@ export default function SlotsManagement() {
             <div className="px-5 py-10 text-center">
               <p className="text-sm text-gray-500">No time slots found.</p>
 
-              <button
-                type="button"
-                onClick={openCreateForm}
-                className="mt-3 text-sm font-medium text-black underline"
-              >
-                Create your first slot
-              </button>
+              {canManageSlots && (
+                <button type="button" onClick={openCreateForm} className="mt-3 text-sm font-medium text-black underline">
+                  Create your first slot
+                </button>
+              )}
             </div>
           ) : (
             <div className="divide-y divide-gray-100">
@@ -258,23 +258,12 @@ export default function SlotsManagement() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      type="button"
-                      onClick={() => openEditForm(slot)}
-                      className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setDeletingSlot(slot)}
-                      className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50"
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  {canManageSlots && (
+                    <div className="flex items-center gap-2">
+                      <button type="button" onClick={() => openEditForm(slot)} className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Edit</button>
+                      <button type="button" onClick={() => setDeletingSlot(slot)} className="rounded-lg border border-red-200 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50">Delete</button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

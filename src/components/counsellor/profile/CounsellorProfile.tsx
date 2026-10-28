@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 import { resolveImageUrl } from "@/lib/image-url";
 import {
   getCounsellorProfile,
@@ -24,6 +26,8 @@ import {
 } from "@/services/counsellor/profile.api";
 
 export default function CounsellorProfile() {
+  const { user } = useDashboardAuth();
+  const canManageOwnProfile = hasPermission(user, "counsellor.profile.manage_own");
   const [counsellor, setCounsellor] = useState<CounsellorProfileData | null>(
     null,
   );
@@ -217,14 +221,12 @@ export default function CounsellorProfile() {
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={openEditProfile}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800"
-        >
-          <Pencil className="h-4 w-4" />
-          Edit Profile
-        </button>
+        {canManageOwnProfile && (
+          <button type="button" onClick={openEditProfile} className="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800">
+            <Pencil className="h-4 w-4" />
+            Edit Profile
+          </button>
+        )}
       </div>
 
       {/* Success Message */}

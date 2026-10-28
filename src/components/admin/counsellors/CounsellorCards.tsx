@@ -22,12 +22,16 @@ import { Eye, Pencil, CheckCircle2, PowerOff } from "lucide-react";
 import type { AdminCounsellor } from "@/types/admin-counsellor";
 import { useRouter } from "next/navigation";
 import { updateAdminCounsellorStatus } from "@/services/admin/counsellors.api";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 
 interface Props {
   counsellors: AdminCounsellor[];
 }
 
 export default function CounsellorCards({ counsellors }: Props) {
+  const { user } = useDashboardAuth();
+  const canManageCounsellors = hasPermission(user, "counsellors.manage");
   const [updatingStatusId, setUpdatingStatusId] = useState<number | null>(null);
   const [selectedCounsellor, setSelectedCounsellor] =
     useState<AdminCounsellor | null>(null);
@@ -233,38 +237,33 @@ export default function CounsellorCards({ counsellors }: Props) {
                     View
                   </Link>
 
-                  <Link
-                    href={`/admin/counsellors/new?id=${counsellor.id}`}
-                    className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#183b3b]"
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                    Edit
-                  </Link>
+                  {canManageCounsellors && (
+                    <>
+                      <Link
+                        href={`/admin/counsellors/new?id=${counsellor.id}`}
+                        className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#183b3b]"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                        Edit
+                      </Link>
 
-                  <button
-                    type="button"
-                    disabled={updatingStatusId === counsellor.id}
-                    onClick={() => setSelectedCounsellor(counsellor)}
-                    className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:opacity-50 ${
-                      counsellor.status === "ACTIVE"
-                        ? "border-amber-100 text-amber-600 hover:bg-amber-50"
-                        : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
-                    }`}
-                  >
-                    {counsellor.status === "ACTIVE" ? (
-                      <PowerOff className="h-3.5 w-3.5" />
-                    ) : (
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    )}
-
-                    {updatingStatusId === counsellor.id
-                      ? counsellor.status === "ACTIVE"
-                        ? "Disabling..."
-                        : "Enabling..."
-                      : counsellor.status === "ACTIVE"
-                        ? "Disable"
-                        : "Enable"}
-                  </button>
+                      <button
+                        type="button"
+                        disabled={updatingStatusId === counsellor.id}
+                        onClick={() => setSelectedCounsellor(counsellor)}
+                        className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:opacity-50 ${
+                          counsellor.status === "ACTIVE"
+                            ? "border-amber-100 text-amber-600 hover:bg-amber-50"
+                            : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
+                        }`}
+                      >
+                        {counsellor.status === "ACTIVE" ? <PowerOff className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+                        {updatingStatusId === counsellor.id
+                          ? counsellor.status === "ACTIVE" ? "Disabling..." : "Enabling..."
+                          : counsellor.status === "ACTIVE" ? "Disable" : "Enable"}
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </article>

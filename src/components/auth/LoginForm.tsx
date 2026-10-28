@@ -64,7 +64,8 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
       }
 
       if (role === "CLIENT") {
-        router.replace("/");
+        // The client UI is prepared now; backend client authentication will be connected later.
+        router.replace("/client");
         return;
       }
 

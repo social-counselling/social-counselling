@@ -4,8 +4,12 @@ import { useState } from "react";
 
 import SingleDateAvailability from "./SingleDateAvailability";
 import UpcomingAvailability from "./UpcomingAvailability";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 
 export default function CounsellorAvailability() {
+  const { user } = useDashboardAuth();
+  const canManageAvailability = hasPermission(user, "availability.manage_own");
   const [singleDateOpen, setSingleDateOpen] = useState(false);
 
   const [upcomingOpen, setUpcomingOpen] = useState(false);
@@ -26,21 +30,13 @@ export default function CounsellorAvailability() {
 
         {/* Actions */}
         <div className="grid gap-5 md:grid-cols-2">
-          <button
-            type="button"
-            onClick={() => setSingleDateOpen(true)}
-            className="rounded-xl border border-gray-200 bg-white p-6 text-left shadow-sm transition hover:border-gray-400 hover:shadow"
-          >
-            <h2 className="text-lg font-semibold text-gray-900">Select Date</h2>
-
-            <p className="mt-2 text-sm text-gray-500">
-              Select a date and choose the time slots when you are available.
-            </p>
-
-            <span className="mt-5 inline-flex rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white">
-              Manage Availability
-            </span>
-          </button>
+          {canManageAvailability && (
+            <button type="button" onClick={() => setSingleDateOpen(true)} className="rounded-xl border border-gray-200 bg-white p-6 text-left shadow-sm transition hover:border-gray-400 hover:shadow">
+              <h2 className="text-lg font-semibold text-gray-900">Select Date</h2>
+              <p className="mt-2 text-sm text-gray-500">Select a date and choose the time slots when you are available.</p>
+              <span className="mt-5 inline-flex rounded-lg bg-gray-900 px-4 py-2 text-sm font-medium text-white">Manage Availability</span>
+            </button>
+          )}
 
           <button
             type="button"
@@ -62,7 +58,7 @@ export default function CounsellorAvailability() {
         </div>
 
         {/* Single Date Modal */}
-        {singleDateOpen && (
+        {canManageAvailability && singleDateOpen && (
           <SingleDateAvailability onClose={() => setSingleDateOpen(false)} />
         )}
 
