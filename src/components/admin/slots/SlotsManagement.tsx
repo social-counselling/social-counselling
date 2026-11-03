@@ -39,7 +39,7 @@ const emptyForm: SlotForm = {
 
 export default function SlotsManagement() {
   const { user } = useDashboardAuth();
-  const canManageSlots = hasPermission(user, "slots.manage");
+  const canManageSlots = hasPermission(user, "admin.slots");
   const [slots, setSlots] = useState<AdminSlot[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

@@ -27,7 +27,7 @@ import {
 
 export default function CounsellorProfile() {
   const { user } = useDashboardAuth();
-  const canManageOwnProfile = hasPermission(user, "counsellor.profile.manage_own");
+  const canManageOwnProfile = hasPermission(user, "counsellor.profile");
   const [counsellor, setCounsellor] = useState<CounsellorProfileData | null>(
     null,
   );

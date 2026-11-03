@@ -25,11 +25,27 @@ export function getCounsellorAvailableSlots() {
   );
 }
 
-export function getCounsellorSlots(date?: string) {
-  return apiClient.get<CounsellorSlot[]>(
-    "/counsellor/slots",
-    date ? { date } : undefined,
-  );
+export interface CounsellorSlotDateRange {
+  fromDate?: string;
+  toDate?: string;
+}
+
+export function getCounsellorSlots(
+  dateOrRange?: string | CounsellorSlotDateRange,
+) {
+  const params:
+    | Record<string, string | number | boolean | undefined>
+    | undefined =
+    typeof dateOrRange === "string"
+      ? { fromDate: dateOrRange }
+      : dateOrRange
+        ? {
+            fromDate: dateOrRange.fromDate,
+            toDate: dateOrRange.toDate,
+          }
+        : undefined;
+
+  return apiClient.get<CounsellorSlot[]>("/counsellor/slots", params);
 }
 
 export function createCounsellorSlot(data: CreateCounsellorSlotRequest) {

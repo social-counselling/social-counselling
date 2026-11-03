@@ -38,7 +38,7 @@ const PAGE_SIZE = 10;
 
 export default function CounsellorsPage() {
   const { user } = useDashboardAuth();
-  const canManageCounsellors = hasPermission(user, "counsellors.manage");
+  const canCreateCounsellors = hasPermission(user, "admin.counsellors.create");
   const [allCounsellors, setAllCounsellors] = useState<AdminCounsellor[]>([]);
 
   const [page, setPage] = useState(1);
@@ -227,7 +227,7 @@ export default function CounsellorsPage() {
           </p>
         </div>
 
-        {canManageCounsellors && (
+        {canCreateCounsellors && (
           <Link
             href="/admin/counsellors/new"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"
@@ -372,7 +372,7 @@ export default function CounsellorsPage() {
 
       {/* COUNSELLOR CARDS */}
       {!loading && !error && counsellors.length > 0 && (
-        <CounsellorCards counsellors={counsellors} />
+        <CounsellorCards counsellors={counsellors} onStatusChanged={fetchCounsellors} />
       )}
 
       {/* PAGINATION */}

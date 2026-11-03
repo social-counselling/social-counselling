@@ -20,22 +20,21 @@ import Link from "next/link";
 import { Eye, Pencil, CheckCircle2, PowerOff } from "lucide-react";
 
 import type { AdminCounsellor } from "@/types/admin-counsellor";
-import { useRouter } from "next/navigation";
 import { updateAdminCounsellorStatus } from "@/services/admin/counsellors.api";
 import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
 import { hasPermission } from "@/lib/auth/permissions";
 
 interface Props {
   counsellors: AdminCounsellor[];
+  onStatusChanged: () => Promise<void>;
 }
 
-export default function CounsellorCards({ counsellors }: Props) {
+export default function CounsellorCards({ counsellors, onStatusChanged }: Props) {
   const { user } = useDashboardAuth();
-  const canManageCounsellors = hasPermission(user, "counsellors.manage");
+  const canManageCounsellors = hasPermission(user, "admin.counsellors");
   const [updatingStatusId, setUpdatingStatusId] = useState<number | null>(null);
   const [selectedCounsellor, setSelectedCounsellor] =
     useState<AdminCounsellor | null>(null);
-  const router = useRouter();
   const getProfileImage = (profileImageUrl: string | null) => {
     if (!profileImageUrl) {
       return null;
@@ -67,7 +66,9 @@ export default function CounsellorCards({ counsellors }: Props) {
       toast.success(`Counsellor ${actionLabel}d successfully.`);
 
       setSelectedCounsellor(null);
-      router.refresh();
+      // The parent owns the fetched list in client-side state. Refresh that
+      // list explicitly; router.refresh() does not rerun its useEffect fetch.
+      await onStatusChanged();
     } catch (error) {
       console.error("UPDATE COUNSELLOR STATUS ERROR:", error);
 
@@ -142,21 +143,6 @@ export default function CounsellorCards({ counsellors }: Props) {
                   )}
                 </div>
 
-                {/* STATUS */}
-
-                <div className="absolute right-4 top-4">
-                  {counsellor.status === "ACTIVE" ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50/95 px-3 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      Active
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50/95 px-3 py-1.5 text-xs font-semibold text-red-600 shadow-sm">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                      {counsellor.status}
-                    </span>
-                  )}
-                </div>
               </div>
 
               {/* CONTENT */}

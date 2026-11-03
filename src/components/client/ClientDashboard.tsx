@@ -6,7 +6,7 @@ import { CalendarDays, ArrowRight, Clock3, UserRound } from "lucide-react";
 
 import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
 import { getClientBookings } from "@/services/booking/booking.api";
-import type { BookingListItem } from "@/types/booking-list";
+import type { ClientBookingListItem } from "@/types/booking-list";
 
 function formatDate(value?: string | null) {
   if (!value) return "Date to be confirmed";
@@ -31,7 +31,7 @@ function statusClass(status: string) {
 
 export default function ClientDashboard() {
   const { user } = useDashboardAuth();
-  const [bookings, setBookings] = useState<BookingListItem[]>([]);
+  const [bookings, setBookings] = useState<ClientBookingListItem[]>([]);
   const [totalBookings, setTotalBookings] = useState(0);
   const [loading, setLoading] = useState(true);
   const [bookingsUnavailable, setBookingsUnavailable] = useState(false);
@@ -103,8 +103,8 @@ export default function ClientDashboard() {
           <div className="space-y-3 p-5 sm:p-6" aria-label="Loading bookings"><div className="h-14 animate-pulse rounded-xl bg-slate-100" /><div className="h-14 animate-pulse rounded-xl bg-slate-100" /></div>
         ) : bookingsUnavailable ? (
           <div className="px-5 py-8 text-sm text-slate-600 sm:px-6">
-            <p className="font-medium text-slate-800">Your booking history is being connected.</p>
-            <p className="mt-1">The frontend is ready for the client bookings API. This endpoint will become available when client access is implemented in the backend.</p>
+            <p className="font-medium text-slate-800">We couldn’t load your booking history.</p>
+            <p className="mt-1">Please try again in a moment. If the problem continues, contact support.</p>
           </div>
         ) : bookings.length === 0 ? (
           <div className="px-5 py-10 text-center sm:px-6">
