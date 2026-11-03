@@ -24,7 +24,7 @@ import { hasPermission } from "@/lib/auth/permissions";
 
 export default function ServicesPage() {
   const { user } = useDashboardAuth();
-  const canManageServices = hasPermission(user, "services.manage");
+  const canCreateServices = hasPermission(user, "admin.services.create");
   const [allServices, setAllServices] = useState<AdminService[]>([]);
 
   const [page, setPage] = useState(1);
@@ -98,7 +98,7 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        {canManageServices && (
+        {canCreateServices && (
           <Link
             href="/admin/services/new"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"

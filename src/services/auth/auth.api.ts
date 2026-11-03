@@ -22,6 +22,14 @@ export interface AuthUser {
   permissions?: string[];
 }
 
+export interface UserNavigationItem {
+  key: string;
+  name: string;
+  path: string;
+  icon: string | null;
+  sortOrder: number;
+}
+
 export interface CurrentUser {
   userId: string;
   email: string;
@@ -31,6 +39,7 @@ export interface CurrentUser {
   profileImageUrl: string | null;
   counsellorId: number | null;
   permissions: string[];
+  navigation: UserNavigationItem[];
 }
 
 export interface LoginResponse {

@@ -80,3 +80,47 @@ export type BookingListQuery = {
   status?: string;
   search?: string;
 };
+
+
+/** Minimal booking data exposed to a client for their own booking history. */
+export type ClientBookingListItem = {
+  id: string;
+  bookingNumber: string;
+  status: BookingListStatus | string;
+  /** Stored in rupees, not paise. */
+  amount: string | number;
+  createdAt: string;
+  service: {
+    serviceId: number;
+    title: string;
+    category: string;
+    slug: string;
+  } | null;
+  counsellor: {
+    id: number;
+    user: {
+      firstName: string;
+      lastName: string | null;
+    };
+  } | null;
+  counsellorSlot: {
+    id: number;
+    date: string;
+    status: string;
+    slot: {
+      id: number;
+      startTime: string;
+      endTime: string;
+    } | null;
+  } | null;
+};
+
+export type ClientBookingListResponse = {
+  data: ClientBookingListItem[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+};

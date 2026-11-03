@@ -46,7 +46,8 @@ export function getCounsellorDashboard() {
 }
 
 export function getCounsellorSlots(date?: string) {
-  const query = date ? `?date=${encodeURIComponent(date)}` : "";
-
-  return apiClient.get<CounsellorSlot[]>(`/counsellor/slots${query}`);
+  return apiClient.get<CounsellorSlot[]>(
+    "/counsellor/slots",
+    date ? { fromDate: date } : undefined,
+  );
 }

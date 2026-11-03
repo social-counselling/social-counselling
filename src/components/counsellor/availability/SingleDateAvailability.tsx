@@ -185,6 +185,9 @@ export default function SingleDateAvailability({ onClose }: Props) {
           .filter((assignment) => assignment.status === "AVAILABLE")
           .map((assignment) => assignment.slot.id),
       );
+
+      // Close the modal automatically after the save and verification succeed.
+      onClose();
     } catch (error) {
       console.error("Failed to save availability:", error);
 
@@ -259,7 +262,7 @@ export default function SingleDateAvailability({ onClose }: Props) {
                   No active time slots are available.
                 </p>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2">
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
                   {slots.map((slot) => {
                     const selected = selectedSlotIds.includes(slot.id);
 
@@ -268,36 +271,31 @@ export default function SingleDateAvailability({ onClose }: Props) {
                         key={slot.id}
                         type="button"
                         onClick={() => toggleSlot(slot.id)}
-                        className={`rounded-xl border p-4 text-left transition ${
+                        className={`min-w-0 rounded-lg border px-2.5 py-2 text-center transition sm:px-3 ${
                           selected
                             ? "border-gray-900 bg-gray-900 text-white"
                             : "border-gray-200 bg-white text-gray-900 hover:border-gray-400"
                         }`}
                       >
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-medium">
-                              {formatSlotTime(slot.startTime)}
-                            </p>
-
-                            <p
-                              className={`text-sm ${
-                                selected ? "text-gray-300" : "text-gray-500"
-                              }`}
-                            >
-                              to {formatSlotTime(slot.endTime)}
-                            </p>
-                          </div>
-
-                          <div
-                            className={`flex h-6 w-6 items-center justify-center rounded-full border ${
-                              selected
-                                ? "border-white bg-white text-gray-900"
-                                : "border-gray-300"
+                        <div className="flex items-center justify-center gap-1.5">
+                          <span className="text-xs font-semibold leading-5 sm:text-sm">
+                            {formatSlotTime(slot.startTime)}
+                          </span>
+                          <span
+                            className={`text-[11px] ${
+                              selected ? "text-gray-300" : "text-gray-500"
                             }`}
                           >
-                            {selected && "✓"}
-                          </div>
+                            –
+                          </span>
+                          <span className="text-xs font-semibold leading-5 sm:text-sm">
+                            {formatSlotTime(slot.endTime)}
+                          </span>
+                          {selected && (
+                            <span className="ml-0.5 text-xs font-bold" aria-label="Selected">
+                              ✓
+                            </span>
+                          )}
                         </div>
                       </button>
                     );

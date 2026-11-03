@@ -180,21 +180,23 @@ export default function CounsellorDashboard() {
             No availability has been added for today.
           </div>
         ) : (
-          <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {todaySlots.map((item) => (
               <div
                 key={item.id}
-                className="rounded-lg border border-gray-200 p-4"
+                className="min-w-0 rounded-lg border border-gray-200 bg-white px-2.5 py-2 text-center sm:px-3"
               >
-                <p className="font-medium text-gray-900">
-                  {formatSlotTime(item.slot.startTime)}
-                </p>
+                <div className="flex items-center justify-center gap-1.5">
+                  <span className="text-xs font-semibold leading-5 text-gray-900 sm:text-sm">
+                    {formatSlotTime(item.slot.startTime)}
+                  </span>
+                  <span className="text-[11px] text-gray-500">–</span>
+                  <span className="text-xs font-semibold leading-5 text-gray-900 sm:text-sm">
+                    {formatSlotTime(item.slot.endTime)}
+                  </span>
+                </div>
 
-                <p className="text-sm text-gray-500">
-                  to {formatSlotTime(item.slot.endTime)}
-                </p>
-
-                <span className="mt-3 inline-flex rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-700">
+                <span className="mt-1 inline-flex max-w-full rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium leading-4 text-gray-700 sm:text-xs">
                   {item.status}
                 </span>
               </div>

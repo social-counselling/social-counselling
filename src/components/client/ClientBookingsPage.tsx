@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { CalendarDays, RefreshCw } from "lucide-react";
 import { getClientBookings } from "@/services/booking/booking.api";
-import type { BookingListItem, BookingListStatus } from "@/types/booking-list";
+import type { ClientBookingListItem, BookingListStatus } from "@/types/booking-list";
 
 const statuses: Array<"ALL" | BookingListStatus> = ["ALL", "PENDING", "CONFIRMED", "COMPLETED", "CANCELLED", "REFUNDED"];
 
@@ -21,7 +21,7 @@ function statusClass(status: string) {
 }
 
 export default function ClientBookingsPage() {
-  const [bookings, setBookings] = useState<BookingListItem[]>([]);
+  const [bookings, setBookings] = useState<ClientBookingListItem[]>([]);
   const [status, setStatus] = useState<"ALL" | BookingListStatus>("ALL");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -33,7 +33,7 @@ export default function ClientBookingsPage() {
       const response = await getClientBookings({ page: 1, limit: 50, status: status === "ALL" ? undefined : status });
       setBookings(response.data ?? []);
     } catch {
-      setError("Client booking history will load once the client bookings endpoint is enabled in the backend.");
+      setError("Unable to load your bookings right now. Please try again.");
     } finally {
       setLoading(false);
     }

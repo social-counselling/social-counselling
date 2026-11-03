@@ -34,7 +34,7 @@ interface Props {
 
 export default function ServiceCards({ services }: Props) {
   const { user } = useDashboardAuth();
-  const canManageServices = hasPermission(user, "services.manage");
+  const canManageServices = hasPermission(user, "admin.services");
   const [updatingId, setUpdatingId] = useState<number | null>(null);
   const [selectedService, setSelectedService] = useState<AdminService | null>(
     null,

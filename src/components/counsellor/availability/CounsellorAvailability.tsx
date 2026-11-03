@@ -9,7 +9,7 @@ import { hasPermission } from "@/lib/auth/permissions";
 
 export default function CounsellorAvailability() {
   const { user } = useDashboardAuth();
-  const canManageAvailability = hasPermission(user, "availability.manage_own");
+  const canManageAvailability = hasPermission(user, "counsellor.availability");
   const [singleDateOpen, setSingleDateOpen] = useState(false);
 
   const [upcomingOpen, setUpcomingOpen] = useState(false);
