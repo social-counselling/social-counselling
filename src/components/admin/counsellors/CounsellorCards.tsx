@@ -20,18 +20,21 @@ import Link from "next/link";
 import { Eye, Pencil, CheckCircle2, PowerOff } from "lucide-react";
 
 import type { AdminCounsellor } from "@/types/admin-counsellor";
-import { useRouter } from "next/navigation";
 import { updateAdminCounsellorStatus } from "@/services/admin/counsellors.api";
+import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
+import { hasPermission } from "@/lib/auth/permissions";
 
 interface Props {
   counsellors: AdminCounsellor[];
+  onStatusChanged: () => Promise<void>;
 }
 
-export default function CounsellorCards({ counsellors }: Props) {
+export default function CounsellorCards({ counsellors, onStatusChanged }: Props) {
+  const { user } = useDashboardAuth();
+  const canManageCounsellors = hasPermission(user, "admin.counsellors");
   const [updatingStatusId, setUpdatingStatusId] = useState<number | null>(null);
   const [selectedCounsellor, setSelectedCounsellor] =
     useState<AdminCounsellor | null>(null);
-  const router = useRouter();
   const getProfileImage = (profileImageUrl: string | null) => {
     if (!profileImageUrl) {
       return null;
@@ -63,7 +66,9 @@ export default function CounsellorCards({ counsellors }: Props) {
       toast.success(`Counsellor ${actionLabel}d successfully.`);
 
       setSelectedCounsellor(null);
-      router.refresh();
+      // The parent owns the fetched list in client-side state. Refresh that
+      // list explicitly; router.refresh() does not rerun its useEffect fetch.
+      await onStatusChanged();
     } catch (error) {
       console.error("UPDATE COUNSELLOR STATUS ERROR:", error);
 
@@ -138,21 +143,6 @@ export default function CounsellorCards({ counsellors }: Props) {
                   )}
                 </div>
 
-                {/* STATUS */}
-
-                <div className="absolute right-4 top-4">
-                  {counsellor.status === "ACTIVE" ? (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50/95 px-3 py-1.5 text-xs font-semibold text-emerald-700 shadow-sm">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                      Active
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50/95 px-3 py-1.5 text-xs font-semibold text-red-600 shadow-sm">
-                      <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
-                      {counsellor.status}
-                    </span>
-                  )}
-                </div>
               </div>
 
               {/* CONTENT */}
@@ -233,38 +223,33 @@ export default function CounsellorCards({ counsellors }: Props) {
                     View
                   </Link>
 
-                  <Link
-                    href={`/admin/counsellors/new?id=${counsellor.id}`}
-                    className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#183b3b]"
-                  >
-                    <Pencil className="h-3.5 w-3.5" />
-                    Edit
-                  </Link>
+                  {canManageCounsellors && (
+                    <>
+                      <Link
+                        href={`/admin/counsellors/new?id=${counsellor.id}`}
+                        className="flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-[#183b3b]"
+                      >
+                        <Pencil className="h-3.5 w-3.5" />
+                        Edit
+                      </Link>
 
-                  <button
-                    type="button"
-                    disabled={updatingStatusId === counsellor.id}
-                    onClick={() => setSelectedCounsellor(counsellor)}
-                    className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:opacity-50 ${
-                      counsellor.status === "ACTIVE"
-                        ? "border-amber-100 text-amber-600 hover:bg-amber-50"
-                        : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
-                    }`}
-                  >
-                    {counsellor.status === "ACTIVE" ? (
-                      <PowerOff className="h-3.5 w-3.5" />
-                    ) : (
-                      <CheckCircle2 className="h-3.5 w-3.5" />
-                    )}
-
-                    {updatingStatusId === counsellor.id
-                      ? counsellor.status === "ACTIVE"
-                        ? "Disabling..."
-                        : "Enabling..."
-                      : counsellor.status === "ACTIVE"
-                        ? "Disable"
-                        : "Enable"}
-                  </button>
+                      <button
+                        type="button"
+                        disabled={updatingStatusId === counsellor.id}
+                        onClick={() => setSelectedCounsellor(counsellor)}
+                        className={`flex h-9 flex-1 items-center justify-center gap-1.5 rounded-xl border text-xs font-semibold transition disabled:opacity-50 ${
+                          counsellor.status === "ACTIVE"
+                            ? "border-amber-100 text-amber-600 hover:bg-amber-50"
+                            : "border-emerald-100 text-emerald-600 hover:bg-emerald-50"
+                        }`}
+                      >
+                        {counsellor.status === "ACTIVE" ? <PowerOff className="h-3.5 w-3.5" /> : <CheckCircle2 className="h-3.5 w-3.5" />}
+                        {updatingStatusId === counsellor.id
+                          ? counsellor.status === "ACTIVE" ? "Disabling..." : "Enabling..."
+                          : counsellor.status === "ACTIVE" ? "Disable" : "Enable"}
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </article>

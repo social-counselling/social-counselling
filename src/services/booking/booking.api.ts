@@ -43,6 +43,7 @@ export async function createBooking(
 import type {
   BookingListQuery,
   BookingListResponse,
+  ClientBookingListResponse,
 } from "@/types/booking-list";
 
 /** Retrieve bookings across all counsellors. The backend restricts this to admins. */
@@ -62,6 +63,18 @@ export async function getCounsellorBookings(
   query: BookingListQuery = {},
 ): Promise<BookingListResponse> {
   return apiClient.get<BookingListResponse>("/booking/counsellor", {
+    page: query.page ?? 1,
+    limit: query.limit ?? 10,
+    status: query.status || undefined,
+    search: query.search?.trim() || undefined,
+  });
+}
+
+/** Retrieve only bookings owned by the authenticated client account. */
+export async function getClientBookings(
+  query: BookingListQuery = {},
+): Promise<ClientBookingListResponse> {
+  return apiClient.get<ClientBookingListResponse>("/booking/client", {
     page: query.page ?? 1,
     limit: query.limit ?? 10,
     status: query.status || undefined,

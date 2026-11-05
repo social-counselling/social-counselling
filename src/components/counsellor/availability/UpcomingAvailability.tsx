@@ -44,12 +44,14 @@ export default function UpcomingAvailability({ onClose }: Props) {
   const [error, setError] = useState("");
 
   async function handleLoadRange() {
-    if (!rangeStart || !rangeEnd) {
-      setError("Please select both start and end dates.");
+    if (!rangeStart) {
+      setError("Please select a start date.");
       return;
     }
 
-    if (rangeEnd < rangeStart) {
+    const effectiveEndDate = rangeEnd || rangeStart;
+
+    if (effectiveEndDate < rangeStart) {
       setError("End date cannot be before start date.");
       return;
     }
@@ -59,32 +61,45 @@ export default function UpcomingAvailability({ onClose }: Props) {
     setUpcomingAvailability([]);
 
     try {
-      const start = new Date(`${rangeStart}T00:00:00`);
+      // ONE API CALL FOR THE COMPLETE DATE RANGE
+      const data = await getCounsellorSlots({
+        fromDate: rangeStart,
+        toDate: effectiveEndDate,
+      });
 
-      const end = new Date(`${rangeEnd}T00:00:00`);
+      // Group the returned records by date.
+      const groupedAvailability = new Map<string, CounsellorSlot[]>();
 
+      data
+        .filter((assignment) => assignment.status === "AVAILABLE")
+        .forEach((assignment) => {
+          // Backend returns ISO date strings.
+          const date = assignment.date.slice(0, 10);
+
+          const existing = groupedAvailability.get(date) || [];
+
+          existing.push(assignment);
+
+          groupedAvailability.set(date, existing);
+        });
+
+      // Generate dates locally so days without availability
+      // can still be displayed.
       const dates: string[] = [];
 
-      const current = new Date(start);
+      const current = new Date(`${rangeStart}T00:00:00.000Z`);
+      const end = new Date(`${effectiveEndDate}T00:00:00.000Z`);
 
       while (current <= end) {
-        dates.push(current.toLocaleDateString("en-CA"));
+        dates.push(current.toISOString().slice(0, 10));
 
-        current.setDate(current.getDate() + 1);
+        current.setUTCDate(current.getUTCDate() + 1);
       }
 
-      const results = await Promise.all(
-        dates.map(async (date) => {
-          const data = await getCounsellorSlots(date);
-
-          return {
-            date,
-            assignments: data.filter(
-              (assignment) => assignment.status === "AVAILABLE",
-            ),
-          };
-        }),
-      );
+      const results = dates.map((date) => ({
+        date,
+        assignments: groupedAvailability.get(date) || [],
+      }));
 
       setUpcomingAvailability(results);
     } catch (error) {
@@ -97,7 +112,6 @@ export default function UpcomingAvailability({ onClose }: Props) {
       setLoading(false);
     }
   }
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
       <div className="max-h-[90vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-xl">

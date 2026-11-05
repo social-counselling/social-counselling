@@ -78,7 +78,7 @@ export default function Navbar() {
             break;
 
           case "CLIENT":
-            setProfileHref("/");
+            setProfileHref("/client");
             break;
 
           default:

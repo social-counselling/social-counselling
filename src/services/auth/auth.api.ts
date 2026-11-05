@@ -7,16 +7,39 @@ export interface LoginRequest {
   password: string;
 }
 
+/** User shape returned by the login endpoint. */
 export interface AuthUser {
-  id: string;
+  id?: string;
+  userId?: string;
   firstName: string;
   lastName: string | null;
   email: string;
-  phone: string | null;
-  status: string;
+  phone?: string | null;
+  status?: string;
   role: UserRole;
   profileImageUrl?: string | null;
   counsellorId?: number | null;
+  permissions?: string[];
+}
+
+export interface UserNavigationItem {
+  key: string;
+  name: string;
+  path: string;
+  icon: string | null;
+  sortOrder: number;
+}
+
+export interface CurrentUser {
+  userId: string;
+  email: string;
+  firstName: string;
+  lastName: string | null;
+  role: UserRole;
+  profileImageUrl: string | null;
+  counsellorId: number | null;
+  permissions: string[];
+  navigation: UserNavigationItem[];
 }
 
 export interface LoginResponse {
@@ -25,17 +48,10 @@ export interface LoginResponse {
   accessToken: string;
 }
 
+/** Matches the current backend GET /auth/me response. */
 export interface MeResponse {
   message: string;
-  user: {
-    userId: string;
-    email: string;
-    firstName: string;
-    lastName: string | null;
-    role: UserRole;
-    profileImageUrl: string | null;
-    counsellorId: number | null;
-  };
+  user: CurrentUser;
 }
 
 export function login(data: LoginRequest) {
