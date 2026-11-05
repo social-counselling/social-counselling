@@ -212,7 +212,9 @@ export default function Step7BookingConfirmation({
           <div className="rounded-xl border border-slate-200 bg-white px-4 py-3">
             <p className="text-sm leading-6 text-slate-600">
               Your booking details have been saved successfully. You can
-              continue to the invitation step to complete the booking process.
+              continue to the invitation step to complete the booking
+              process.Please check your email for the booking confirmation and
+              further instructions.
             </p>
           </div>
         </div>
