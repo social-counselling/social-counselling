@@ -21,12 +21,8 @@ type ApiMessage = {
   bookingNumber?: string;
 };
 
-const API_BASE_URL = (
-  process.env.NEXT_PUBLIC_API_URL ||
-  (process.env.NODE_ENV === "production"
-    ? "https://backend-social-councelling.vercel.app"
-    : "http://localhost:3001")
-).replace(/\/+$/, "");
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL
+
 
 const INVITE_ACCEPTED_STORAGE_KEY =
   "social-counselling:booking-invite-accepted";
