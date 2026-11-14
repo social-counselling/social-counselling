@@ -1,8 +1,8 @@
-
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
+  output: "standalone",
 
   images: {
     remotePatterns: [
@@ -10,6 +10,11 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "localhost",
         port: "3001",
+        pathname: "/uploads/**",
+      },
+      {
+        protocol: "https",
+        hostname: "api.socialcounselling.co.in",
         pathname: "/uploads/**",
       },
     ],

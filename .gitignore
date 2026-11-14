@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Deployment build files
+/frontend-deploy-linux/
+/frontend-deploy.zip
