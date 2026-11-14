@@ -21,8 +21,8 @@ type ApiMessage = {
   bookingNumber?: string;
 };
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
-
+import { API_URL } from "@/lib/api";
+const API_BASE_URL = API_URL.replace(/\/+$/, "");
 const INVITE_ACCEPTED_STORAGE_KEY =
   "social-counselling:booking-invite-accepted";
 
