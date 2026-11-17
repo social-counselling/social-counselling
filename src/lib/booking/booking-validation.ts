@@ -31,7 +31,8 @@ export function validateBookingClient(bookingData: BookingData): boolean {
   const clientAge = calculateAge(bookingData.clientDob);
 
   return (
-    Boolean(bookingData.clientName.trim()) &&
+    Boolean(bookingData.clientFirstName.trim()) &&
+    Boolean(bookingData.clientLastName.trim()) &&
     Boolean(bookingData.clientDob) &&
     Boolean(bookingData.gender) &&
     Boolean(bookingData.clientPhone.trim()) &&

@@ -1,16 +1,38 @@
 "use client";
+import { useState } from "react";
 
-import { CalendarDays, Mail, Phone, User, Users } from "lucide-react";
+import {
+  CalendarDays,
+  Mail,
+  Phone,
+  User,
+  Users,
+  ShieldCheck,
+  Loader2,
+} from "lucide-react";
+
 import { toast } from "sonner";
 
 import type { BookingData } from "@/types/booking";
+
+import {
+  requestOtp,
+  type VerifyLoginOtpResponse,
+  type VerifyBookingOtpResponse,
+} from "@/services/auth/auth.api";
+
+import EmailOtpDialog from "@/components/auth/EmailOtpDialog";
+
 interface Step5ClientInputsProps {
   bookingData: BookingData;
   serviceId: number | null;
   serviceSlug: string | null;
   onChange: (data: Partial<BookingData>) => void;
-}
 
+  emailVerified: boolean;
+
+  onEmailVerified: (email: string, verificationToken: string) => void;
+}
 /*
  * ----------------------------------------------------
  * Relationship options
@@ -198,7 +220,12 @@ export default function Step5ClientInputs({
   serviceId,
   serviceSlug,
   onChange,
+  emailVerified,
+  onEmailVerified,
 }: Step5ClientInputsProps) {
+  const [otpDialogOpen, setOtpDialogOpen] = useState(false);
+
+  const [sendingOtp, setSendingOtp] = useState(false);
   const today = getTodayDate();
   const isTeenageCounselling =
     serviceId === 13 || serviceSlug === "teenage-counselling";
@@ -290,6 +317,64 @@ export default function Step5ClientInputs({
     onChange({ counseleeDob: value, relationship: "" });
   };
 
+  const handleSendEmailOtp = async () => {
+    const email = bookingData.clientEmail.trim().toLowerCase();
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
+
+    if (!emailPattern.test(email)) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (emailVerified) {
+      return;
+    }
+
+    try {
+      setSendingOtp(true);
+
+      await requestOtp({
+        email,
+        purpose: "BOOKING",
+      });
+
+      setOtpDialogOpen(true);
+
+      toast.success("Verification code sent to your email.");
+    } catch (error) {
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Unable to send verification code.",
+      );
+    } finally {
+      setSendingOtp(false);
+    }
+  };
+
+  const handleEmailOtpVerified = (
+    result: VerifyLoginOtpResponse | VerifyBookingOtpResponse,
+  ) => {
+    if (!("verificationToken" in result)) {
+      toast.error("Invalid booking verification response.");
+      return;
+    }
+
+    const verifiedEmail = result.email.trim().toLowerCase();
+
+    if (verifiedEmail !== bookingData.clientEmail.trim().toLowerCase()) {
+      toast.error("The verified email does not match your booking email.");
+      return;
+    }
+
+    onEmailVerified(verifiedEmail, result.verificationToken);
+
+    setOtpDialogOpen(false);
+
+    toast.success("Email verified successfully!");
+  };
+
   return (
     <section
       className="
@@ -347,24 +432,31 @@ export default function Step5ClientInputs({
             </h2>
           </div>
 
-          {/* Name */}
+          {/* First Name + Last Name */}
 
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <InputField
-              label="Full Name"
-              value={bookingData.clientName}
-              placeholder="Enter your full name"
+              label="First Name"
+              value={bookingData.clientFirstName}
+              placeholder="Enter first name"
               required
               icon={<User className="h-3.5 w-3.5" />}
-              onChange={(value) =>
-                onChange({
-                  clientName: value,
-                })
-              }
+              onChange={(value) => onChange({ clientFirstName: value })}
             />
 
-            {/* DOB */}
+            <InputField
+              label="Last Name"
+              value={bookingData.clientLastName}
+              placeholder="Enter last name"
+              required
+              icon={<User className="h-3.5 w-3.5" />}
+              onChange={(value) => onChange({ clientLastName: value })}
+            />
+          </div>
 
+          {/* DOB */}
+
+          <div className="mt-3">
             <InputField
               label="Date of Birth"
               value={bookingData.clientDob}
@@ -439,30 +531,108 @@ export default function Step5ClientInputs({
             <InputField
               label="Mobile Number"
               value={bookingData.clientPhone}
-              placeholder="+91 9876543210"
+              placeholder="9876543210"
               type="tel"
               required
               icon={<Phone className="h-3.5 w-3.5" />}
-              onChange={(value) =>
+              onChange={(value) => {
+                const digits = value.replace(/\D/g, "").slice(0, 10);
+
                 onChange({
-                  clientPhone: value,
-                })
-              }
+                  clientPhone: digits,
+                });
+              }}
             />
 
-            <InputField
-              label="Email Address"
-              value={bookingData.clientEmail}
-              placeholder="you@example.com"
-              type="email"
-              required
-              icon={<Mail className="h-3.5 w-3.5" />}
-              onChange={(value) =>
-                onChange({
-                  clientEmail: value,
-                })
-              }
-            />
+            <div>
+              <label className="mb-1 block text-[11px] font-semibold text-secondary">
+                Email Address
+                <span className="ml-1 text-red-500">*</span>
+              </label>
+
+              <div className="flex items-center gap-2">
+                <div className="relative min-w-0 flex-1">
+                  <Mail className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-400" />
+
+                  <input
+                    type="email"
+                    value={bookingData.clientEmail}
+                    placeholder="you@example.com"
+                    required
+                    onChange={(event) =>
+                      onChange({
+                        clientEmail: event.target.value,
+                      })
+                    }
+                    className="
+          h-9
+          w-full
+          rounded-lg
+          border
+          border-slate-200
+          bg-white
+          pl-9
+          pr-3
+          text-sm
+          text-secondary
+          outline-none
+          transition
+          placeholder:text-slate-400
+          focus:border-primary
+          focus:ring-2
+          focus:ring-primary/10
+        "
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleSendEmailOtp}
+                  disabled={sendingOtp || emailVerified}
+                  className={`
+        flex
+        h-9
+        shrink-0
+        items-center
+        justify-center
+        gap-1.5
+        rounded-lg
+        px-3
+        text-xs
+        font-semibold
+        transition
+        disabled:cursor-not-allowed
+
+        ${
+          emailVerified
+            ? "bg-green-50 text-green-700"
+            : "bg-primary text-white hover:bg-primary-dark disabled:opacity-60"
+        }
+      `}
+                >
+                  {sendingOtp ? (
+                    <>
+                      <Loader2 className="size-3.5 animate-spin" />
+                      Sending
+                    </>
+                  ) : emailVerified ? (
+                    <>
+                      <ShieldCheck className="size-3.5" />
+                      Verified
+                    </>
+                  ) : (
+                    "Verify"
+                  )}
+                </button>
+              </div>
+
+              {emailVerified && (
+                <p className="mt-1 flex items-center gap-1 text-[10px] font-medium text-green-600">
+                  <ShieldCheck className="size-3" />
+                  Email verified successfully
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Client age warning */}
@@ -717,6 +887,14 @@ export default function Step5ClientInputs({
       <p className="mt-2 shrink-0 text-[10px] text-slate-500">
         Please complete all required information to continue.
       </p>
+
+      <EmailOtpDialog
+        open={otpDialogOpen}
+        email={bookingData.clientEmail.trim().toLowerCase()}
+        purpose="BOOKING"
+        onOpenChange={setOtpDialogOpen}
+        onVerified={handleEmailOtpVerified}
+      />
     </section>
   );
 }

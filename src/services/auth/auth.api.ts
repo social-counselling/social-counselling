@@ -58,6 +58,21 @@ export function login(data: LoginRequest) {
   return apiClient.post<LoginResponse>("/auth/login", data);
 }
 
+export function requestOtp(data: RequestOtpRequest) {
+  return apiClient.post<RequestOtpResponse>(
+    "/auth/otp/request",
+    data,
+  );
+}
+
+export function verifyLoginOtp(data: VerifyOtpRequest) {
+  return apiClient.post<VerifyLoginOtpResponse>(
+    "/auth/otp/verify",
+    data,
+  );
+}
+
+
 export function getCurrentUser() {
   return apiClient.get<MeResponse>("/auth/me");
 }
@@ -72,4 +87,44 @@ export function logout() {
   return apiClient.post<{
     message: string;
   }>("/auth/logout");
+}
+
+
+export type OtpPurpose = "LOGIN" | "BOOKING";
+
+export interface RequestOtpRequest {
+  email: string;
+  purpose: OtpPurpose;
+}
+
+export interface RequestOtpResponse {
+  message: string;
+  expiresIn: number;
+  resendAfter: number;
+}
+
+export interface VerifyOtpRequest {
+  email: string;
+  otp: string;
+  purpose: OtpPurpose;
+}
+
+export interface VerifyLoginOtpResponse {
+  message: string;
+  user: AuthUser;
+  accessToken: string;
+}
+
+export interface VerifyBookingOtpResponse {
+  message: string;
+  email: string;
+  verificationToken: string;
+}
+
+export function verifyOtp(
+  data: VerifyOtpRequest,
+) {
+  return apiClient.post<
+    VerifyLoginOtpResponse | VerifyBookingOtpResponse
+  >("/auth/otp/verify", data);
 }

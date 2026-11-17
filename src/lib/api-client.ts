@@ -82,7 +82,10 @@ async function request<T>(
 
   const headers = new Headers(fetchOptions.headers);
 
-  if (typeof FormData === "undefined" || !(fetchOptions.body instanceof FormData)) {
+  if (
+    typeof FormData === "undefined" ||
+    !(fetchOptions.body instanceof FormData)
+  ) {
     headers.set("Content-Type", "application/json");
   }
 
@@ -108,7 +111,9 @@ async function request<T>(
     response.status === 401 &&
     !isRetry &&
     endpoint !== "/auth/refresh" &&
-    endpoint !== "/auth/login"
+    endpoint !== "/auth/login" &&
+    endpoint !== "/auth/otp/request" &&
+    endpoint !== "/auth/otp/verify"
   ) {
     const newAccessToken = await refreshAccessToken();
 

@@ -24,6 +24,7 @@ interface ConsentItemProps {
   title: string;
   description: React.ReactNode;
   icon: React.ReactNode;
+   required?: boolean;
 }
 
 function ConsentItem({
@@ -32,6 +33,7 @@ function ConsentItem({
   title,
   description,
   icon,
+   required = false,
 }: ConsentItemProps) {
   return (
     <div
@@ -75,8 +77,11 @@ function ConsentItem({
       </span>
 
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold text-secondary">{title}</p>
-
+        
+<p className="flex items-center gap-1 text-xs font-semibold text-secondary">
+  {title}
+  {required && <span className="text-red-500">*</span>}
+</p>
         <div className="mt-0.5 select-text text-[10px] leading-4 text-slate-500">
           {description}
         </div>
@@ -203,6 +208,7 @@ export default function Step6ConsentPayment({
           <div className="space-y-2">
             {/* Booking Authorization */}
             <ConsentItem
+            required
               checked={bookingData.bookingAuthorization}
               onChange={(checked) =>
                 onChange({ bookingAuthorization: checked })
@@ -210,7 +216,11 @@ export default function Step6ConsentPayment({
               title="Booking Authorization"
               description={
                 <>
-                  I hereby confirm that I am authorised to request and book Social Counselling services for the proposed Counselee identified in this booking. In case the Counselee is a minor, I understand that counselling service can only be booked by parents / legal guardian.
+                  I hereby confirm that I am authorised to request and book
+                  Social Counselling services for the proposed Counselee
+                  identified in this booking. In case the Counselee is a minor,
+                  I understand that counselling service can only be booked by
+                  parents / legal guardian.
                 </>
               }
               icon={<LockKeyhole className="h-3.5 w-3.5" />}
@@ -218,6 +228,7 @@ export default function Step6ConsentPayment({
 
             {/* Terms & Conditions */}
             <ConsentItem
+            required
               checked={bookingData.termsAccepted}
               onChange={(checked) => onChange({ termsAccepted: checked })}
               title="Terms & Conditions"
@@ -238,6 +249,7 @@ export default function Step6ConsentPayment({
 
             {/* Privacy Policy */}
             <ConsentItem
+              required  
               checked={bookingData.privacyAccepted}
               onChange={(checked) => onChange({ privacyAccepted: checked })}
               title="Privacy Policy"

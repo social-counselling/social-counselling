@@ -64,7 +64,8 @@ export type BookingData = {
 
   bookingDate: string;
 
-  clientName: string;
+  clientFirstName: string;
+  clientLastName: string;
 
   clientDob: string;
 
@@ -94,11 +95,14 @@ export type CreateBookingPayload = {
   counsellorId: number;
   counsellorSlotId: number;
 
-  clientName: string;
+  clientFirstName: string;
+  clientLastName: string;
+
   clientDob: string;
   gender: string;
   clientPhone: string;
   clientEmail: string;
+  emailVerificationToken: string;
 
   counseleeSameAsClient: boolean;
   counseleeName?: string;

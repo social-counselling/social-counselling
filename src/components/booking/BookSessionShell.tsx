@@ -26,8 +26,10 @@ import type {
   BookingOptionsResponse,
   BookingConfirmation,
 } from "@/types/booking";
+import Link from "next/link";
 
-const INVITE_ACCEPTED_STORAGE_KEY = "social-counselling:booking-invite-accepted";
+const INVITE_ACCEPTED_STORAGE_KEY =
+  "social-counselling:booking-invite-accepted";
 const INVITE_NOTICE_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
 type InviteAcceptedNotice = {
@@ -39,7 +41,9 @@ type InvitationCompletion = {
   bookingNumber: string;
 };
 
-function parseInviteAcceptedNotice(raw: string | null): InviteAcceptedNotice | null {
+function parseInviteAcceptedNotice(
+  raw: string | null,
+): InviteAcceptedNotice | null {
   if (!raw) return null;
 
   try {
@@ -73,7 +77,8 @@ const initialBookingData: BookingData = {
 
   counsellorSlotId: null,
   bookingDate: "",
-  clientName: "",
+  clientFirstName: "",
+  clientLastName: "",
 
   clientDob: "",
 
@@ -105,6 +110,11 @@ export default function BookSessionShell() {
 
   const [bookingData, setBookingData] =
     useState<BookingData>(initialBookingData);
+
+  const [bookingVerification, setBookingVerification] = useState<{
+    email: string;
+    verificationToken: string;
+  } | null>(null);
 
   const [options, setOptions] = useState<BookingOptionsResponse | null>(null);
 
@@ -203,6 +213,16 @@ export default function BookSessionShell() {
    */
 
   const updateBookingData = (data: Partial<BookingData>) => {
+    if (Object.prototype.hasOwnProperty.call(data, "clientEmail")) {
+      const nextEmail = data.clientEmail?.trim().toLowerCase() ?? "";
+
+      const currentEmail = bookingData.clientEmail.trim().toLowerCase();
+
+      if (nextEmail !== currentEmail) {
+        setBookingVerification(null);
+      }
+    }
+
     setBookingData((previous) => ({
       ...previous,
       ...data,
@@ -222,31 +242,24 @@ export default function BookSessionShell() {
     if (currentStep === 5) {
       const email = bookingData.clientEmail.trim();
       const phone = bookingData.clientPhone.trim();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/;
-      const phoneDigits = phone.replace(/\D/g, "");
-      const phonePattern = /^\+?[\d\s().-]+$/;
-
       if (
-        !bookingData.clientName.trim() ||
+        !bookingData.clientFirstName.trim() ||
+        !bookingData.clientLastName.trim() ||
         !bookingData.clientDob ||
         !bookingData.gender
       ) {
         toast.error("Please complete all required client information.");
         return;
       }
-      if (!emailPattern.test(email)) {
-        toast.error(
-          "Please enter a valid email address, for example name@example.com.",
-        );
+      if (
+        !bookingVerification ||
+        bookingVerification.email !== email.toLowerCase()
+      ) {
+        toast.error("Please verify your email address before continuing.");
         return;
       }
-      if (
-        !phonePattern.test(phone) ||
-        phoneDigits.length < 7 ||
-        phoneDigits.length > 15 ||
-        /^(\d)\1+$/.test(phoneDigits)
-      ) {
-        toast.error("Please enter a valid mobile number with 7–15 digits.");
+      if (!/^[6-9]\d{9}$/.test(phone)) {
+        toast.error("Please enter a valid 10-digit Indian mobile number.");
         return;
       }
       if (!canContinue) {
@@ -273,12 +286,13 @@ export default function BookSessionShell() {
           counsellorId: bookingData.counsellorId!,
           counsellorSlotId: bookingData.counsellorSlotId!,
 
-          clientName: bookingData.clientName,
+          clientFirstName: bookingData.clientFirstName,
+          clientLastName: bookingData.clientLastName,
           clientDob: bookingData.clientDob,
           gender: bookingData.gender,
           clientPhone: bookingData.clientPhone,
           clientEmail: bookingData.clientEmail,
-
+          emailVerificationToken: bookingVerification!.verificationToken,
           counseleeSameAsClient: bookingData.counseleeSameAsClient,
           ...(bookingData.counseleeSameAsClient
             ? {}
@@ -421,8 +435,9 @@ export default function BookSessionShell() {
                     Thank you! Your booking is complete.
                   </h1>
                   <p className="mt-3 max-w-lg text-sm leading-6 text-slate-600 sm:text-base">
-                    Your confirmation has been received and your invitation acceptance
-                    has been recorded successfully. We look forward to supporting you.
+                    Your confirmation has been received and your invitation
+                    acceptance has been recorded successfully. We look forward
+                    to supporting you.
                   </p>
                   {invitationCompletion.bookingNumber && (
                     <div className="mt-6 w-full max-w-sm rounded-2xl border border-slate-200 bg-slate-50 px-5 py-4 text-left">
@@ -435,15 +450,15 @@ export default function BookSessionShell() {
                     </div>
                   )}
                   <p className="mt-6 max-w-lg text-xs leading-5 text-slate-500">
-                    Please check your email for your session details, calendar invitation,
-                    and invoice. You can safely close this page.
+                    Please check your email for your session details, calendar
+                    invitation, and invoice. You can safely close this page.
                   </p>
-                  <a
+                  <Link
                     href="/"
                     className="mt-7 inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition hover:bg-primary/90"
                   >
                     Return to Home
-                  </a>
+                  </Link>
                 </div>
               )}
 
@@ -469,164 +484,184 @@ export default function BookSessionShell() {
               )}
 
               {/* Steps */}
-              {!loadingOptions && !optionsError && options && !invitationCompletion && (
-                <>
-                  {currentStep === 1 && (
-                    <Step1Category
-                      categories={options.categories}
-                      selectedCategory={bookingData.category}
-                      onSelect={(category) => {
-                        const isEmpatheticListening =
-                          category === "EMPATHETIC_LISTENING";
+              {!loadingOptions &&
+                !optionsError &&
+                options &&
+                !invitationCompletion && (
+                  <>
+                    {currentStep === 1 && (
+                      <Step1Category
+                        categories={options.categories}
+                        selectedCategory={bookingData.category}
+                        onSelect={(category) => {
+                          const isEmpatheticListening =
+                            category === "EMPATHETIC_LISTENING";
 
-                        const empatheticListeningService =
-                          options.services.find(
-                            (service) =>
-                              service.category === "EMPATHETIC_LISTENING",
-                          );
+                          const empatheticListeningService =
+                            options.services.find(
+                              (service) =>
+                                service.category === "EMPATHETIC_LISTENING",
+                            );
 
-                        updateBookingData({
-                          category,
-                          serviceId: isEmpatheticListening
-                            ? (empatheticListeningService?.serviceId ?? null)
-                            : null,
-                          counsellorId: null,
-                          counsellorSlotId: null,
-                          bookingDate: "",
-                        });
-                        setCurrentStep(isEmpatheticListening ? 3 : 2);
-                      }}
-                    />
-                  )}
+                          updateBookingData({
+                            category,
+                            serviceId: isEmpatheticListening
+                              ? (empatheticListeningService?.serviceId ?? null)
+                              : null,
+                            counsellorId: null,
+                            counsellorSlotId: null,
+                            bookingDate: "",
+                          });
+                          setCurrentStep(isEmpatheticListening ? 3 : 2);
+                        }}
+                      />
+                    )}
 
-                  {currentStep === 2 && (
-                    <Step2Service
-                      services={options.services}
-                      selectedServiceId={bookingData.serviceId}
-                      selectedCategory={bookingData.category}
-                      onSelect={(serviceId) => {
-                        updateBookingData({
-                          serviceId,
-                          counsellorId: null,
-                          counsellorSlotId: null,
-                        });
-                        setCurrentStep(3);
-                      }}
-                    />
-                  )}
+                    {currentStep === 2 && (
+                      <Step2Service
+                        services={options.services}
+                        selectedServiceId={bookingData.serviceId}
+                        selectedCategory={bookingData.category}
+                        onSelect={(serviceId) => {
+                          updateBookingData({
+                            serviceId,
+                            counsellorId: null,
+                            counsellorSlotId: null,
+                          });
+                          setCurrentStep(3);
+                        }}
+                      />
+                    )}
 
-                  {currentStep === 3 && (
-                    <Step3Counsellor
-                      counsellors={options.counsellors}
-                      selectedCounsellorId={bookingData.counsellorId}
-                      selectedServiceId={bookingData.serviceId}
-                      selectedCategory={bookingData.category}
-                      onSelect={(counsellorId) => {
-                        updateBookingData({
-                          counsellorId,
-                          counsellorSlotId: null,
-                          bookingDate: "",
-                        });
-                        setCurrentStep(4);
-                      }}
-                    />
-                  )}
-                  {currentStep === 4 && options && (
-                    <Step4Calendar
-                      counsellorId={bookingData.counsellorId}
-                      counsellorName={
-                        options.counsellors.find(
-                          (counsellor) =>
-                            counsellor.counsellorId ===
-                            bookingData.counsellorId,
-                        )?.name ?? "your counsellor"
-                      }
-                      selectedSlotId={bookingData.counsellorSlotId}
-                      selectedDate={bookingData.bookingDate}
-                      onSelectSlot={(slotId, date) => {
-                        updateBookingData({
-                          counsellorSlotId: slotId,
-                          bookingDate: date,
-                        });
-                        // Automatically continue only after an actual time slot is selected.
-                        if (slotId !== null) setCurrentStep(5);
-                      }}
-                    />
-                  )}
-
-                  {currentStep === 5 && (
-                    <Step5ClientInputs
-                      bookingData={bookingData}
-                      serviceId={bookingData.serviceId}
-                      serviceSlug={options.services.find((service) => service.serviceId === bookingData.serviceId)?.slug ?? null}
-                      onChange={updateBookingData}
-                    />
-                  )}
-
-                  {currentStep === 6 && options && (
-                    <Step6ConsentPayment
-                      bookingData={bookingData}
-                      serviceTitle={
-                        options.services.find(
-                          (service) =>
-                            service.serviceId === bookingData.serviceId,
-                        )?.title ?? "Selected service"
-                      }
-                      counsellorName={
-                        options.counsellors.find(
-                          (counsellor) =>
-                            counsellor.counsellorId ===
-                            bookingData.counsellorId,
-                        )?.name ?? "Selected counsellor"
-                      }
-                      amount={
-                        options.counsellors
-                          .find(
+                    {currentStep === 3 && (
+                      <Step3Counsellor
+                        counsellors={options.counsellors}
+                        selectedCounsellorId={bookingData.counsellorId}
+                        selectedServiceId={bookingData.serviceId}
+                        selectedCategory={bookingData.category}
+                        onSelect={(counsellorId) => {
+                          updateBookingData({
+                            counsellorId,
+                            counsellorSlotId: null,
+                            bookingDate: "",
+                          });
+                          setCurrentStep(4);
+                        }}
+                      />
+                    )}
+                    {currentStep === 4 && options && (
+                      <Step4Calendar
+                        counsellorId={bookingData.counsellorId}
+                        counsellorName={
+                          options.counsellors.find(
                             (counsellor) =>
                               counsellor.counsellorId ===
                               bookingData.counsellorId,
-                          )
-                          ?.services?.find(
+                          )?.name ?? "your counsellor"
+                        }
+                        selectedSlotId={bookingData.counsellorSlotId}
+                        selectedDate={bookingData.bookingDate}
+                        onSelectSlot={(slotId, date) => {
+                          updateBookingData({
+                            counsellorSlotId: slotId,
+                            bookingDate: date,
+                          });
+                          // Automatically continue only after an actual time slot is selected.
+                          if (slotId !== null) setCurrentStep(5);
+                        }}
+                      />
+                    )}
+
+                    {currentStep === 5 && (
+                      <Step5ClientInputs
+                        bookingData={bookingData}
+                        serviceId={bookingData.serviceId}
+                        serviceSlug={
+                          options.services.find(
                             (service) =>
                               service.serviceId === bookingData.serviceId,
-                          )?.price ?? "0"
-                      }
-                      onChange={updateBookingData}
+                          )?.slug ?? null
+                        }
+                        onChange={updateBookingData}
+                        emailVerified={
+                          !!bookingVerification &&
+                          bookingVerification.email ===
+                            bookingData.clientEmail.trim().toLowerCase()
+                        }
+                        onEmailVerified={(email, verificationToken) => {
+                          setBookingVerification({
+                            email,
+                            verificationToken,
+                          });
+                        }}
+                      />
+                    )}
+
+                    {currentStep === 6 && options && (
+                      <Step6ConsentPayment
+                        bookingData={bookingData}
+                        serviceTitle={
+                          options.services.find(
+                            (service) =>
+                              service.serviceId === bookingData.serviceId,
+                          )?.title ?? "Selected service"
+                        }
+                        counsellorName={
+                          options.counsellors.find(
+                            (counsellor) =>
+                              counsellor.counsellorId ===
+                              bookingData.counsellorId,
+                          )?.name ?? "Selected counsellor"
+                        }
+                        amount={
+                          options.counsellors
+                            .find(
+                              (counsellor) =>
+                                counsellor.counsellorId ===
+                                bookingData.counsellorId,
+                            )
+                            ?.services?.find(
+                              (service) =>
+                                service.serviceId === bookingData.serviceId,
+                            )?.price ?? "0"
+                        }
+                        onChange={updateBookingData}
+                      />
+                    )}
+
+                    {currentStep === 7 && bookingConfirmation && (
+                      <Step7BookingConfirmation
+                        bookingData={bookingData}
+                        bookingNumber={bookingConfirmation.bookingNumber}
+                        status={bookingConfirmation.status}
+                        serviceTitle={
+                          bookingConfirmation.service?.title ??
+                          "Selected service"
+                        }
+                        counsellorName={
+                          bookingConfirmation.counsellor?.name ??
+                          "Selected counsellor"
+                        }
+                        bookingDate={
+                          bookingConfirmation.slot?.date ??
+                          bookingData.bookingDate
+                        }
+                        startTime={bookingConfirmation.slot?.startTime ?? ""}
+                        endTime={bookingConfirmation.slot?.endTime ?? ""}
+                      />
+                    )}
+
+                    {currentStep === 8 && <div>Step 8 will be added here.</div>}
+
+                    <BookingNavigation
+                      currentStep={currentStep}
+                      canContinue={canContinue}
+                      isLoading={isCreatingBooking}
+                      onBack={handleBack}
+                      onNext={handleNext}
                     />
-                  )}
-
-                  {currentStep === 7 && bookingConfirmation && (
-                    <Step7BookingConfirmation
-                      bookingData={bookingData}
-                      bookingNumber={bookingConfirmation.bookingNumber}
-                      status={bookingConfirmation.status}
-                      serviceTitle={
-                        bookingConfirmation.service?.title ?? "Selected service"
-                      }
-                      counsellorName={
-                        bookingConfirmation.counsellor?.name ??
-                        "Selected counsellor"
-                      }
-                      bookingDate={
-                        bookingConfirmation.slot?.date ??
-                        bookingData.bookingDate
-                      }
-                      startTime={bookingConfirmation.slot?.startTime ?? ""}
-                      endTime={bookingConfirmation.slot?.endTime ?? ""}
-                    />
-                  )}
-
-                  {currentStep === 8 && <div>Step 8 will be added here.</div>}
-
-                  <BookingNavigation
-                    currentStep={currentStep}
-                    canContinue={canContinue}
-                    isLoading={isCreatingBooking}
-                    onBack={handleBack}
-                    onNext={handleNext}
-                  />
-                </>
-              )}
+                  </>
+                )}
             </div>
           </div>
         </div>

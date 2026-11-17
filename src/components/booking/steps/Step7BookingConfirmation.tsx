@@ -160,7 +160,8 @@ export default function Step7BookingConfirmation({
                 <div className="min-w-0">
                   <p className="text-xs text-slate-500">Name</p>
                   <p className="truncate text-sm font-medium text-slate-900">
-                    {bookingData.clientName || "—"}
+                    {bookingData.clientFirstName}{" "}
+                    {bookingData.clientLastName || "—"}
                   </p>
                 </div>
               </div>
