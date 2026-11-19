@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Filter, Plus, RefreshCcw, Search } from "lucide-react";
+import { Filter, Plus, RefreshCcw, Search, Clock3, Languages } from "lucide-react";
 import Link from "next/link";
 
 import {
@@ -21,10 +21,16 @@ import type { AdminService } from "@/types/admin-service";
 import ServiceCards from "./ServiceCards";
 import { useDashboardAuth } from "@/components/dashboard/SharedDashboardShell";
 import { hasPermission } from "@/lib/auth/permissions";
+import SlotsManagement from "@/components/admin/slots/SlotsManagement";
+import LanguagesManagement from "./LanguagesManagement";
 
+type ServicesTab = "services" | "slots" | "languages";
 export default function ServicesPage() {
+  const [activeTab, setActiveTab] = useState<ServicesTab>("services");
+  const [slotCreateRequest,setSlotCreateRequest] = useState(0);
   const { user } = useDashboardAuth();
   const canCreateServices = hasPermission(user, "admin.services.create");
+  const canManageSlots = hasPermission(user, "admin.slots");
   const [allServices, setAllServices] = useState<AdminService[]>([]);
 
   const [page, setPage] = useState(1);
@@ -85,20 +91,23 @@ export default function ServicesPage() {
 
       <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#238BE6]">
-            Content Management
-          </p>
+          {activeTab !== "slots" && <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#238BE6]">Content Management</p>}
 
           <h1 className="mt-1 text-2xl font-semibold tracking-tight text-[#183b3b] sm:text-3xl">
-            Services
+            {activeTab === "services" ? "Services" : activeTab === "slots" ? "" : "Languages"}
           </h1>
 
-          <p className="mt-1 max-w-2xl text-sm text-slate-500">
-            Manage all counselling services and their content.
-          </p>
+          {activeTab !== "slots" && <p className="mt-1 max-w-2xl text-sm text-slate-500">{activeTab === "services" ? "Manage all counselling services and their content." : "Manage the languages available across counsellor profiles."}</p>}
         </div>
 
-        {canCreateServices && (
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap gap-1 rounded-xl border border-slate-200 bg-white p-1">
+            <button type="button" onClick={() => setActiveTab("services")} className={`rounded-lg px-3 py-2 text-sm font-semibold ${activeTab === "services" ? "bg-[#103f3d] text-white" : "text-slate-600 hover:bg-slate-50"}`}>Services</button>
+            <button type="button" onClick={() => setActiveTab("slots")} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold ${activeTab === "slots" ? "bg-[#103f3d] text-white" : "text-slate-600 hover:bg-slate-50"}`}><Clock3 className="h-4 w-4"/>Slots</button>
+            <button type="button" onClick={() => setActiveTab("languages")} className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-semibold ${activeTab === "languages" ? "bg-[#103f3d] text-white" : "text-slate-600 hover:bg-slate-50"}`}><Languages className="h-4 w-4"/>Languages</button>
+          </div>
+        {activeTab === "slots" && canManageSlots && <button type="button" onClick={()=>setSlotCreateRequest(v=>v+1)} className="inline-flex h-10 items-center gap-2 rounded-xl bg-[#103f3d] px-4 text-sm font-semibold text-white"><Plus className="h-4 w-4"/>Add Slot</button>}
+        {activeTab === "services" && canCreateServices && (
           <Link
             href="/admin/services/new"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#238BE6] px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1477ca]"
@@ -107,8 +116,12 @@ export default function ServicesPage() {
             Add Service
           </Link>
         )}
+        </div>
       </div>
 
+      <div className={activeTab === "slots" ? "" : "hidden"}><SlotsManagement createRequest={slotCreateRequest} /></div>
+      {activeTab === "languages" && <LanguagesManagement />}
+      {activeTab === "services" && <>
       {/* FILTER CARD */}
 
       <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
@@ -229,6 +242,7 @@ export default function ServicesPage() {
           </div>
         </div>
       )}
+      </>}
     </div>
   );
 }

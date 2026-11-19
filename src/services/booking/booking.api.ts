@@ -55,6 +55,8 @@ export async function getAdminBookings(
     limit: query.limit ?? 10,
     status: query.status || undefined,
     search: query.search?.trim() || undefined,
+    fromDate: query.fromDate || undefined,
+    toDate: query.toDate || undefined,
   });
 }
 
@@ -67,6 +69,8 @@ export async function getCounsellorBookings(
     limit: query.limit ?? 10,
     status: query.status || undefined,
     search: query.search?.trim() || undefined,
+    fromDate: query.fromDate || undefined,
+    toDate: query.toDate || undefined,
   });
 }
 
@@ -79,5 +83,7 @@ export async function getClientBookings(
     limit: query.limit ?? 10,
     status: query.status || undefined,
     search: query.search?.trim() || undefined,
+    fromDate: query.fromDate || undefined,
+    toDate: query.toDate || undefined,
   });
 }

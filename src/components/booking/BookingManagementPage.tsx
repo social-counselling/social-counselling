@@ -13,7 +13,14 @@ import {
   Search,
   UsersRound,
 } from "lucide-react";
-import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
 import {
   getAdminBookings,
@@ -147,7 +154,14 @@ function BookingCard({
             {clientEmail || "No email"}
           </p>
         </div>
-        <StatusBadge status={booking.status} />
+        <div className="flex shrink-0 flex-col items-end gap-2">
+          <StatusBadge status={booking.status} />
+          <span
+            className={`rounded-full px-2 py-1 text-[11px] font-semibold ${booking.inviteAccepted ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}
+          >
+            {booking.inviteAccepted ? "Invite accepted" : "Invite pending"}
+          </span>
+        </div>
       </div>
 
       <div className="mt-4 grid grid-cols-1 gap-3 border-t border-slate-100 pt-4 sm:grid-cols-2">
@@ -159,16 +173,14 @@ function BookingCard({
             {booking.service?.title?.trim() || "Service unavailable"}
           </p>
         </div>
-        {audience === "admin" && (
-          <div>
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
-              Counsellor
-            </p>
-            <p className="mt-1 text-sm font-medium text-slate-800">
-              {getCounsellorName(booking)}
-            </p>
-          </div>
-        )}
+        <div>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
+            Counsellor
+          </p>
+          <p className="mt-1 text-sm font-medium text-slate-800">
+            {getCounsellorName(booking)}
+          </p>
+        </div>
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-slate-400">
             Appointment
@@ -213,31 +225,80 @@ export default function BookingManagementPage({
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [page, setPage] = useState(1);
+  const toIsoDate = (value: string) => {
+    const m = value.trim().match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!m) return "";
+    const d = new Date(Number(m[3]), Number(m[2]) - 1, Number(m[1]));
+    return d.getFullYear() === Number(m[3]) &&
+      d.getMonth() === Number(m[2]) - 1 &&
+      d.getDate() === Number(m[1])
+      ? `${m[3]}-${m[2]}-${m[1]}`
+      : "";
+  };
+  const [fromDateInput, setFromDateInput] = useState("");
+  const [toDateInput, setToDateInput] = useState("");
+  const [appliedFromDate, setAppliedFromDate] = useState("");
+  const [appliedToDate, setAppliedToDate] = useState("");
+  const pageCache = useRef(new Map<string, BookingListResponse>());
+  const requestSequence = useRef(0);
 
   const loadBookings = useCallback(
     async (showRefresh = false) => {
-      if (showRefresh) setRefreshing(true);
-      else setLoading(true);
+      const requestId = ++requestSequence.current;
+      const cacheKey = JSON.stringify([
+        audience,
+        page,
+        PAGE_SIZE,
+        status,
+        search,
+        appliedFromDate,
+        appliedToDate,
+      ]);
+      if (showRefresh) {
+        pageCache.current.delete(cacheKey);
+        setRefreshing(true);
+      } else {
+        const cached = pageCache.current.get(cacheKey);
+        if (cached) {
+          setResult(cached);
+          setLoading(false);
+          setRefreshing(false);
+          setError(null);
+          return;
+        }
+        setLoading(true);
+      }
       setError(null);
 
       try {
-        const query = { page, limit: PAGE_SIZE, status, search };
+        const query = {
+          page,
+          limit: PAGE_SIZE,
+          status,
+          search,
+          fromDate: toIsoDate(appliedFromDate),
+          toDate: toIsoDate(appliedToDate),
+        };
         const response = isAdmin
           ? await getAdminBookings(query)
           : await getCounsellorBookings(query);
-        setResult(response);
+        pageCache.current.set(cacheKey, response);
+        if (requestId === requestSequence.current) setResult(response);
       } catch (loadError) {
-        setError(
-          loadError instanceof Error
-            ? loadError.message
-            : "Unable to load bookings. Please try again.",
-        );
+        if (requestId === requestSequence.current)
+          setError(
+            loadError instanceof Error
+              ? loadError.message
+              : "Unable to load bookings. Please try again.",
+          );
       } finally {
-        setLoading(false);
-        setRefreshing(false);
+        if (requestId === requestSequence.current) {
+          setLoading(false);
+          setRefreshing(false);
+        }
       }
     },
-    [isAdmin, page, search, status],
+    [audience, isAdmin, page, search, status, appliedFromDate, appliedToDate],
   );
 
   useEffect(() => {
@@ -258,11 +319,34 @@ export default function BookingManagementPage({
     event.preventDefault();
     setPage(1);
     setSearch(searchInput.trim());
+    setAppliedFromDate(fromDateInput);
+    setAppliedToDate(toDateInput);
   };
 
   const handleStatusChange = (value: string) => {
     setPage(1);
     setStatus(value);
+  };
+
+  const applyPreset = (period: "weekly" | "monthly") => {
+    const now = new Date();
+    const to = new Date(now);
+    const from = new Date(now);
+    if (period === "weekly") {
+      const day = (now.getDay() + 6) % 7;
+      from.setDate(now.getDate() - day);
+    } else {
+      from.setDate(1);
+    }
+    const format = (date: Date) =>
+      `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+    const fromValue = format(from);
+    const toValue = format(to);
+    setFromDateInput(fromValue);
+    setToDateInput(toValue);
+    setAppliedFromDate(fromValue);
+    setAppliedToDate(toValue);
+    setPage(1);
   };
 
   const title = isAdmin ? "Booking Management" : "My Bookings";
@@ -277,10 +361,11 @@ export default function BookingManagementPage({
       <div className="mx-auto max-w-[1440px]">
         <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <div className="flex items-center gap-2 text-sm font-medium text-[#147d7e]">
-              <CalendarDays className="h-4 w-4" />
-              {isAdmin ? "Administration" : "Counsellor workspace"}
-            </div>
+            {!isAdmin && (
+              <div className="flex items-center gap-2 text-sm font-medium text-[#147d7e]">
+                <CalendarDays className="h-4 w-4" /> Counsellor workspace
+              </div>
+            )}
             <h1 className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
               {title}
             </h1>
@@ -335,31 +420,31 @@ export default function BookingManagementPage({
           </div>
         </div>
 
-        {/* <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
+        <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
           <form
             onSubmit={handleSearch}
-            className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1fr)_220px_auto]"
+            className="grid grid-cols-1 items-end gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(260px,1fr)_160px_150px_150px_auto_auto_auto]"
           >
-            <label className="relative block">
-              <span className="sr-only">Search bookings</span>
-              <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
-              <input
-                value={searchInput}
-                onChange={(event) => setSearchInput(event.target.value)}
-                placeholder={
-                  isAdmin
-                    ? "Search booking, client, counsellor or service…"
-                    : "Search booking, client or service…"
-                }
-                className="h-11 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#147d7e] focus:ring-2 focus:ring-[#147d7e]/10"
-              />
+            <label className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-xs font-semibold text-slate-500">Search bookings</span>
+              <span className="relative block">
+                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                <input
+                  value={searchInput}
+                  onChange={(event) => setSearchInput(event.target.value)}
+                  placeholder="Booking, client, counsellor or service"
+                  className="h-11 w-full rounded-xl border border-slate-200 bg-white pl-10 pr-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-[#147d7e] focus:ring-2 focus:ring-[#147d7e]/10"
+                />
+              </span>
             </label>
-            <label>
-              <span className="sr-only">Filter by status</span>
+
+            <label className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-xs font-semibold text-slate-500">Status</span>
               <select
                 value={status}
                 onChange={(event) => handleStatusChange(event.target.value)}
-                className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none focus:border-[#147d7e] focus:ring-2 focus:ring-[#147d7e]/10"
+                aria-label="Filter by status"
+                className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition focus:border-[#147d7e] focus:ring-2 focus:ring-[#147d7e]/10"
               >
                 {STATUS_OPTIONS.map((option) => (
                   <option key={option.value || "all"} value={option.value}>
@@ -368,14 +453,59 @@ export default function BookingManagementPage({
                 ))}
               </select>
             </label>
+
+            <label className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-xs font-semibold text-slate-500">From date</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="DD/MM/YYYY"
+                value={fromDateInput}
+                onChange={(event) => {
+                  setFromDateInput(event.target.value);
+                  setPage(1);
+                }}
+                className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-[#147d7e] focus:ring-2 focus:ring-[#147d7e]/10"
+              />
+            </label>
+
+            <label className="flex min-w-0 flex-col gap-1.5">
+              <span className="text-xs font-semibold text-slate-500">To date</span>
+              <input
+                type="text"
+                inputMode="numeric"
+                placeholder="DD/MM/YYYY"
+                value={toDateInput}
+                onChange={(event) => {
+                  setToDateInput(event.target.value);
+                  setPage(1);
+                }}
+                className="h-11 w-full rounded-xl border border-slate-200 bg-white px-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-[#147d7e] focus:ring-2 focus:ring-[#147d7e]/10"
+              />
+            </label>
+
             <button
               type="submit"
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#103f3d] px-5 text-sm font-semibold text-white transition hover:bg-[#14514e]"
+              className="h-11 whitespace-nowrap rounded-xl bg-[#103f3d] px-5 text-sm font-semibold text-white shadow-sm transition hover:bg-[#0b302e] focus:outline-none focus:ring-2 focus:ring-[#147d7e]/30"
             >
-              <Search className="h-4 w-4" /> Search
+              Search
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset("weekly")}
+              className="h-11 whitespace-nowrap rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-[#147d7e]/40 hover:bg-[#f2f8f7]"
+            >
+              Weekly
+            </button>
+            <button
+              type="button"
+              onClick={() => applyPreset("monthly")}
+              className="h-11 whitespace-nowrap rounded-xl border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 transition hover:border-[#147d7e]/40 hover:bg-[#f2f8f7]"
+            >
+              Monthly
             </button>
           </form>
-        </div> */}
+        </div>
 
         {error && (
           <div
@@ -437,15 +567,16 @@ export default function BookingManagementPage({
               </div>
 
               <div className="hidden overflow-x-auto md:block">
-                <table className="w-full min-w-[950px] border-collapse text-left">
+                <table className="w-full min-w-[1120px] border-collapse text-left">
                   <thead className="bg-slate-50">
                     <tr className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                      <th className="px-5 py-3.5">Booking / Client</th>
-                      <th className="px-5 py-3.5">Service</th>
-                      {isAdmin && <th className="px-5 py-3.5">Counsellor</th>}
                       <th className="px-5 py-3.5">Appointment</th>
+                      <th className="px-5 py-3.5">Booking</th>
+                      <th className="px-5 py-3.5">Counsellor</th>
+                      <th className="px-5 py-3.5">Service</th>
                       <th className="px-5 py-3.5">Fee</th>
                       <th className="px-5 py-3.5">Status</th>
+                      <th className="px-5 py-3.5">Invite</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-100">
@@ -461,6 +592,14 @@ export default function BookingManagementPage({
                           className="align-top transition hover:bg-slate-50/70"
                         >
                           <td className="px-5 py-4">
+                            <p className="whitespace-nowrap text-sm font-medium text-slate-800">
+                              {formatDate(slot?.date)}
+                            </p>
+                            <p className="mt-1 whitespace-nowrap text-xs text-slate-500">
+                              {formatSlotTime(slot?.slot?.startTime)}
+                            </p>
+                          </td>
+                          <td className="px-5 py-4">
                             <p className="whitespace-nowrap text-sm font-bold text-[#103f3d]">
                               {booking.bookingNumber}
                             </p>
@@ -471,29 +610,27 @@ export default function BookingManagementPage({
                               {clientEmail || "No email"}
                             </p>
                           </td>
+                          <td className="px-5 py-4 text-sm text-slate-700">
+                            {getCounsellorName(booking)}
+                          </td>
                           <td className="max-w-[210px] px-5 py-4 text-sm text-slate-700">
                             {booking.service?.title?.trim() ||
                               "Service unavailable"}
-                          </td>
-                          {isAdmin && (
-                            <td className="px-5 py-4 text-sm text-slate-700">
-                              {getCounsellorName(booking)}
-                            </td>
-                          )}
-                          <td className="px-5 py-4">
-                            <p className="whitespace-nowrap text-sm font-medium text-slate-800">
-                              {formatDate(slot?.date)}
-                            </p>
-                            <p className="mt-1 whitespace-nowrap text-xs text-slate-500">
-                              {formatSlotTime(slot?.slot?.startTime)} –{" "}
-                              {formatSlotTime(slot?.slot?.endTime)}
-                            </p>
                           </td>
                           <td className="whitespace-nowrap px-5 py-4 text-sm font-bold text-slate-900">
                             {formatRupees(booking.amount)}
                           </td>
                           <td className="px-5 py-4">
                             <StatusBadge status={booking.status} />
+                          </td>
+                          <td className="px-5 py-4">
+                            <span
+                              className={`inline-flex rounded-full px-2.5 py-1 text-xs font-semibold ${booking.inviteAccepted ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}
+                            >
+                              {booking.inviteAccepted
+                                ? "Accepted"
+                                : "Not accepted"}
+                            </span>
                           </td>
                         </tr>
                       );

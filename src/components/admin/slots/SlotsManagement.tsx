@@ -37,7 +37,7 @@ const emptyForm: SlotForm = {
   isActive: true,
 };
 
-export default function SlotsManagement() {
+export default function SlotsManagement({ createRequest = 0 }: { createRequest?: number }) {
   const { user } = useDashboardAuth();
   const canManageSlots = hasPermission(user, "admin.slots");
   const [slots, setSlots] = useState<AdminSlot[]>([]);
@@ -71,6 +71,8 @@ export default function SlotsManagement() {
   useEffect(() => {
     loadSlots();
   }, []);
+
+  useEffect(() => { if (createRequest > 0) { setEditingSlot(null); setForm(emptyForm); setError(""); setShowForm(true); } }, [createRequest]);
 
   function openCreateForm() {
     setEditingSlot(null);
@@ -177,23 +179,6 @@ export default function SlotsManagement() {
   return (
     <>
       <div className="space-y-6">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">Slots</h1>
-
-            <p className="mt-1 text-sm text-gray-500">
-              Manage the master counselling time slots.
-            </p>
-          </div>
-
-          {canManageSlots && (
-            <button type="button" onClick={openCreateForm} className="rounded-lg bg-black px-4 py-2.5 text-sm font-medium text-white transition hover:bg-gray-800">
-              + Add Slot
-            </button>
-          )}
-        </div>
-
         {/* Error */}
         {error && (
           <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
@@ -204,13 +189,7 @@ export default function SlotsManagement() {
         {/* Slots */}
         <div className="rounded-xl border border-gray-200 bg-white">
           <div className="border-b border-gray-200 px-5 py-4">
-            <h2 className="text-lg font-semibold text-gray-900">
-              Master Time Slots
-            </h2>
-
-            <p className="mt-1 text-sm text-gray-500">
-              These slots can later be assigned to individual counsellors.
-            </p>
+            <h2 className="text-base font-semibold text-gray-900">Available time slots</h2>
           </div>
 
           {loading ? (

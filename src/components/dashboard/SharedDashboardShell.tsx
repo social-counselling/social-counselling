@@ -32,6 +32,8 @@ import {
   hasAnyPermission,
 } from "@/lib/auth/permissions";
 import { resolveImageUrl } from "@/lib/image-url";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 import {
   getCurrentUser,
   logout,
@@ -39,7 +41,7 @@ import {
   type UserRole,
 } from "@/services/auth/auth.api";
 
-type DashboardContextValue = { user: CurrentUser };
+type DashboardContextValue = { user: CurrentUser; updateUser: (updates: Partial<CurrentUser>) => void };
 const DashboardContext = createContext<DashboardContextValue | null>(null);
 
 export function useDashboardAuth() {
@@ -184,10 +186,16 @@ export default function SharedDashboardShell({
 
   const navigation = useMemo(() => {
     if (!user) return [];
-    return [...(user.navigation ?? [])]
+    return [...(user.navigation ?? []), ...(user.role === "ADMIN" ? [{ key: "admin.settings", name: "Settings", path: "/admin/settings", icon: "Settings", sortOrder: 9999 }] : [])]
+      .filter((item) => {
+        if (user.role === "CLIENT") return false;
+        if (user.role === "ADMIN" && item.key === "admin.slots") return false;
+        if (user.role === "COUNSELLOR" && ["counsellor.services", "counsellor.availability"].includes(item.key)) return false;
+        return true;
+      })
       .sort((a, b) => a.sortOrder - b.sortOrder)
       .map((item) => ({
-        label: item.name,
+        label: user.role === "ADMIN" && item.key === "admin.counsellors" ? "User Management" : item.name,
         href: item.path,
         key: item.key,
         icon: navigationIcons[item.icon ?? ""] ?? LayoutDashboard,
@@ -230,7 +238,55 @@ export default function SharedDashboardShell({
   const home = getDashboardHome(user.role);
 
   return (
-    <DashboardContext.Provider value={{ user }}>
+    <DashboardContext.Provider value={{ user, updateUser: (updates) => setUser((current) => current ? { ...current, ...updates } : current) }}>
+      {user.role === "CLIENT" ? (
+        <div className="min-h-screen bg-[#f5f8f5]">
+          <Navbar />
+
+          <main className="min-h-screen px-4 pb-10 pt-28 sm:px-6 lg:px-8">
+            <div className="mx-auto w-full max-w-7xl">
+              <div className="mb-5 flex flex-wrap items-center justify-end gap-2">
+                <Link
+                  href="/client/profile"
+                  aria-current={pathname === "/client/profile" ? "page" : undefined}
+                  className={`inline-flex min-h-10 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                    pathname === "/client/profile"
+                      ? "bg-[#103f3d] text-white shadow-sm"
+                      : "border border-slate-200 bg-white text-slate-700 hover:border-[#103f3d]/30 hover:bg-[#f2f7f5]"
+                  }`}
+                >
+                  <UserRound className="h-4 w-4" />
+                  My Profile
+                </Link>
+                <Link
+                  href="/client/bookings"
+                  aria-current={pathname.startsWith("/client/bookings") ? "page" : undefined}
+                  className={`inline-flex min-h-10 items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+                    pathname.startsWith("/client/bookings")
+                      ? "bg-[#103f3d] text-white shadow-sm"
+                      : "border border-slate-200 bg-white text-slate-700 hover:border-[#103f3d]/30 hover:bg-[#f2f7f5]"
+                  }`}
+                >
+                  <CalendarDays className="h-4 w-4" />
+                  My Bookings
+                </Link>
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="inline-flex min-h-10 items-center gap-2 rounded-full border border-rose-200 bg-white px-4 py-2 text-sm font-semibold text-rose-700 transition-colors hover:bg-rose-50"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </button>
+              </div>
+              <div className="min-w-0">
+                {children}
+              </div>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      ) : (
       <div className="min-h-screen bg-[#f5f8f5]">
         <div className="fixed inset-x-0 top-0 z-40 flex h-[70px] items-center justify-between border-b border-slate-200 bg-white px-4 shadow-sm lg:hidden">
           <Link
@@ -369,6 +425,7 @@ export default function SharedDashboardShell({
           </main>
         </div>
       </div>
+      )}
     </DashboardContext.Provider>
   );
 }

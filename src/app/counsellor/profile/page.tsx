@@ -1,5 +1,2 @@
-import CounsellorProfile from "@/components/counsellor/profile/CounsellorProfile";
-
-export default function CounsellorProfilePage() {
-  return <CounsellorProfile />;
-}
+import CounsellorProfileWorkspace from "@/components/counsellor/profile/CounsellorProfileWorkspace";
+export default function CounsellorProfilePage() { return <CounsellorProfileWorkspace />; }

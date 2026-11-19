@@ -1,5 +1,2 @@
-import CounsellorsPage from "@/components/admin/counsellors/CounsellorsPage";
-
-export default function AdminCounsellorsPage() {
-  return <CounsellorsPage />;
-}
+import UserManagementPage from "@/components/admin/counsellors/UserManagementPage";
+export default function AdminUserManagementRoute() { return <UserManagementPage />; }

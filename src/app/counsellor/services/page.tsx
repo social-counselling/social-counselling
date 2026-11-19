@@ -1,5 +1,2 @@
-import CounsellorServices from "@/components/counsellor/services/CounsellorServices";
-
-export default function CounsellorServicesPage() {
-  return <CounsellorServices />;
-}
+import { redirect } from "next/navigation";
+export default function LegacyCounsellorRoute() { redirect("/counsellor/profile"); }

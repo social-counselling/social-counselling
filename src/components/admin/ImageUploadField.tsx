@@ -22,7 +22,7 @@ interface UploadResponse {
   size?: number;
 }
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024;
+const MAX_FILE_SIZE = 4 * 1024 * 1024;
 
 const ALLOWED_IMAGE_TYPES = [
   "image/jpeg",
@@ -119,7 +119,7 @@ export default function ImageUploadField({
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      setError("Image must be 5 MB or smaller.");
+      setError("Image must be 4 MB or smaller.");
       if (inputRef.current) inputRef.current.value = "";
       return;
     }
@@ -183,7 +183,7 @@ export default function ImageUploadField({
 
           <p className="mt-1 break-all text-xs text-slate-500">
             {value ||
-              " Max 5 MB "}
+               "Max 4 MB " }
           </p>
 
           <div className="mt-3 flex flex-wrap gap-2">

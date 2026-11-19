@@ -45,6 +45,7 @@ const pageRoutes: Array<{ path: string; permission: string }> = [
   { path: "/admin/counsellors", permission: "admin.counsellors" },
   { path: "/admin/slots", permission: "admin.slots" },
   { path: "/admin/bookings", permission: "admin.bookings" },
+  { path: "/admin/settings", permission: "admin.dashboard" },
   { path: "/admin", permission: "admin.dashboard" },
   { path: "/counsellor/profile", permission: "counsellor.profile" },
   { path: "/counsellor/services", permission: "counsellor.services" },

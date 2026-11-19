@@ -36,7 +36,7 @@ import {
 
 const PAGE_SIZE = 10;
 
-export default function CounsellorsPage() {
+export default function CounsellorsPage({ showHeader = true }: { showHeader?: boolean }) {
   const { user } = useDashboardAuth();
   const canCreateCounsellors = hasPermission(user, "admin.counsellors.create");
   const [allCounsellors, setAllCounsellors] = useState<AdminCounsellor[]>([]);
@@ -210,9 +210,9 @@ export default function CounsellorsPage() {
    * --------------------------------------------------------- */
 
   return (
-    <div className="p-5 sm:p-6 lg:p-8">
+    <div className={showHeader ? "p-5 sm:p-6 lg:p-8" : "pt-1"}>
       {/* HEADER */}
-      <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
+      {showHeader && <div className="mb-6 flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#238BE6]">
             People Management
@@ -236,7 +236,7 @@ export default function CounsellorsPage() {
             Add Counsellor
           </Link>
         )}
-      </div>
+      </div>}
 
       {/* FILTERS */}
       <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">

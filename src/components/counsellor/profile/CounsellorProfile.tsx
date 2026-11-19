@@ -26,7 +26,7 @@ import {
 } from "@/services/counsellor/profile.api";
 
 export default function CounsellorProfile() {
-  const { user } = useDashboardAuth();
+  const { user, updateUser } = useDashboardAuth();
   const canManageOwnProfile = hasPermission(user, "counsellor.profile");
   const [counsellor, setCounsellor] = useState<CounsellorProfileData | null>(
     null,
@@ -154,6 +154,7 @@ export default function CounsellorProfile() {
       console.log("UPDATED COUNSELLOR PROFILE RESPONSE:", updated);
 
       setCounsellor(updated);
+      updateUser({ profileImageUrl: updated.user?.profileImageUrl ?? null });
 
       setIsEditing(false);
 
@@ -464,6 +465,12 @@ export default function CounsellorProfile() {
 
             {/* Form */}
             <form onSubmit={handleUpdateProfile} className="space-y-5 p-6">
+              <ImageUploadField
+                label="Profile photo"
+                folder="counsellors"
+                value={form.profileImageUrl}
+                onChange={(profileImageUrl) => setForm((current) => ({ ...current, profileImageUrl }))}
+              />
               <div>
                 <label className="text-sm font-medium text-gray-700">
                   Credentials

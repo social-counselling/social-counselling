@@ -1,5 +1,2 @@
-import CounsellorAvailability from "@/components/counsellor/availability/CounsellorAvailability";
-
-export default function CounsellorAvailabilityPage() {
-  return <CounsellorAvailability />;
-}
+import { redirect } from "next/navigation";
+export default function LegacyCounsellorRoute() { redirect("/counsellor/profile"); }

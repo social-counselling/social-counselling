@@ -75,10 +75,7 @@ export type BookingListResponse = {
 };
 
 export type BookingListQuery = {
-  page?: number;
-  limit?: number;
-  status?: string;
-  search?: string;
+  page?: number; limit?: number; status?: string; search?: string; fromDate?: string; toDate?: string;
 };
 
 
