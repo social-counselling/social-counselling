@@ -43,3 +43,5 @@ next-env.d.ts
 # Deployment build files
 /frontend-deploy-linux/
 /frontend-deploy.zip
+
+.sentryclirc
